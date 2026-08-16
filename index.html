@@ -307,14 +307,30 @@ svg{display:block}
 .pie a{border-bottom:1px solid var(--linea)}
 
 
+/* ─────────────────────────── interruttore modalita' ───────────────────────
+   Due bisogni diversi meritano due mappe diverse: mangiare fuori e' una
+   questione di rischio, fare la spesa e' una questione di dove trovare
+   i prodotti. Tenerli insieme confonde entrambi. */
+.modo-switch{
+  display:flex;gap:3px;padding:3px;border-radius:999px;
+  background:rgba(255,255,255,.12);margin-bottom:9px;
+}
+.modo-switch button{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px 10px;border-radius:999px;font-size:12.5px;font-weight:600;
+  color:#DCC3C9;transition:background .18s,color .18s;
+}
+.modo-switch button[aria-pressed="true"]{background:var(--grano);color:var(--bordeaux)}
+.cappello .modo-switch{margin-top:14px;margin-bottom:0}
+
 /* ══════════════════════════ SPLASH ══════════════════════════
    Il caricamento non e' tempo morto: e' il momento in cui l'app
    fa davvero le due query che servono, e intanto racconta un dato
    vero su una citta' italiana estratta a caso. */
 .splash{
   position:fixed;inset:0;z-index:2000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:calc(var(--st) + 22px) 24px calc(20px + var(--sb));
+  display:flex;flex-direction:column;align-items:center;
+  padding:calc(var(--st) + 24px) 24px calc(16px + var(--sb));
   background:linear-gradient(160deg,#5E1522,#3A0B16 62%,#2A0710);
   transition:opacity .5s ease,visibility .5s;
   overflow:hidden;text-align:center;
@@ -331,47 +347,48 @@ svg{display:block}
 .splash > *:not(.splash-foto):not(.splash-velo):not(.splash-grana){position:relative;z-index:2}
 
 .avviso-carico{
-  background:rgba(20,4,9,.7);color:#F3E4E7;border-radius:999px;
-  padding:11px 22px;font-size:13.5px;font-weight:500;line-height:1.4;
-  max-width:330px;margin-bottom:34px;backdrop-filter:blur(6px);
-  border:1px solid rgba(255,255,255,.1);
+  flex:0 0 auto;background:rgba(20,4,9,.72);color:#F3E4E7;border-radius:20px;
+  padding:11px 20px;font-size:13.5px;font-weight:500;line-height:1.45;
+  max-width:340px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.11);
 }
+/* il centro si prende lo spazio residuo: la firma non puo' piu' finirci sotto */
+.splash-mid{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:0;padding:16px 0}
 .avviso-carico b{font-weight:700;color:#fff}
 
 .disco{
-  width:150px;height:150px;border-radius:50%;background:var(--carta);
-  display:grid;place-items:center;margin-bottom:26px;
-  box-shadow:0 16px 46px rgba(0,0,0,.42);
+  width:122px;height:122px;border-radius:50%;background:var(--carta);
+  display:grid;place-items:center;margin-bottom:22px;flex:0 0 auto;
+  box-shadow:0 14px 40px rgba(0,0,0,.42);
   animation:respiro 3.4s ease-in-out infinite;
 }
 @keyframes respiro{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
 
 .logotipo{
-  font-family:Fraunces,serif;font-weight:900;font-size:27px;
-  letter-spacing:.13em;color:#fff;font-variation-settings:"opsz" 48;
+  font-family:Fraunces,serif;font-weight:900;font-size:25px;
+  letter-spacing:.05em;color:#fff;font-variation-settings:"opsz" 48;
   line-height:1;display:flex;align-items:baseline;justify-content:center;
 }
-.logotipo .barrato{position:relative;color:var(--grano-3);padding:0 1px}
+.logotipo .barrato{position:relative;color:var(--grano-3)}
 .logotipo .barrato::after{
-  content:"";position:absolute;left:-2px;right:-2px;top:52%;height:3px;
-  background:var(--grano-3);border-radius:2px;transform:rotate(-4deg);
+  content:"";position:absolute;left:0;right:.05em;top:50%;height:2.5px;
+  background:var(--grano-3);border-radius:2px;
 }
 .slogan{
-  font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:#D8B7BE;margin-top:14px;
+  font-size:10.5px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;
+  color:#D8B7BE;margin-top:12px;text-align:center;
 }
 
 .contatore{
-  margin-top:30px;background:rgba(255,253,248,.94);border-radius:999px;
-  padding:11px 22px;font-size:14px;font-weight:600;color:var(--bordeaux);
-  box-shadow:0 8px 24px rgba(0,0,0,.24);
+  margin-top:24px;background:rgba(255,253,248,.94);border-radius:999px;
+  padding:10px 20px;font-size:13px;font-weight:600;color:var(--bordeaux);
+  box-shadow:0 8px 24px rgba(0,0,0,.24);text-align:center;max-width:320px;
 }
 .contatore b{font-family:Fraunces,serif;font-weight:900;font-size:17px;font-variation-settings:"opsz" 20}
 
-.firma{position:absolute;left:0;right:0;bottom:calc(22px + var(--sb));z-index:2}
-.firma p{font-size:12.5px;color:#C9A8AF}
+.firma{flex:0 0 auto;text-align:center;padding-top:10px}
+.firma p{font-size:12px;color:#C9A8AF;line-height:1.4}
 .firma a.sito{display:block;font-size:13.5px;font-weight:700;color:#F2E2E5;margin-top:5px;letter-spacing:.02em}
-.firma .rondella{width:16px;height:16px;border-radius:50%;margin:13px auto 9px;background:conic-gradient(var(--bordeaux-3) 0 50%,var(--grano-3) 50% 100%)}
+.firma .rondella{width:15px;height:15px;border-radius:50%;margin:11px auto 8px;background:conic-gradient(var(--bordeaux-3) 0 50%,var(--grano-3) 50% 100%)}
 .firma .versione{font-size:11px;color:#A98790}
 .firma .versione button{font-size:11px;color:#A98790;text-decoration:underline;text-underline-offset:2px}
 
@@ -444,6 +461,19 @@ svg{display:block}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-filtro" viewBox="0 0 24 24"><path d="M3.5 5.5h17M6.5 12h11M10 18.5h4"/></symbol>
   <symbol id="i-lente" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><path d="m16.3 16.3 4.2 4.2"/></symbol>
+  <symbol id="i-croce" viewBox="0 0 24 24">
+    <rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.4"/><path d="M12 8v8M8 12h8"/>
+  </symbol>
+  <symbol id="i-foglia" viewBox="0 0 24 24">
+    <path d="M20 4c0 9-5.2 14.2-12.4 14.2A5.6 5.6 0 0 1 4 16.6C4 9.4 10.6 4 20 4Z"/><path d="M4.5 20 13 11.5"/>
+  </symbol>
+  <symbol id="i-carrello" viewBox="0 0 24 24">
+    <path d="M2.6 3.4h2.6l2.4 11.2a1.8 1.8 0 0 0 1.8 1.4h8.2a1.8 1.8 0 0 0 1.8-1.4l1.4-6.6H6"/>
+    <circle cx="9.4" cy="20" r="1.4"/><circle cx="17.6" cy="20" r="1.4"/>
+  </symbol>
+  <symbol id="i-buono" viewBox="0 0 24 24">
+    <rect x="2.6" y="6" width="18.8" height="12" rx="2.4"/><path d="M2.6 10.4h18.8"/><path d="M6.6 14.4h4"/>
+  </symbol>
   <symbol id="i-matita" viewBox="0 0 24 24"><path d="M16.5 3.9a2.3 2.3 0 0 1 3.3 3.3L7.4 19.6l-4.2 1 1-4.2L16.5 3.9Z"/></symbol>
 </defs>
 </svg>
@@ -457,6 +487,7 @@ svg{display:block}
 
   <div class="avviso-carico" id="avviso-carico">Cerco i posti senza glutine qui intorno&hellip;</div>
 
+  <div class="splash-mid">
   <div class="disco">
     <svg width="82" height="82" viewBox="0 0 100 100" aria-hidden="true">
       <rect x="47" y="30" width="6" height="52" rx="3" fill="#4A0F1C"/>
@@ -475,8 +506,8 @@ svg{display:block}
   <div class="logotipo">free<span class="barrato">gluten</span>free</div>
   <div class="slogan">mangiare sicuro in Italia</div>
 
-  <div class="contatore" id="contatore">
-    <b id="c-numero">&mdash;</b> <span id="c-testo">luoghi mappati in Italia</span>
+  <div class="contatore" id="contatore">dati aperti dalla community di OpenStreetMap</div>
+
   </div>
 
   <div class="firma">
@@ -497,6 +528,10 @@ svg{display:block}
         <p>mangiare sicuro in Italia</p>
       </div>
     </div>
+    <div class="modo-switch" data-switch role="group" aria-label="Cosa stai cercando">
+      <button data-modo="mangiare" aria-pressed="true"><svg class="ico sm"><use href="#i-spiga"/></svg>Mangiare fuori</button>
+      <button data-modo="comprare" aria-pressed="false"><svg class="ico sm"><use href="#i-carrello"/></svg>Fare la spesa</button>
+    </div>
   </header>
 
   <div class="eroe" id="eroe"></div>
@@ -513,6 +548,10 @@ svg{display:block}
 <section class="vista" id="v-mappa">
   <div id="mappa"></div>
   <div class="cappello-mappa">
+    <div class="modo-switch" data-switch role="group" aria-label="Cosa stai cercando">
+      <button data-modo="mangiare" aria-pressed="true"><svg class="ico sm"><use href="#i-spiga"/></svg>Mangiare fuori</button>
+      <button data-modo="comprare" aria-pressed="false"><svg class="ico sm"><use href="#i-carrello"/></svg>Fare la spesa</button>
+    </div>
     <div class="spettro" id="spettro" role="group" aria-label="Filtra per livello di sicurezza"></div>
     <div class="strumenti">
       <button class="pill chiave" id="b-alta" aria-pressed="false"><svg class="ico sm"><use href="#i-scudo"/></svg>Solo alta sicurezza</button>
@@ -568,7 +607,7 @@ const CFG = {
   supabaseUrl:'', supabaseKey:'',            // da riempire quando il DB e' pronto
   overpass:['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'],
   maxDiagKm:45,
-  raggioVicino:[2500, 8000, 20000]           // allarga finche' non trova qualcosa
+  raggioVicino:[3000, 10000, 28000]           // allarga finche' non trova qualcosa
 };
 
 /* Mapping pessimista, voluto: su OpenStreetMap "yes" dice solo che esistono
@@ -590,6 +629,25 @@ const LIV = {
   dati_insufficienti:{et:'Da verificare',breve:'Da verificare',c:'#A89684',ord:6,alta:false,ico:'i-avviso',
     desc:'Risulta che offra opzioni senza glutine, ma non sappiamo come gestisce la contaminazione.',
     avviso:'Chiedi al personale prima di ordinare e di\u2019 che sei celiaco.'}
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   MODALITA' SPESA
+   ------------------------------------------------------------------
+   Qui la domanda non e' "posso mangiarci senza rischi" ma "dove trovo
+   i prodotti". I prodotti confezionati con dicitura senza glutine sono
+   la via piu' affidabile in assoluto per un celiaco, quindi questa non
+   e' una scorciatoia: e' l'altra meta' del problema.
+   ══════════════════════════════════════════════════════════════════ */
+const SPESA = {
+  specializzato:{et:'Negozio senza glutine',breve:'Specializzato',c:'#2E7D4F',ord:1,ico:'i-spiga',
+    desc:'Negozio dedicato o con reparto senza glutine dichiarato.'},
+  farmacia:{et:'Farmacia o parafarmacia',breve:'Farmacia',c:'#8C1D33',ord:2,ico:'i-croce',
+    desc:'Canale principale per i prodotti dietetici senza glutine, e dove di norma si spende il contributo mensile riconosciuto a chi ha la diagnosi.'},
+  bio:{et:'Bio ed erboristeria',breve:'Bio',c:'#C9962E',ord:3,ico:'i-foglia',
+    desc:'Alimentazione naturale: quasi sempre hanno una linea senza glutine.'},
+  supermercato:{et:'Supermercato',breve:'Super',c:'#A89684',ord:4,ico:'i-carrello',
+    desc:'I supermercati medio-grandi hanno di norma un reparto senza glutine.'}
 };
 
 const TIPI = {ristorante:'Ristorante',pizzeria:'Pizzeria',fast_food:'Fast food',caffetteria:'Caffetteria',
@@ -636,6 +694,8 @@ const CITTA = [
    STATO
    ══════════════════════════════════════════════════════════════════ */
 const S = {
+  modo:'mangiare',
+  categorie:new Set(Object.keys(SPESA)),
   locali:new Map(),
   livelli:new Set(['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','dati_insufficienti']),
   tipi:new Set(),
@@ -675,20 +735,63 @@ let cerchioIo = null;
    DATI — Overpass lato browser, nessun server
    ══════════════════════════════════════════════════════════════════ */
 function queryBox(s,w,n,e){
+  const b = `${s.toFixed(5)},${w.toFixed(5)},${n.toFixed(5)},${e.toFixed(5)}`;
+  return corpoQuery(`(${b})`);
+}
+const RE_NOME = 'senza glutine|gluten ?free|glutenfree|celiac';
+function corpoQuery(f){
   return `[out:json][timeout:60];
 (
-  nwr["diet:gluten_free"](${s.toFixed(5)},${w.toFixed(5)},${n.toFixed(5)},${e.toFixed(5)});
-  nwr["gluten_free"](${s.toFixed(5)},${w.toFixed(5)},${n.toFixed(5)},${e.toFixed(5)});
+  nwr["diet:gluten_free"]${f};
+  nwr["gluten_free"]${f};
+  nwr["cuisine"~"gluten_free",i]${f};
+  nwr["amenity"]["name"~"${RE_NOME}",i]${f};
+  nwr["shop"]["name"~"${RE_NOME}",i]${f};
 );
 out center tags;`;
 }
-function queryRaggio(lat,lng,m){
-  return `[out:json][timeout:60];
+function queryRaggio(lat,lng,m){ return corpoQuery(`(around:${m},${lat},${lng})`); }
+
+function corpoSpesa(f){
+  return `[out:json][timeout:70];
 (
-  nwr["diet:gluten_free"](around:${m},${lat},${lng});
-  nwr["gluten_free"](around:${m},${lat},${lng});
+  nwr["amenity"="pharmacy"]${f};
+  nwr["shop"="chemist"]${f};
+  nwr["shop"="health_food"]${f};
+  nwr["shop"="herbalist"]${f};
+  nwr["shop"="organic"]${f};
+  nwr["shop"="supermarket"]${f};
+  nwr["shop"]["diet:gluten_free"]${f};
 );
 out center tags;`;
+}
+const spesaBox = (s,w,n,e) => corpoSpesa(`(${s.toFixed(5)},${w.toFixed(5)},${n.toFixed(5)},${e.toFixed(5)})`);
+const spesaRaggio = (lat,lng,m) => corpoSpesa(`(around:${m},${lat},${lng})`);
+
+function catSpesa(t){
+  const gf = t['diet:gluten_free'] || t['gluten_free'];
+  if(gf==='only' || new RegExp(RE_NOME,'i').test(t.name||'')) return 'specializzato';
+  if(t.amenity==='pharmacy' || t.shop==='chemist')            return 'farmacia';
+  if(['health_food','herbalist','organic'].includes(t.shop))  return 'bio';
+  if(t.shop==='supermarket')                                  return 'supermercato';
+  return gf ? 'specializzato' : null;
+}
+
+function normalizzaSpesa(el){
+  const t = el.tags||{}, lat = el.lat ?? el.center?.lat, lng = el.lon ?? el.center?.lon;
+  if(lat==null||lng==null) return null;
+  const cat = catSpesa(t); if(!cat) return null;
+  const etichetta = {farmacia:'Farmacia',bio:'Negozio bio',supermercato:'Supermercato',specializzato:'Negozio senza glutine'}[cat];
+  return {
+    k:'s:'+el.type+'/'+el.id, osmType:el.type, osmId:el.id, modo:'comprare', cat,
+    nome:t.name||etichetta, lat, lng,
+    tipo: cat==='farmacia'?'farmacia':(cat==='supermercato'?'supermercato':'negozio'),
+    marca:t.brand||t.operator||null,
+    indirizzo:[t['addr:street'],t['addr:housenumber']].filter(Boolean).join(' ')||null,
+    comune:t['addr:city']||null, telefono:t.phone||t['contact:phone']||null,
+    sito:t.website||t['contact:website']||null, orari:t.opening_hours||null,
+    tagGf:t['diet:gluten_free']||t['gluten_free']||null
+  };
 }
 
 async function interroga(q){
@@ -714,7 +817,13 @@ function normalizza(el){
   const t = el.tags||{}, lat = el.lat ?? el.center?.lat, lng = el.lon ?? el.center?.lon;
   if(lat==null||lng==null) return null;
   const gf = t['diet:gluten_free'] || t['gluten_free'] || null;
+  const nome = t.name || '';
+  const perNome = !gf && new RegExp(RE_NOME,'i').test(nome);
+  const perCucina = !gf && /gluten/i.test(t.cuisine||'');
+  if(!gf && !perNome && !perCucina) return null;
   return {
+    modo:'mangiare',
+    origine: gf ? 'tag' : (perCucina ? 'cucina' : 'nome'),
     k:el.type+'/'+el.id, osmType:el.type, osmId:el.id,
     nome:t.name||'Locale senza nome', lat, lng,
     tipo:deduciTipo(t), livello:MAP_OSM[gf]||'dati_insufficienti', tagGf:gf,
@@ -726,17 +835,30 @@ function normalizza(el){
   };
 }
 
-function assorbi(dati){
+function assorbi(dati, modo){
   let nuovi=0;
   for(const el of (dati.elements||[])){
-    const n=normalizza(el);
+    const n = (modo||S.modo)==='comprare' ? normalizzaSpesa(el) : normalizza(el);
     if(n && !S.locali.has(n.k)){ S.locali.set(n.k,n); nuovi++; }
   }
   return nuovi;
 }
+const qPerModo   = (lat,lng,m) => S.modo==='comprare' ? spesaRaggio(lat,lng,m) : queryRaggio(lat,lng,m);
+const qBoxPerModo = b => S.modo==='comprare'
+  ? spesaBox(b.getSouth(),b.getWest(),b.getNorth(),b.getEast())
+  : queryBox(b.getSouth(),b.getWest(),b.getNorth(),b.getEast());
+
+// Un solo insieme di funzioni per due mondi: cambia la tabella, non la logica.
+const tabella  = () => S.modo==='comprare' ? SPESA : LIV;
+const insieme  = () => S.modo==='comprare' ? S.categorie : S.livelli;
+const chiaveOf = l  => l.modo==='comprare' ? l.cat : l.livello;
+const stile    = l  => (l.modo==='comprare' ? SPESA : LIV)[chiaveOf(l)];
 
 function ammesso(l){
-  return S.livelli.has(l.livello) && (S.tipi.size===0 || S.tipi.has(l.tipo));
+  if(l.modo !== S.modo) return false;
+  if(!insieme().has(chiaveOf(l))) return false;
+  if(S.modo==='mangiare' && S.tipi.size && !S.tipi.has(l.tipo)) return false;
+  return true;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -750,7 +872,7 @@ function scheletroEroe(testo){
 }
 
 async function avviaVicino(){
-  if(!navigator.geolocation){ eroeErrore('Posizione non disponibile','Il browser non condivide la posizione. Usa la scheda Mappa e cerca a mano.'); return; }
+  if(!navigator.geolocation){ eroeSenzaPosizione(); return; }
   scheletroEroe('Cerco dove sei…');
 
   navigator.geolocation.getCurrentPosition(async p=>{
@@ -763,7 +885,7 @@ async function avviaVicino(){
     scheletroEroe('Cerco i posti più vicini…');
     try{
       for(const r of CFG.raggioVicino){
-        assorbi(await interroga(queryRaggio(S.posizione.lat,S.posizione.lng,r)));
+        assorbi(await interroga(qPerModo(S.posizione.lat,S.posizione.lng,r)), S.modo);
         if(vicini().length) break;
       }
       disegnaVicino();
@@ -771,9 +893,21 @@ async function avviaVicino(){
     }catch(e){
       eroeErrore('Ricerca non riuscita','OpenStreetMap non ha risposto. Riprova fra qualche secondo.');
     }
-  }, ()=>{
-    eroeErrore('Posizione negata','Attiva la posizione per vedere cosa hai vicino, oppure cerca a mano dalla scheda Mappa.');
-  }, {timeout:9000, enableHighAccuracy:true});
+  }, eroeSenzaPosizione, {timeout:12000, enableHighAccuracy:true, maximumAge:60000});
+}
+
+function eroeSenzaPosizione(){
+  $('#eroe').innerHTML = `<div class="eroe-card"><div class="eroe-top">
+    <div class="eroe-anello" style="background:var(--grano-2);color:var(--bordeaux)">${icona('i-pin','ico lg')}</div>
+    <div class="eroe-info"><h2 style="font-size:16px">Posizione non attiva</h2>
+    <p class="sotto">Senza posizione non posso dirti cosa hai vicino, ma puoi partire da una citt&agrave;.</p></div></div>
+    <div class="eroe-azioni">
+      <button class="btn btn-pieno" id="b-riprova">${icona('i-vicino','ico sm')}Riprova</button>
+      <button class="btn btn-vuoto" id="b-vaiCitta">${icona('i-valigia','ico sm')}Scegli citt&agrave;</button>
+    </div></div>`;
+  $('#lista-vicino').innerHTML='';
+  $('#b-riprova').addEventListener('click',avviaVicino);
+  $('#b-vaiCitta').addEventListener('click',()=>document.querySelector('[data-vista="v-viaggi"]').click());
 }
 
 function eroeErrore(titolo,testo){
@@ -797,7 +931,7 @@ function disegnaVicino(){
     eroeErrore('Niente nei dintorni','Con i filtri attuali non risulta nulla vicino a te. Prova a riaccendere qualche livello dalla Mappa.');
     return;
   }
-  const p = v[0], L1 = LIV[p.livello];
+  const p = v[0], L1 = stile(p);
 
   $('#eroe').innerHTML = `
     <div class="eroe-card">
@@ -833,12 +967,12 @@ function disegnaVicino(){
    COMPONENTE CARD
    ══════════════════════════════════════════════════════════════════ */
 function cardRiga(l, destra1, destra2, stella=false){
-  const L1 = LIV[l.livello];
+  const L1 = stile(l);
   return `<button class="riga-card" data-apri="${esc(l.k)}">
     <div class="gemma" style="background:${L1.c}">${icona('i-'+L1.ico.slice(2),'ico sm')}</div>
     <div class="riga-corpo">
       <h3>${esc(l.nome)}</h3>
-      <div class="meta">${esc(TIPI[l.tipo])}${l.comune?' · '+esc(l.comune):''}</div>
+      <div class="meta">${esc(l.marca || TIPI[l.tipo] || '')}${l.comune?' · '+esc(l.comune):''}</div>
       <span class="tag-liv" style="background:${L1.c}1A;color:${L1.c}">${esc(L1.breve)}</span>
     </div>
     ${stella ? `<span class="stella" data-stella="${esc(l.k)}" role="button" aria-pressed="${S.viaggio.has(l.k)}">${icona('i-stella','ico sm')}</span>`
@@ -870,20 +1004,20 @@ function collega(){
    VISTA 2 — MAPPA
    ══════════════════════════════════════════════════════════════════ */
 function costruisciSpettro(){
-  $('#spettro').innerHTML = Object.entries(LIV).sort((a,b)=>a[1].ord-b[1].ord).map(([id,l])=>`
-    <button class="seg" data-liv="${id}" aria-pressed="${S.livelli.has(id)}" aria-label="${esc(l.et)}">
+  $('#spettro').innerHTML = Object.entries(tabella()).sort((a,b)=>a[1].ord-b[1].ord).map(([id,l])=>`
+    <button class="seg" data-liv="${id}" aria-pressed="${insieme().has(id)}" aria-label="${esc(l.et)}">
       <div class="cima"><span class="pallino" style="background:${l.c}"></span><span class="n" data-n="${id}">0</span></div>
       <span class="et">${esc(l.breve)}</span>
     </button>`).join('');
   document.querySelectorAll('.seg').forEach(b=>b.addEventListener('click',()=>{
-    const id=b.dataset.liv;
-    S.livelli.has(id)?S.livelli.delete(id):S.livelli.add(id);
+    const id=b.dataset.liv, ins=insieme();
+    ins.has(id)?ins.delete(id):ins.add(id);
     S.alta=false; sincronizza();
   }));
 }
 
 function sincronizza(){
-  document.querySelectorAll('.seg').forEach(b=>b.setAttribute('aria-pressed',S.livelli.has(b.dataset.liv)));
+  document.querySelectorAll('.seg').forEach(b=>b.setAttribute('aria-pressed',insieme().has(b.dataset.liv)));
   $('#b-alta').setAttribute('aria-pressed',S.alta);
   $('#b-tipi').setAttribute('aria-pressed',S.tipi.size>0);
   disegnaMappa();
@@ -897,36 +1031,37 @@ function disegnaMappa(){
   const conta = {};
   for(const l of S.locali.values()){
     if(!b.contains([l.lat,l.lng])) continue;
-    if(S.tipi.size && !S.tipi.has(l.tipo)) continue;
-    conta[l.livello]=(conta[l.livello]||0)+1;
+    if(l.modo !== S.modo) continue;
+    if(S.modo==='mangiare' && S.tipi.size && !S.tipi.has(l.tipo)) continue;
+    conta[chiaveOf(l)]=(conta[chiaveOf(l)]||0)+1;
   }
   document.querySelectorAll('[data-n]').forEach(e=>e.textContent=conta[e.dataset.n]||0);
 
   for(const l of S.locali.values()){
     if(!ammesso(l)) continue;
     L.circleMarker([l.lat,l.lng],{
-      radius:l.livello==='gf_100'?9:7, fillColor:LIV[l.livello].c,
+      radius:(l.livello==='gf_100'||l.cat==='specializzato')?9:7, fillColor:stile(l).c,
       color:'#FFFDF8', weight:2.5, opacity:1, fillOpacity:.95
     }).on('click',()=>apriDettaglio(l.k)).addTo(strato);
   }
 }
 
-async function cercaArea(){
+async function cercaArea(silenzioso){
   if(S.caricando) return;
   const b = mappa.getBounds();
   const diag = b.getNorthWest().distanceTo(b.getSouthEast())/1000;
   if(diag > CFG.maxDiagKm){
-    apriModale('Zona troppo ampia',`<p>Stai guardando circa ${Math.round(diag)} km. Avvicinati su una città: la ricerca resta veloce e OpenStreetMap non viene sovraccaricato.</p>`);
+    if(!silenzioso) apriModale('Zona troppo ampia',`<p>Stai guardando circa ${Math.round(diag)} km. Avvicinati su una città: la ricerca resta veloce e OpenStreetMap non viene sovraccaricato.</p>`);
     return;
   }
   S.caricando=true;
   $('#t-area').textContent='Cerco…';
   $('#b-area').insertAdjacentHTML('afterbegin','<span class="rotella"></span>');
   try{
-    assorbi(await interroga(queryBox(b.getSouth(),b.getWest(),b.getNorth(),b.getEast())));
+    assorbi(await interroga(qBoxPerModo(b)), S.modo);
     disegnaMappa();
   }catch(e){
-    apriModale('Ricerca non riuscita',`<p>OpenStreetMap non ha risposto. Può capitare quando il servizio è sotto carico: riprova fra qualche secondo.</p>`);
+    if(!silenzioso) apriModale('Ricerca non riuscita',`<p>OpenStreetMap non ha risposto. Può capitare quando il servizio è sotto carico: riprova fra qualche secondo.</p>`);
   }finally{
     S.caricando=false;
     document.querySelector('.rotella')?.remove();
@@ -954,7 +1089,7 @@ async function scegliCitta(nome){
   document.querySelectorAll('[data-citta]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.citta===nome));
   $('#lista-viaggio').innerHTML = `<div class="vuoto">${icona('i-bussola','ico lg')}<b>Cerco a ${esc(nome)}…</b><p>Un momento.</p></div>`;
   try{
-    assorbi(await interroga(queryRaggio(c.lat,c.lng,7000)));
+    assorbi(await interroga(qPerModo(c.lat,c.lng,7000)), S.modo);
     disegnaViaggio();
     disegnaMappa();
   }catch(e){
@@ -963,13 +1098,14 @@ async function scegliCitta(nome){
 }
 
 function disegnaViaggio(){
+  // in modalita' spesa il pannello viaggi mostra comunque i punti vendita
   const c = S.cittaScelta; if(!c) return;
   // "I migliori" qui significa una cosa precisa e verificabile: prima i piu'
   // sicuri, poi quelli di cui sappiamo di piu'. Nessun punteggio inventato.
   const lista = [...S.locali.values()]
     .filter(l => ammesso(l) && distanza(c.lat,c.lng,l.lat,l.lng) < 9000)
     .map(l=>({...l, completo:[l.telefono,l.sito,l.orari,l.indirizzo].filter(Boolean).length}))
-    .sort((a,b)=> LIV[a.livello].ord-LIV[b.livello].ord || b.completo-a.completo || a.nome.localeCompare(b.nome,'it'))
+    .sort((a,b)=> stile(a).ord-stile(b).ord || b.completo-a.completo || a.nome.localeCompare(b.nome,'it'))
     .slice(0,40);
 
   if(!lista.length){
@@ -977,7 +1113,7 @@ function disegnaViaggio(){
       <p>Prova a riaccendere qualche livello dalla scheda Mappa.</p></div>`;
     return;
   }
-  const alti = lista.filter(l=>LIV[l.livello].alta).length;
+  const alti = lista.filter(l=>stile(l).alta).length;
   $('#lista-viaggio').innerHTML =
     `<div class="occhiello">${esc(c.n)} · ${lista.length} luoghi, ${alti} ad alta sicurezza</div>` +
     lista.map(l=>cardRiga(l,'','',true)).join('');
@@ -990,7 +1126,7 @@ function disegnaValigia(){
     <div class="valigia-testa">${icona('i-valigia','ico sm')}<h3>La mia lista</h3></div>
     ${v.length
       ? `<p>${v.length} ${v.length===1?'posto salvato':'posti salvati'} per questo viaggio.</p>
-         <ul>${v.map(l=>`<li><span style="width:8px;height:8px;border-radius:50%;background:${LIV[l.livello].c};display:block;flex:0 0 auto"></span>
+         <ul>${v.map(l=>`<li><span style="width:8px;height:8px;border-radius:50%;background:${stile(l).c};display:block;flex:0 0 auto"></span>
            <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.nome)}</span>
            <button class="togli" data-togli="${esc(l.k)}" aria-label="Togli">${icona('i-x','ico sm')}</button></li>`).join('')}</ul>`
       : `<p>Tocca la stella accanto a un locale per aggiungerlo alla lista del viaggio.</p>`}`;
@@ -1006,6 +1142,7 @@ const riga=(e,v)=> v? `<div class="riga"><span>${e}</span><span>${v}</span></div
 
 function apriDettaglio(k){
   const l=S.locali.get(k); if(!l) return;
+  if(l.modo==='comprare') return dettaglioSpesa(l);
   const L1=LIV[l.livello];
   const d = S.posizione ? distanza(S.posizione.lat,S.posizione.lng,l.lat,l.lng) : null;
 
@@ -1025,6 +1162,7 @@ function apriDettaglio(k){
     <div class="pannello">
       <div class="occhiello">Su cosa si basa</div>
       ${riga('Fonte','OpenStreetMap')}
+      ${riga('Come e\u2019 stato trovato', l.origine==='tag'?'tag dieta':(l.origine==='cucina'?'tipo di cucina':'nome del locale'))}
       ${riga('Tag dieta', l.tagGf?`<code>${esc(l.tagGf)}</code>`:'assente')}
       ${riga('Verifica sul posto','mai effettuata')}
       ${(l.tagGf==='yes'||l.tagGf==='limited')?`<div class="avviso">${icona('i-avviso','ico sm')}<div>Il dato dice che esistono opzioni senza glutine, ma non dice nulla su come viene gestita la contaminazione. Per questo resta in “Da verificare”.</div></div>`:''}
@@ -1104,6 +1242,26 @@ document.querySelectorAll('.scheda-tab').forEach(t=>t.addEventListener('click',(
   if(t.dataset.vista==='v-mappa') setTimeout(()=>mappa.invalidateSize(),60);
 }));
 
+function cambiaModo(m){
+  if(S.modo===m) return;
+  S.modo = m;
+  document.querySelectorAll('[data-modo]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.modo===m));
+  $('#b-alta').style.display = m==='comprare' ? 'none' : '';
+  $('#b-tipi').style.display = m==='comprare' ? 'none' : '';
+  costruisciSpettro();
+  sincronizza();
+  // se non ho ancora dati per questa modalita' nei dintorni, li chiedo ora
+  const qualcosa = [...S.locali.values()].some(l=>l.modo===m);
+  if(!qualcosa){
+    if(S.posizione) avviaVicino();
+    else if(mappa.getZoom()>=12) cercaArea(true);
+  }else{
+    disegnaVicino();
+  }
+}
+document.querySelectorAll('[data-modo]').forEach(b=>
+  b.addEventListener('click',()=>cambiaModo(b.dataset.modo)));
+
 $('#b-area').addEventListener('click',cercaArea);
 $('#b-tipi').addEventListener('click',modaleTipi);
 $('#b-guida').addEventListener('click',modaleGuida);
@@ -1120,16 +1278,31 @@ document.addEventListener('keydown',e=>{
   if(!$('#modale').hidden) $('#modale').hidden=true;
   else $('#foglio').classList.remove('aperto');
 });
-mappa.on('moveend',()=>{ if(S.locali.size) disegnaMappa(); });
+// La mappa si aggiorna da sola: chiedere un tocco per vedere qualcosa
+// era il motivo principale per cui sembrava vuota.
+let timerMossa=null, ultimoCentro=null;
+mappa.on('moveend',()=>{
+  if(S.locali.size) disegnaMappa();
+  clearTimeout(timerMossa);
+  if(mappa.getZoom() < 12) return;
+  timerMossa = setTimeout(()=>{
+    const c = mappa.getCenter();
+    if(ultimoCentro && distanza(c.lat,c.lng,ultimoCentro.lat,ultimoCentro.lng) < 1500) return;
+    ultimoCentro = {lat:c.lat,lng:c.lng};
+    cercaArea(true);
+  }, 900);
+});
 
 costruisciSpettro();
 costruisciCitta();
+avviaVicino();   // la posizione si chiede subito
 
 /* ══════════════════════════════════════════════════════════════════
    SPLASH — due conteggi reali, nessun numero inventato
    ══════════════════════════════════════════════════════════════════ */
 const APERTURA = Date.now();
-const MIN_SPLASH = 2300;
+const MIN_SPLASH = 2500;
+const attesa = ms => new Promise(r=>setTimeout(()=>r(null), ms));
 
 function qCount(dentro){
   return `[out:json][timeout:40];
@@ -1169,32 +1342,73 @@ function fraseCitta(d){
 }
 
 async function avviaSplash(){
-  const [citta, totale] = await Promise.allSettled([
-    contaCitta(),
-    conta(qCount({pre:'area["ISO3166-1"="IT"][admin_level=2]->.a;', f:'(area.a)'}))
-  ]);
+  // Lo splash aspetta SOLO la frase sulla citta': una query leggera.
+  // Il totale nazionale e' lento e viaggia per conto suo, senza bloccare nulla.
+  contaItalia();
 
-  const dc = citta.status === 'fulfilled' ? citta.value : null;
-  const frase = fraseCitta(dc);
-  if (frase) $('#avviso-carico').innerHTML = frase;
-  else $('#avviso-carico').textContent = 'Pronto.';
+  let frase = null;
+  try{ frase = fraseCitta(await Promise.race([contaCitta(), attesa(2100)])); }catch(e){}
 
-  if (totale.status === 'fulfilled'){
-    $('#c-numero').textContent = totale.value.toLocaleString('it-IT');
-    $('#c-testo').textContent = 'luoghi mappati dalla community in Italia';
-  }else{
-    $('#contatore').innerHTML = '<span id="c-testo">dati aperti dalla community di OpenStreetMap</span>';
-  }
-
-  if (frase){
+  if(frase){
+    $('#avviso-carico').innerHTML = frase;
     $('#lo-sapevi').innerHTML = `<div class="lo-sapevi">${icona('i-bussola')}
       <div><h4>Lo sapevi</h4><p>${frase}</p></div></div>`;
+  }else{
+    $('#avviso-carico').textContent = 'Pronto.';
   }
 
-  avviaVicino();   // parte solo ora: niente query in concorrenza
+  setTimeout(chiudiSplash, Math.max(0, MIN_SPLASH - (Date.now() - APERTURA)));
+}
 
-  const resta = Math.max(0, MIN_SPLASH - (Date.now() - APERTURA));
-  setTimeout(chiudiSplash, resta + (frase ? 1500 : 0));
+async function contaItalia(){
+  try{
+    const n = await conta(qCount({pre:'area["ISO3166-1"="IT"][admin_level=2]->.a;', f:'(area.a)'}));
+    $('#contatore').innerHTML = `<b>${n.toLocaleString('it-IT')}</b> luoghi mappati dalla community in Italia`;
+  }catch(e){ /* resta la riga sulla fonte: nessun numero inventato */ }
+}
+
+function dettaglioSpesa(l){
+  const C = SPESA[l.cat];
+  const d = S.posizione ? distanza(S.posizione.lat,S.posizione.lng,l.lat,l.lng) : null;
+  $('#foglio').innerHTML=`
+    <div class="f-testa" style="background:${C.c}">
+      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+      <h2>${esc(l.nome)}</h2>
+      <div class="tipo">${esc(C.et)}${l.comune?' · '+esc(l.comune):''}${d?' · '+formatoDist(d):''}</div>
+      <div class="f-livello"><strong>${icona(C.ico,'ico sm')}Cosa trovi qui</strong><p>${esc(C.desc)}</p></div>
+    </div>
+
+    ${l.cat==='farmacia'?`<div style="padding:0 14px"><div class="avviso">${icona('i-buono','ico sm')}
+      <div>Chi ha una diagnosi di celiachia ha diritto a un contributo mensile per gli alimenti senza glutine.
+      Importi e negozi convenzionati cambiano da Regione a Regione: controlla sul sito della tua ASL se questa
+      struttura &egrave; tra quelle accreditate.</div></div></div>`:''}
+
+    <div class="pannello">
+      <div class="occhiello">Informazioni</div>
+      ${riga('Insegna', l.marca?esc(l.marca):'')}
+      ${riga('Indirizzo', l.indirizzo?esc(l.indirizzo):'')}
+      ${riga('Orari', l.orari?esc(l.orari):'')}
+      ${riga('Telefono', l.telefono?`<a href="tel:${esc(l.telefono)}">${esc(l.telefono)}</a>`:'')}
+      ${riga('Sito', l.sito?`<a href="${esc(l.sito)}" target="_blank" rel="noopener">apri</a>`:'')}
+      ${riga('Indicazioni', `<a href="https://www.google.com/maps/dir/?api=1&destination=${l.lat},${l.lng}" target="_blank" rel="noopener">apri nelle mappe</a>`)}
+      ${riga('Reparto senza glutine', l.tagGf?'segnalato su OpenStreetMap':'non sappiamo')}
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Prima di andare</div>
+      <p style="font-size:13px;color:var(--muto);line-height:1.55;padding-bottom:12px">
+        La presenza di un reparto senza glutine non &egrave; garantita in tutti i punti vendita della stessa insegna.
+        Se ti serve qualcosa di preciso, una telefonata evita il viaggio a vuoto.</p>
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Migliora i dati</div>
+      ${riga('Correggi', `<a href="https://www.openstreetmap.org/${l.osmType}/${l.osmId}" target="_blank" rel="noopener">su OpenStreetMap</a>`)}
+    </div>
+
+    <p class="pie">Dati &copy; OpenStreetMap contributors, ODbL 1.0.</p>`;
+  $('#foglio').classList.add('aperto');
+  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
 }
 
 function chiudiSplash(){ $('#splash').classList.add('via'); }
@@ -1207,7 +1421,7 @@ $('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiSplash()
      <p>Questa applicazione non certifica nessun locale e non &egrave; collegata ad alcuna associazione.</p>`);
 });
 $('#splash').addEventListener('click', chiudiSplash);
-setTimeout(chiudiSplash, 14000);   // rete lenta: non si resta mai bloccati
+setTimeout(chiudiSplash, 6000);   // rete lenta: non si resta mai bloccati
 
 avviaSplash();
 

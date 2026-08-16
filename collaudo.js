@@ -237,12 +237,52 @@ const attendi = ms => new Promise(r => setTimeout(r, ms));
      capoInButton.length + ' casi (in WebKit non crescono in altezza)');
   ok('le scelte descritte usano .opzione', /class="opzione"/.test(js));
   ok('.opzione non e un button', !/<button class="opzione"/.test(js));
-  ok('.riga-corpo taglia gli eccessi', /\.riga-corpo\{[^}]*overflow:hidden/.test(css));
+  ok('.riga-card cresce con il contenuto', !/\.riga-card\{[^}]*height:/.test(css)
+     && /\.riga-corpo\{[^}]*min-width:0/.test(css));
   const senzaCapo = /\.riga-corpo \.meta\{[^}]*white-space:nowrap/.test(css);
   ok('la meta resta su una riga', senzaCapo);
   // ogni testo lungo deve stare in un contenitore che cresce
   const lunghi = [...js.matchAll(/<(div|p) class="(meta|testo)"[^>]*>\$\{esc\((\w+)\.desc\)\}/g)];
   ok('descrizioni lunghe in contenitori elastici', lunghi.every(m => m[2]!=='meta'));
+
+
+  sez('14 · INTEGRITA DEI FOGLI DI STILE');
+  const ap = (css.match(/\{/g)||[]).length, ch = (css.match(/\}/g)||[]).length;
+  ok('graffe bilanciate', ap === ch, ap + ' aperte / ' + ch + ' chiuse');
+  const usateNelMarkup = [...new Set([...(markup+js).matchAll(/class="([^"${}]+)"/g)].flatMap(m=>m[1].split(/\s+/)))].filter(Boolean);
+  const orfane = usateNelMarkup.filter(c => !new RegExp('\\.'+c.replace(/-/g,'\\-')+'(?![a-zA-Z0-9_-])').test(css));
+  ok('ogni classe usata ha una regola', orfane.length === 0, orfane.join(', '));
+  const base = ['riga-card','riga-corpo','lo-sapevi','tag-liv','gemma','eroe-card','opzione','dist','stella'];
+  const senzaBase = base.filter(c => !new RegExp('\\n\\.'+c+'\\{').test(css));
+  ok('regole di base tutte presenti', senzaBase.length === 0, senzaBase.join(', '));
+  ok('nessun pulsante come contenitore flex', !/<button class="(riga-card|opzione)"/.test(js));
+  ok('card navigabili da tastiera', (js.match(/role="button" tabindex="0"/g)||[]).length >= 3);
+  ok('altezza a finestra reale', /height:100dvh/.test(css));
+
+
+  sez('15 · ROBUSTEZZA DI CONTESTO');
+  const cssNudo = css.replace(/\/\*[\s\S]*?\*\//g,'');
+  ok('la radice non e in posizione fissa', !/html,body\{[^}]*position:fixed/.test(cssNudo));
+  ok('nessun antenato con transform sugli strati', !/body\{[^}]*transform:/.test(cssNudo));
+  ok('viste nascoste per default', /\.vista\{[^}]*display:none/.test(cssNudo));
+  ok('solo la vista attiva si mostra', /\.vista\.attiva\{display:block\}/.test(cssNudo));
+
+
+  sez('16 · COLLISIONI DI NOMI CSS');
+  const cssN = css.replace(/\/\*[\s\S]*?\*\//g,'');
+  // una classe usata per due cose diverse e' la causa piu' insidiosa di
+  // sovrapposizioni: una regola in position:absolute ne travolge un'altra
+  const regoleBase = {};
+  for (const m of cssN.matchAll(/(^|\n)\.([a-zA-Z][\w-]*)\s*\{([^}]*)\}/g)) {
+    (regoleBase[m[2]] ||= []).push(m[3]);
+  }
+  const doppie = Object.entries(regoleBase).filter(([,v]) => v.length > 1).map(([k]) => k);
+  ok('nessuna classe definita due volte', doppie.length === 0, doppie.join(', '));
+  const assolute = Object.entries(regoleBase).filter(([,v]) => v.some(x=>/position:absolute|position:fixed/.test(x))).map(([k])=>k);
+  // .meta era lungo 4 caratteri e serviva a due scopi: e' la lunghezza
+  // sotto cui un nome diventa facilmente riutilizzabile per sbaglio
+  const generiche = assolute.filter(k => k.length <= 4);
+  ok('nessun nome troppo corto in posizione assoluta', generiche.length === 0, generiche.join(', '));
 
   // ══════════════════════════════════════════════════════════════
   sez('ESITO');

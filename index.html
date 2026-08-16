@@ -82,7 +82,13 @@ input,textarea{-webkit-user-select:text;user-select:text}
   position:absolute;width:1px;height:1px;overflow:hidden;
   clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;
 }
-html,body{height:100%;overflow:hidden;overscroll-behavior:none;position:fixed;width:100%}
+html,body{
+  height:100%;height:100dvh;width:100%;
+  overflow:hidden;overscroll-behavior:none;
+  /* la radice resta in flusso normale: il layout non deve dipendere
+     dal contesto in cui la pagina viene incorporata */
+}
+body{position:relative}
 body{
   font-family:"Instrument Sans",system-ui,sans-serif;
   background:var(--grano);color:var(--inchiostro);
@@ -190,7 +196,7 @@ svg{display:block}
 /* ────────────────────────────────────────────────────────── elenco card */
 .blocco{padding:22px 14px 8px}
 .riga-card{
-  display:flex;gap:12px;align-items:center;width:100%;
+  display:flex;gap:12px;align-items:center;width:100%;cursor:pointer;
   background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);
   padding:12px 13px;margin-bottom:9px;transition:transform .12s;
 }
@@ -200,7 +206,7 @@ svg{display:block}
   display:grid;place-items:center;color:var(--bianco);
 }
 .gemma .ico{width:22px;height:22px;stroke-width:1.9}
-.riga-corpo{flex:1;min-width:0;overflow:hidden}
+.riga-corpo{flex:1;min-width:0}
 .riga-corpo h3{font-size:14.5px;font-weight:600;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .riga-corpo .meta{font-size:12px;color:var(--muto);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dist{
@@ -296,7 +302,7 @@ svg{display:block}
 
 /* ───────────────────────────────────────────────────────── dettaglio */
 .foglio{
-  position:fixed;inset:0;z-index:1500;background:var(--grano);
+  position:fixed;inset:0;min-height:100dvh;z-index:1500;background:var(--grano);
   overflow-y:auto;transform:translateY(100%);
   transition:transform .3s cubic-bezier(.32,.72,0,1);
   padding-bottom:calc(34px + var(--sb));
@@ -381,7 +387,7 @@ svg{display:block}
 /* ─────────────────────────── menu iniziale ───────────────────────────────
    Quattro mete disposte a rombo: una in alto, due ai lati, una in basso. */
 .lancio{
-  position:fixed;inset:0;z-index:1850;
+  position:fixed;inset:0;min-height:100dvh;z-index:1850;
   background:linear-gradient(165deg,#5E1522,#3A0B16 60%,#2A0710);
   display:flex;flex-direction:column;align-items:center;justify-content:space-between;
   padding:calc(var(--st) + 26px) 20px calc(16px + var(--sb));
@@ -435,23 +441,24 @@ svg{display:block}
 .rombo{
   position:relative;width:min(300px,80vw);aspect-ratio:1/1.12;margin:0;
 }
-.meta{
-  position:absolute;width:31%;display:flex;flex-direction:column;align-items:center;gap:9px;
+.meta-rombo{
+  position:absolute;width:31%;display:flex;flex-direction:column;
+  align-items:center;gap:9px;padding-bottom:2px;
 }
-.meta.su{top:0;left:50%;transform:translateX(-50%)}
-.meta.giu{bottom:0;left:50%;transform:translateX(-50%)}
-.meta.sx{left:0;top:50%;transform:translateY(-50%)}
-.meta.dx{right:0;top:50%;transform:translateY(-50%)}
-.meta .globo{
+.meta-rombo.su{top:0;left:50%;transform:translateX(-50%)}
+.meta-rombo.giu{bottom:0;left:50%;transform:translateX(-50%)}
+.meta-rombo.sx{left:0;top:50%;transform:translateY(-50%)}
+.meta-rombo.dx{right:0;top:50%;transform:translateY(-50%)}
+.meta-rombo .globo{
   width:100%;aspect-ratio:1;color:var(--bordeaux);border-radius:50%;background:var(--carta);
   display:grid;place-items:center;color:var(--bordeaux);
   box-shadow:0 10px 26px rgba(0,0,0,.34);
   border:3px solid rgba(227,210,176,.42);
   transition:transform .16s;
 }
-.meta:active .globo{transform:scale(.93)}
-.meta .globo svg{width:46%;height:46%;stroke-width:1.55;stroke:var(--bordeaux);fill:none}
-.meta .nome{
+.meta-rombo:active .globo{transform:scale(.93)}
+.meta-rombo .globo svg{width:46%;height:46%;stroke-width:1.55;stroke:var(--bordeaux);fill:none}
+.meta-rombo .nome{
   background:var(--grano);color:var(--bordeaux);border-radius:999px;
   padding:6px 15px;font-size:12.5px;font-weight:700;white-space:nowrap;
   box-shadow:0 3px 10px rgba(0,0,0,.22);
@@ -545,7 +552,7 @@ svg{display:block}
 
 /* schermo pieno da mostrare al banco */
 .vetrina{
-  position:fixed;inset:0;z-index:1900;background:#fff;color:#111;
+  position:fixed;inset:0;min-height:100dvh;z-index:1900;background:#fff;color:#111;
   display:flex;flex-direction:column;padding:calc(var(--st) + 16px) 18px calc(18px + var(--sb));
   overflow-y:auto;
 }
@@ -666,11 +673,6 @@ svg{display:block}
    Il caricamento non e' tempo morto: e' il momento in cui l'app
    fa davvero le due query che servono, e intanto racconta un dato
    vero su una citta' italiana estratta a caso. */
-/* Metti una tua foto accanto al file con nome splash.jpg: se non c'e',
-   resta il fondo bordeaux e non si rompe nulla. */
-
-/* il centro si prende lo spazio residuo: la firma non puo' piu' finirci sotto */
-}
 
 
 
@@ -946,16 +948,16 @@ svg{display:block}
   </div>
 
   <div class="rombo">
-    <button class="meta su" data-meta="v-vicino">
+    <button class="meta-rombo su" data-meta="v-vicino">
       <span class="globo"><svg class="ico" viewBox="0 0 24 24"><use href="#i-vicino"/></svg></span>
       <span class="nome">Posizione</span></button>
-    <button class="meta sx" data-meta="v-mappa">
+    <button class="meta-rombo sx" data-meta="v-mappa">
       <span class="globo"><svg class="ico" viewBox="0 0 24 24"><use href="#i-mappa"/></svg></span>
       <span class="nome">Mappa</span></button>
-    <button class="meta dx" data-meta="v-viaggi">
+    <button class="meta-rombo dx" data-meta="v-viaggi">
       <span class="globo"><svg class="ico" viewBox="0 0 24 24"><use href="#i-valigia"/></svg></span>
       <span class="nome">Viaggi</span></button>
-    <button class="meta giu" data-meta="v-salvati">
+    <button class="meta-rombo giu" data-meta="v-salvati">
       <span class="globo"><svg class="ico" viewBox="0 0 24 24"><use href="#i-io"/></svg></span>
       <span class="nome">Io</span></button>
   </div>
@@ -967,7 +969,7 @@ svg{display:block}
     <div class="righino">
       <button id="s-livelli">Livelli</button>
       <button id="s-fonti">Fonti</button>
-      <span style="font-size:11px;color:#A98790">v0.4 &middot; 2026-08-16</span>
+      <span style="font-size:11px;color:#A98790">v0.7 &middot; 2026-08-16</span>
     </div>
     <div class="carico-mini" id="carico-mini">
       <span class="pulsa"></span>
@@ -1390,6 +1392,7 @@ async function deduciComune(){
 
 async function disegnaComune(){
   const box = $('#lo-sapevi');
+  if(Prog.attivo){ box.innerHTML=''; return; }   // niente card a meta' caricamento
   if(!S.posizione){ box.innerHTML=''; return; }
   if(!S.comune) S.comune = await deduciComune();
   const n = vicini().length;
@@ -1667,7 +1670,7 @@ function bilancia(lista, quota){
    ══════════════════════════════════════════════════════════════════ */
 function cardRiga(l, destra1, destra2, stella=false){
   const L1 = stile(l);
-  return `<button class="riga-card" data-apri="${esc(l.k)}">
+  return `<div class="riga-card" role="button" tabindex="0" data-apri="${esc(l.k)}">
     <div class="gemma" style="background:${L1.c}">${icona('i-'+L1.ico.slice(2),'ico sm')}</div>
     <div class="riga-corpo">
       <h3>${esc(l.nome)}</h3>
@@ -1675,18 +1678,17 @@ function cardRiga(l, destra1, destra2, stella=false){
       <span class="tag-liv" style="background:${L1.c}1A;color:${L1.c}">${esc(L1.breve)}</span>
     </div>
     <div class="dist">${destra1||''}<span>${destra2||''}</span></div>
-    <span class="stella" data-stella="${esc(l.k)}" role="button"
+    <span class="stella" data-stella="${esc(l.k)}" role="button" tabindex="0"
           aria-pressed="${Archivio.ha(l.k)}" aria-label="Salva">${icona('i-stella','ico sm')}</span>
-  </button>`;
+  </div>`;
 }
 
 function collega(){
   document.querySelectorAll('[data-apri]').forEach(b=>{
     if(b.dataset.legato) return; b.dataset.legato='1';
-    b.addEventListener('click',e=>{
-      if(e.target.closest('[data-stella]')) return;
-      apriDettaglio(b.dataset.apri);
-    });
+    const apri = e => { if(e.target.closest('[data-stella]')) return; apriDettaglio(b.dataset.apri); };
+    b.addEventListener('click', apri);
+    b.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); apri(e); } });
   });
   document.querySelectorAll('[data-stella]').forEach(s=>{
     if(s.dataset.legato) return; s.dataset.legato='1';
@@ -2539,6 +2541,7 @@ document.querySelectorAll('.scheda-tab').forEach(t=>t.addEventListener('click',(
 function cambiaModo(m){
   if(S.modo===m) return;
   richiesta++;                     // abbandono la richiesta in corso, non la aspetto
+  if(Prog.attivo) Prog.fine();     // e ne tolgo di mezzo l'indicatore
   S.modo = m;
   document.querySelectorAll('[data-modo]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.modo===m));
   $('#b-alta').style.display = m==='comprare' ? 'none' : '';
@@ -2802,7 +2805,7 @@ $('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiLancio()
    finisce per guardare una versione vecchia senza accorgersene.
    Qui la pagina confronta se stessa con quella sul server e lo dice.
    ══════════════════════════════════════════════════════════════════ */
-const VERSIONE = '0.4';
+const VERSIONE = '0.7';
 
 async function controllaVersione(){
   try{

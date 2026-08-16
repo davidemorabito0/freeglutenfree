@@ -2,7 +2,12 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="freeglutenfree">
+<meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#4A0F1C">
 <title>freeglutenfree — mangiare sicuro in Italia</title>
 <meta name="description" content="Mappa gratuita dei locali senza glutine in Italia, ordinati per rischio di contaminazione.">
@@ -46,8 +51,17 @@
   --tab:calc(62px + var(--sb));
 }
 
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden}
+/* Si comporta come un'app installata: niente zoom a pizzico, niente doppio
+   tocco che ingrandisce, niente selezione del testo, niente rimbalzo elastico. */
+*{
+  box-sizing:border-box;margin:0;padding:0;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;user-select:none;
+  touch-action:manipulation;
+}
+input,textarea{-webkit-user-select:text;user-select:text}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;position:fixed;width:100%}
 body{
   font-family:"Instrument Sans",system-ui,sans-serif;
   background:var(--grano);color:var(--inchiostro);
@@ -80,6 +94,9 @@ svg{display:block}
   transition:color .18s;position:relative;
 }
 .scheda-tab[aria-selected="true"]{color:var(--bianco)}
+.scheda-tab:active{transform:scale(.94)}
+.pill:active,.chip:active,.citta:active,.seg:active{transform:scale(.96)}
+.pill,.chip,.citta,.seg,.modo-switch button{transition:transform .12s,background .18s,color .18s,border-color .18s,opacity .16s}
 .scheda-tab[aria-selected="true"]::before{
   content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
   width:26px;height:2.5px;border-radius:0 0 3px 3px;background:var(--grano-3);
@@ -89,8 +106,10 @@ svg{display:block}
 .cappello{background:var(--bordeaux);color:var(--bianco);padding:calc(var(--st) + 16px) 18px 22px;position:relative;overflow:hidden}
 .cappello::after{
   content:"";position:absolute;right:-30px;top:-24px;width:170px;height:170px;
+  pointer-events:none;   /* decorativo: non deve intercettare i tocchi */
   background:radial-gradient(circle at 50% 50%,rgba(227,210,176,.16),transparent 68%);
 }
+.cappello .modo-switch{position:relative;z-index:3}
 .marchio{display:flex;align-items:center;gap:9px;position:relative;z-index:1}
 .marchio .sigillo{
   width:32px;height:32px;border-radius:9px;background:var(--grano-3);
@@ -181,6 +200,8 @@ svg{display:block}
 
 /* ───────────────────────────────────────────────────────────── mappa */
 #mappa{position:absolute;inset:0}
+/* eccezione voluta: qui lo zoom serve, ed e' Leaflet a gestirlo */
+#mappa,.leaflet-container,.leaflet-container *{touch-action:none}
 .cappello-mappa{
   position:absolute;top:0;left:0;right:0;z-index:900;
   background:linear-gradient(180deg,var(--bordeaux) 74%,rgba(74,15,28,0));
@@ -190,7 +211,7 @@ svg{display:block}
 .spettro{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .spettro::-webkit-scrollbar{display:none}
 .seg{
-  flex:1 0 auto;min-width:58px;border-radius:12px;padding:7px 7px 8px;
+  flex:1 0 auto;min-width:66px;border-radius:12px;padding:8px 8px 9px;
   background:rgba(255,255,255,.1);border:1.5px solid transparent;
   opacity:.45;transition:opacity .16s,background .16s,border-color .16s;
 }
@@ -264,7 +285,7 @@ svg{display:block}
 }
 .foglio.aperto{transform:translateY(0)}
 .f-testa{padding:calc(var(--st) + 14px) 18px 20px;color:#fff;position:relative;overflow:hidden}
-.f-testa::after{content:"";position:absolute;right:-40px;bottom:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.13),transparent 65%)}
+.f-testa::after{content:"";pointer-events:none;position:absolute;right:-40px;bottom:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.13),transparent 65%)}
 .f-chiudi{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;opacity:.9;margin-bottom:16px;position:relative;z-index:1}
 .f-testa h2{font-family:Fraunces,serif;font-weight:900;font-size:25px;line-height:1.13;font-variation-settings:"opsz" 40;position:relative;z-index:1}
 .f-testa .tipo{font-size:11px;text-transform:uppercase;letter-spacing:.12em;opacity:.82;margin-top:7px;position:relative;z-index:1}
@@ -317,8 +338,8 @@ svg{display:block}
 }
 .modo-switch button{
   flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:8px 10px;border-radius:999px;font-size:12.5px;font-weight:600;
-  color:#DCC3C9;transition:background .18s,color .18s;
+  padding:10px 10px;border-radius:999px;font-size:12.5px;font-weight:600;
+  color:#DCC3C9;min-height:40px;
 }
 .modo-switch button[aria-pressed="true"]{background:var(--grano);color:var(--bordeaux)}
 .cappello .modo-switch{margin-top:14px;margin-bottom:0}
@@ -401,6 +422,8 @@ svg{display:block}
 .lo-sapevi h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;color:#D8B7BE;margin-bottom:5px}
 .lo-sapevi p{font-size:14px;line-height:1.45}
 .lo-sapevi b{font-family:Fraunces,serif;font-weight:900;font-size:16px;font-variation-settings:"opsz" 20}
+.lo-sapevi .citta-nome{font-family:Fraunces,serif;font-weight:900;font-size:21px;line-height:1.1;font-variation-settings:"opsz" 30;display:block;margin-bottom:3px}
+.lo-sapevi .altrove{margin-left:auto;flex:0 0 auto;align-self:center;color:#E3C4CB;padding:8px 4px 8px 10px}
 
 @media (min-width:820px){
   .eroe{max-width:560px;margin-left:auto;margin-right:auto}
@@ -695,6 +718,7 @@ const CITTA = [
    ══════════════════════════════════════════════════════════════════ */
 const S = {
   modo:'mangiare',
+  comune:null,
   categorie:new Set(Object.keys(SPESA)),
   locali:new Map(),
   livelli:new Set(['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','dati_insufficienti']),
@@ -871,29 +895,34 @@ function scheletroEroe(testo){
     <p class="sotto">Un attimo solo</p></div></div></div>`;
 }
 
-async function avviaVicino(){
+// La posizione si chiede una volta sola; i dati si ricaricano quando serve.
+function avviaVicino(){
+  if(S.posizione) return caricaIntorno();
   if(!navigator.geolocation){ eroeSenzaPosizione(); return; }
   scheletroEroe('Cerco dove sei…');
-
-  navigator.geolocation.getCurrentPosition(async p=>{
+  navigator.geolocation.getCurrentPosition(p=>{
     S.posizione = {lat:p.coords.latitude, lng:p.coords.longitude};
     mappa.setView([S.posizione.lat,S.posizione.lng],15);
     if(cerchioIo) cerchioIo.remove();
     cerchioIo = L.circleMarker([S.posizione.lat,S.posizione.lng],
       {radius:8,color:'#fff',weight:3,fillColor:'#4A0F1C',fillOpacity:1}).addTo(mappa);
-
-    scheletroEroe('Cerco i posti più vicini…');
-    try{
-      for(const r of CFG.raggioVicino){
-        assorbi(await interroga(qPerModo(S.posizione.lat,S.posizione.lng,r)), S.modo);
-        if(vicini().length) break;
-      }
-      disegnaVicino();
-      disegnaMappa();
-    }catch(e){
-      eroeErrore('Ricerca non riuscita','OpenStreetMap non ha risposto. Riprova fra qualche secondo.');
-    }
+    caricaIntorno();
   }, eroeSenzaPosizione, {timeout:12000, enableHighAccuracy:true, maximumAge:60000});
+}
+
+async function caricaIntorno(){
+  if(!S.posizione || S.caricando) return;
+  S.caricando = true;
+  scheletroEroe(S.modo==='comprare' ? 'Cerco dove fare la spesa…' : 'Cerco i posti più vicini…');
+  try{
+    for(const r of CFG.raggioVicino){
+      assorbi(await interroga(qPerModo(S.posizione.lat,S.posizione.lng,r)), S.modo);
+      if(vicini().length) break;
+    }
+    disegnaVicino(); disegnaMappa(); disegnaComune();
+  }catch(e){
+    eroeErrore('Ricerca non riuscita','OpenStreetMap non ha risposto. Riprova fra qualche secondo.');
+  }finally{ S.caricando = false; }
 }
 
 function eroeSenzaPosizione(){
@@ -1021,7 +1050,7 @@ function sincronizza(){
   $('#b-alta').setAttribute('aria-pressed',S.alta);
   $('#b-tipi').setAttribute('aria-pressed',S.tipi.size>0);
   disegnaMappa();
-  if(S.posizione) disegnaVicino();
+  if(S.posizione){ disegnaVicino(); disegnaComune(); }
   if(S.cittaScelta) disegnaViaggio();
 }
 
@@ -1243,21 +1272,19 @@ document.querySelectorAll('.scheda-tab').forEach(t=>t.addEventListener('click',(
 }));
 
 function cambiaModo(m){
-  if(S.modo===m) return;
+  if(S.modo===m || S.caricando) return;
   S.modo = m;
   document.querySelectorAll('[data-modo]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.modo===m));
   $('#b-alta').style.display = m==='comprare' ? 'none' : '';
   $('#b-tipi').style.display = m==='comprare' ? 'none' : '';
   costruisciSpettro();
-  sincronizza();
-  // se non ho ancora dati per questa modalita' nei dintorni, li chiedo ora
-  const qualcosa = [...S.locali.values()].some(l=>l.modo===m);
-  if(!qualcosa){
-    if(S.posizione) avviaVicino();
-    else if(mappa.getZoom()>=12) cercaArea(true);
-  }else{
-    disegnaVicino();
-  }
+  disegnaMappa();
+
+  const gia = [...S.locali.values()].some(l=>l.modo===m);
+  if(gia){ disegnaVicino(); disegnaComune(); if(S.cittaScelta) disegnaViaggio(); return; }
+  if(S.posizione) caricaIntorno();
+  else if(mappa.getZoom()>=12) cercaArea(true);
+  else disegnaVicino();
 }
 document.querySelectorAll('[data-modo]').forEach(b=>
   b.addEventListener('click',()=>cambiaModo(b.dataset.modo)));
@@ -1292,6 +1319,29 @@ mappa.on('moveend',()=>{
     cercaArea(true);
   }, 900);
 });
+
+// Comportamenti da applicazione, non da pagina web.
+document.addEventListener('contextmenu', e => e.preventDefault());
+const dentroMappa = e => !!(e.target && e.target.closest && e.target.closest('#mappa'));
+document.addEventListener('gesturestart', e => { if(!dentroMappa(e)) e.preventDefault(); });
+document.addEventListener('dblclick',     e => { if(!dentroMappa(e)) e.preventDefault(); }, {passive:false});
+document.addEventListener('touchmove',    e => {
+  if(!dentroMappa(e) && e.scale && e.scale !== 1) e.preventDefault();
+}, {passive:false});
+
+// manifest generato al volo: resta tutto in un solo file
+try{
+  const manifest = {
+    name:'freeglutenfree', short_name:'freeglutenfree',
+    description:'Mappa dei posti senza glutine in Italia',
+    start_url:'.', display:'standalone', orientation:'portrait',
+    background_color:'#4A0F1C', theme_color:'#4A0F1C'
+  };
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));
+  document.head.appendChild(link);
+}catch(e){}
 
 costruisciSpettro();
 costruisciCitta();
@@ -1350,14 +1400,45 @@ async function avviaSplash(){
   try{ frase = fraseCitta(await Promise.race([contaCitta(), attesa(2100)])); }catch(e){}
 
   if(frase){
-    $('#avviso-carico').innerHTML = frase;
-    $('#lo-sapevi').innerHTML = `<div class="lo-sapevi">${icona('i-bussola')}
-      <div><h4>Lo sapevi</h4><p>${frase}</p></div></div>`;
+    $('#avviso-carico').innerHTML = frase;   // solo qui: in home mostro dove sei
   }else{
     $('#avviso-carico').textContent = 'Pronto.';
   }
 
   setTimeout(chiudiSplash, Math.max(0, MIN_SPLASH - (Date.now() - APERTURA)));
+}
+
+/* Dove sono davvero. Prima provo a dedurlo dai dati gia' scaricati
+   (molti punti hanno addr:city): zero richieste in piu'. Solo se non
+   basta chiedo a Nominatim, una volta sola. */
+async function deduciComune(){
+  const v = vicini().slice(0,14).map(l=>l.comune).filter(Boolean);
+  if(v.length){
+    const c={}; v.forEach(x=>c[x]=(c[x]||0)+1);
+    return Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0];
+  }
+  try{
+    const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=12&accept-language=it&lat=${S.posizione.lat}&lon=${S.posizione.lng}`;
+    const r = await fetch(u); const j = await r.json(); const a = j.address||{};
+    return a.city || a.town || a.village || a.municipality || a.county || null;
+  }catch(e){ return null; }
+}
+
+async function disegnaComune(){
+  const box = $('#lo-sapevi');
+  if(!S.posizione){ box.innerHTML=''; return; }
+  if(!S.comune) S.comune = await deduciComune();
+  const n = vicini().length;
+  if(!S.comune && !n){ box.innerHTML=''; return; }
+  const cosa = S.modo==='comprare' ? 'punti dove fare la spesa' : 'posti segnalati senza glutine';
+  box.innerHTML = `<div class="lo-sapevi">${icona('i-pin')}
+    <div><h4>Sei qui</h4>
+      ${S.comune?`<span class="citta-nome">${esc(S.comune)}</span>`:''}
+      <p><b>${n}</b> ${cosa} nei dintorni</p></div>
+    <button class="altrove" id="b-altrove" aria-label="Cerca in un'altra citt&agrave;">${icona('i-freccia')}</button></div>`;
+  const b=$('#b-altrove');
+  if(b){ b.style.transform='scaleX(-1)';
+    b.addEventListener('click',()=>document.querySelector('[data-vista="v-viaggi"]').click()); }
 }
 
 async function contaItalia(){

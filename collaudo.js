@@ -195,7 +195,12 @@ const attendi = ms => new Promise(r => setTimeout(r, ms));
 
   // id referenziati nel JS ma mai creati, né in markup né dinamicamente
   const idMarkup = new Set([...markup.matchAll(/id="([a-zA-Z0-9_-]+)"/g)].map(m => m[1]));
-  const idDinamici = new Set([...js.matchAll(/id="([a-zA-Z0-9_${}.\-]+)"/g)].map(m => m[1]));
+  // alcuni id nascono da funzioni ausiliarie: campo('s-asl', ...) genera
+  // <input id="s-asl">. Vanno riconosciuti, altrimenti sembrano fantasmi.
+  const idDinamici = new Set([
+    ...[...js.matchAll(/id="([a-zA-Z0-9_${}.\-]+)"/g)].map(m => m[1]),
+    ...[...js.matchAll(/campo\(\s*'([a-zA-Z0-9_-]+)'/g)].map(m => m[1])
+  ]);
   const usatiJS = [...new Set([...js.matchAll(/\$\('#([a-zA-Z0-9_-]+)'\)/g)].map(m => m[1]))];
   const fantasma = usatiJS.filter(i => !idMarkup.has(i) && !idDinamici.has(i));
   ok('nessun id fantasma', fantasma.length === 0, fantasma.join(', '));
@@ -283,6 +288,50 @@ const attendi = ms => new Promise(r => setTimeout(r, ms));
   // sotto cui un nome diventa facilmente riutilizzabile per sbaglio
   const generiche = assolute.filter(k => k.length <= 4);
   ok('nessun nome troppo corto in posizione assoluta', generiche.length === 0, generiche.join(', '));
+
+
+  sez('17 · COLLISIONI DI ATTRIBUTI');
+  // due schermate diverse che usano lo stesso data-* si rubano i gestori
+  const attr = {};
+  for (const m of js.matchAll(/data-([a-z]+)="/g)) attr[m[1]] = (attr[m[1]]||0)+1;
+  const zone = {};
+  for (const nome of Object.keys(attr)) {
+    const contesti = [...js.matchAll(new RegExp('class="([^"]*)"[^>]*data-'+nome+'="','g'))].map(x=>x[1].split(' ')[0]);
+    zone[nome] = [...new Set(contesti)];
+  }
+  // data-apri e' condiviso di proposito fra la card e il pulsante "Dettagli":
+  // aprono la stessa scheda, quindi devono condividere il gestore
+  const ammessi = ['apri','stella','modo','vista','meta'];
+  const doppi = Object.entries(zone).filter(([k,v]) => v.length > 1 && !ammessi.includes(k));
+  ok('ogni data-* appartiene a un solo componente', doppi.length === 0,
+     doppi.map(([k,v])=>k+' usato da '+v.join('/')).join(' · '));
+
+
+  sez('18 · RICORSIONI');
+  // una funzione che ridisegna e nel farlo richiama se stessa blocca la
+  // pagina: e' successo davvero, e non deve poter ripassare
+  const corpi = [...js.matchAll(/^(?:async )?function ([a-zA-Z0-9_]+)\s*\([^)]*\)\s*\{/gm)];
+  const ricorsive = [];
+  for (let i = 0; i < corpi.length; i++) {
+    const nome = corpi[i][1];
+    const dal = corpi[i].index;
+    const al = i + 1 < corpi.length ? corpi[i + 1].index : js.length;
+    const corpo = js.slice(dal, al);
+    // Conta solo le chiamate nel corpo diretto della funzione: dentro un
+    // gestore di eventi richiamarsi e' normale (ridisegna dopo un'azione),
+    // nel corpo diretto e' un ciclo infinito.
+    const dirette = [];
+    let liv = 0, dentro = false;
+    for (const riga of corpo.split('\n')) {
+      if (dentro && liv === 1 && riga.trim().startsWith(nome + '(')) dirette.push(riga.trim());
+      for (const c of riga) {
+        if (c === '{') { liv++; dentro = true; }
+        else if (c === '}') liv--;
+      }
+    }
+    if (dirette.length) ricorsive.push(nome);
+  }
+  ok('nessuna funzione che si richiama da sola', ricorsive.length === 0, ricorsive.join(', '));
 
   // ══════════════════════════════════════════════════════════════
   sez('ESITO');

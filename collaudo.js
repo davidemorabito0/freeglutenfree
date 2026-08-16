@@ -228,6 +228,22 @@ const attendi = ms => new Promise(r => setTimeout(r, ms));
     return a && b && a === b;
   })(), (js.match(/const VERSIONE = '([^']+)'/) || [])[1] + ' vs ' + (markup.match(/v(\d+\.\d+) &middot;/) || [])[1]);
 
+
+  sez('13 · RISCHIO SOVRAPPOSIZIONI');
+  const flexButton = /\.riga-card\{[^}]*display:flex/.test(css);
+  const capoInButton = [...js.matchAll(/<button class="riga-card"[\s\S]{0,400}?<\/button>/g)]
+    .filter(m => /white-space:\s*normal/.test(m[0]));
+  ok('nessun pulsante flex con testo a capo', capoInButton.length === 0,
+     capoInButton.length + ' casi (in WebKit non crescono in altezza)');
+  ok('le scelte descritte usano .opzione', /class="opzione"/.test(js));
+  ok('.opzione non e un button', !/<button class="opzione"/.test(js));
+  ok('.riga-corpo taglia gli eccessi', /\.riga-corpo\{[^}]*overflow:hidden/.test(css));
+  const senzaCapo = /\.riga-corpo \.meta\{[^}]*white-space:nowrap/.test(css);
+  ok('la meta resta su una riga', senzaCapo);
+  // ogni testo lungo deve stare in un contenitore che cresce
+  const lunghi = [...js.matchAll(/<(div|p) class="(meta|testo)"[^>]*>\$\{esc\((\w+)\.desc\)\}/g)];
+  ok('descrizioni lunghe in contenitori elastici', lunghi.every(m => m[2]!=='meta'));
+
   // ══════════════════════════════════════════════════════════════
   sez('ESITO');
   if (!problemi.length) console.log('  \x1b[32mNessun problema rilevato.\x1b[0m');

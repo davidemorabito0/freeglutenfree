@@ -496,6 +496,52 @@ svg{display:block}
 .esiti button:active{background:var(--grano)}
 .esiti .reg{color:var(--muto);font-size:12px;margin-left:auto;text-align:right}
 
+/* ─────────────────────────── account ──────────────────────────────────── */
+.conto{
+  margin:16px 14px 0;background:var(--carta);border:1px solid var(--linea);
+  border-radius:var(--r-m);padding:14px;display:flex;align-items:center;gap:13px;
+}
+.conto .faccia{
+  width:52px;height:52px;border-radius:50%;flex:0 0 auto;overflow:hidden;
+  background:var(--grano-2);display:grid;place-items:center;color:var(--bordeaux);
+}
+.conto .faccia img{width:100%;height:100%;object-fit:cover}
+.conto .chi{flex:1;min-width:0}
+.conto .chi b{
+  display:block;font-family:Fraunces,serif;font-weight:700;font-size:16px;
+  font-variation-settings:"opsz" 20;line-height:1.2;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.conto .chi span{display:block;font-size:12.5px;color:var(--muto);margin-top:3px}
+.conto .via{flex:0 0 auto;color:var(--muto);padding:9px;border-radius:10px}
+.conto.ospite{background:var(--bordeaux);border-color:var(--bordeaux);color:#fff}
+.conto.ospite .faccia{background:rgba(255,255,255,.17);color:#fff}
+.conto.ospite .chi span{color:#DCC3C9}
+.conto.ospite .via{color:#F0DFE3}
+
+.stato-nube{
+  display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.07em;margin-top:6px;
+}
+.stato-nube .luce{width:7px;height:7px;border-radius:50%;background:var(--l1)}
+.stato-nube.attesa .luce{background:var(--l4);animation:pulsante 1.2s ease-in-out infinite}
+.stato-nube.spento .luce{background:var(--muto)}
+
+.avviso-privacy{
+  display:flex;gap:10px;background:var(--grano-2);border-radius:var(--r-s);
+  padding:12px;font-size:12.5px;line-height:1.5;color:var(--bordeaux);margin-top:4px;
+}
+.errore{
+  background:#FBE8EA;color:#7A1421;border-radius:var(--r-s);
+  padding:11px 12px;font-size:13px;line-height:1.45;margin-bottom:14px;
+}
+.scelta-modo{display:flex;gap:8px;margin-bottom:18px}
+.scelta-modo button{
+  flex:1;padding:11px;border-radius:var(--r-s);font-size:13.5px;font-weight:600;
+  background:var(--grano-2);color:var(--bordeaux);text-align:center;
+}
+.scelta-modo button[aria-pressed="true"]{background:var(--bordeaux);color:#fff}
+
 /* ─────────────────── scelte con descrizione su piu' righe ────────────────
    Volutamente un <div role="button"> e non un <button>: in WebKit un
    pulsante usato come contenitore flex non cresce in altezza quando il
@@ -767,6 +813,13 @@ svg{display:block}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-filtro" viewBox="0 0 24 24"><path d="M3.5 5.5h17M6.5 12h11M10 18.5h4"/></symbol>
   <symbol id="i-lente" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><path d="m16.3 16.3 4.2 4.2"/></symbol>
+  <symbol id="i-nube" viewBox="0 0 24 24">
+    <path d="M7 19.4a4.4 4.4 0 0 1-.5-8.8 6 6 0 0 1 11.5 1.6 3.9 3.9 0 0 1-.6 7.2H7Z"/>
+  </symbol>
+  <symbol id="i-esci" viewBox="0 0 24 24">
+    <path d="M9.5 20.5H5.6A1.6 1.6 0 0 1 4 18.9V5.1a1.6 1.6 0 0 1 1.6-1.6h3.9"/>
+    <path d="M16 16.2 20.2 12 16 7.8M20.2 12H9.4"/>
+  </symbol>
   <symbol id="i-io" viewBox="0 0 24 24">
     <circle cx="12" cy="8" r="4.1"/><path d="M4.4 20.4a7.9 7.9 0 0 1 15.2 0"/>
   </symbol>
@@ -904,6 +957,7 @@ svg{display:block}
       <div><h1>Io</h1><p>la mia carta, i buoni, i miei posti</p></div>
     </div>
   </header>
+  <div id="conto"></div>
   <div class="scorciatoie">
     <button class="scorc" id="s-carta">
       <span class="cerchio"><svg class="ico sm"><use href="#i-carta"/></svg></span>
@@ -969,7 +1023,7 @@ svg{display:block}
     <div class="righino">
       <button id="s-livelli">Livelli</button>
       <button id="s-fonti">Fonti</button>
-      <span style="font-size:11px;color:#A98790">v0.7 &middot; 2026-08-16</span>
+      <span style="font-size:11px;color:#A98790">v0.9 &middot; 2026-08-16</span>
     </div>
     <div class="carico-mini" id="carico-mini">
       <span class="pulsa"></span>
@@ -995,13 +1049,17 @@ svg{display:block}
     <svg class="ico"><use href="#i-io"/></svg>Io</button>
 </nav>
 
+<script src="config.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════════════════
    CONFIGURAZIONE
    ══════════════════════════════════════════════════════════════════ */
 const CFG = {
-  supabaseUrl:'', supabaseKey:'',            // da riempire quando il DB e' pronto
+  // I due valori arrivano da config.js, che si modifica senza toccare
+  // questo file. Senza config.js l'app funziona, solo senza account.
+  supabaseUrl: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseUrl) || '',
+  supabaseKey: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseKey) || '',
   overpass:['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'],
   maxDiagKm:45,
   raggioVicino:{mangiare:[5000, 15000, 35000], comprare:[1500, 4000, 12000]}           // allarga finche' non trova qualcosa
@@ -1110,8 +1168,22 @@ const Archivio = {
   },
   ha(k){ return !!this.leggi()[k]; },
   prendi(k){ return this.leggi()[k] || null; },
-  salva(voce){ const o=this.leggi(); o[voce.k]={...(o[voce.k]||{}), ...voce}; this.scrivi(o); },
-  togli(k){ const o=this.leggi(); delete o[k]; this.scrivi(o); },
+  salva(voce){
+    const o=this.leggi();
+    o[voce.k]={...(o[voce.k]||{}), ...voce, agg:new Date().toISOString()};
+    this.scrivi(o);
+    if(typeof Nube!=='undefined' && Nube.dentro()) clearTimeout(this._t),
+      this._t=setTimeout(()=>Nube.sincronizza(), 1500);
+  },
+  togli(k){
+    const o=this.leggi(); delete o[k]; this.scrivi(o);
+    const c=this.codaTolti(); if(!c.includes(k)) c.push(k);
+    try{ localStorage.setItem('fgf.tolti.v1', JSON.stringify(c)); }catch(e){}
+    if(typeof Nube!=='undefined' && Nube.dentro()) clearTimeout(this._t),
+      this._t=setTimeout(()=>Nube.sincronizza(), 1500);
+  },
+  codaTolti(){ try{ return JSON.parse(localStorage.getItem('fgf.tolti.v1')||'[]'); }catch(e){ return []; } },
+  svuotaCoda(){ try{ localStorage.removeItem('fgf.tolti.v1'); }catch(e){} },
   tutti(){ return Object.values(this.leggi()); },
   collezioni(){
     const g={};
@@ -1699,6 +1771,8 @@ function collega(){
       else{ salvaLocale(S.locali.get(k)); }
       s.setAttribute('aria-pressed',Archivio.ha(k));
       disegnaValigia(); disegnaSalvati();
+disegnaConto();
+Nube.avvia();
     });
   });
 }
@@ -1949,6 +2023,184 @@ const Prog = {
 };
 
 /* ══════════════════════════════════════════════════════════════════
+   ACCOUNT E SINCRONIZZAZIONE
+   ------------------------------------------------------------------
+   Viaggiano verso il server soltanto i posti salvati, le note e il
+   nome col ritratto. Profilo di sensibilita', tessera e buoni restano
+   su questo telefono: sono dati sulla salute, e non li vogliamo in
+   custodia. Le password non le tocchiamo mai: le gestisce Supabase.
+   ══════════════════════════════════════════════════════════════════ */
+const Nube = {
+  chiaveSess:'fgf.sessione.v1',
+  sess:null, profilo:null, stato:'spento',   // spento | attesa | acceso | errore
+
+  attiva(){ return !!(CFG.supabaseUrl && CFG.supabaseKey); },
+  dentro(){ return !!(this.sess && this.sess.access_token); },
+
+  leggiSess(){
+    try{ return JSON.parse(localStorage.getItem(this.chiaveSess) || 'null'); }catch(e){ return null; }
+  },
+  scriviSess(s){
+    this.sess = s;
+    try{ s ? localStorage.setItem(this.chiaveSess, JSON.stringify(s))
+           : localStorage.removeItem(this.chiaveSess); }catch(e){}
+  },
+
+  async chiama(via, opz={}, conAuth=true){
+    const t = {
+      'Content-Type':'application/json',
+      'apikey': CFG.supabaseKey,
+      ...(opz.headers||{})
+    };
+    if(conAuth && this.sess?.access_token) t['Authorization'] = 'Bearer ' + this.sess.access_token;
+    const r = await fetch(CFG.supabaseUrl.replace(/\/$/,'') + via, {...opz, headers:t});
+    if(r.status === 401 && conAuth && this.sess?.refresh_token){
+      if(await this.rinnova()) return this.chiama(via, opz, conAuth);
+    }
+    const testo = await r.text();
+    let dati = null;
+    try{ dati = testo ? JSON.parse(testo) : null; }catch(e){ dati = testo; }
+    if(!r.ok) throw new Error(dati?.msg || dati?.error_description || dati?.message || dati?.error || ('errore ' + r.status));
+    return dati;
+  },
+
+  async rinnova(){
+    try{
+      const d = await this.chiama('/auth/v1/token?grant_type=refresh_token',
+        {method:'POST', body:JSON.stringify({refresh_token:this.sess.refresh_token})}, false);
+      this.scriviSess(d);
+      return true;
+    }catch(e){ this.scriviSess(null); return false; }
+  },
+
+  async registra(email, password, nome){
+    const d = await this.chiama('/auth/v1/signup',
+      {method:'POST', body:JSON.stringify({email, password, data:{nome}})}, false);
+    if(d.access_token){ this.scriviSess(d); return {entrato:true}; }
+    return {entrato:false, verifica:true};   // Supabase chiede la conferma via email
+  },
+
+  async accedi(email, password){
+    const d = await this.chiama('/auth/v1/token?grant_type=password',
+      {method:'POST', body:JSON.stringify({email, password})}, false);
+    this.scriviSess(d);
+  },
+
+  async esci(){
+    try{ await this.chiama('/auth/v1/logout', {method:'POST'}); }catch(e){}
+    this.scriviSess(null);
+    this.profilo = null; this.stato = 'spento';
+    disegnaConto();
+  },
+
+  async leggiProfilo(){
+    const id = this.sess?.user?.id; if(!id) return null;
+    const r = await this.chiama(`/rest/v1/profili?id=eq.${id}&select=*`);
+    this.profilo = r?.[0] || null;
+    return this.profilo;
+  },
+
+  async scriviProfilo(campi){
+    const id = this.sess?.user?.id; if(!id) return;
+    await this.chiama(`/rest/v1/profili?id=eq.${id}`,
+      {method:'PATCH', headers:{Prefer:'return=minimal'}, body:JSON.stringify(campi)});
+    this.profilo = {...(this.profilo||{}), ...campi};
+  },
+
+  async caricaRitratto(dataUrl){
+    const id = this.sess?.user?.id; if(!id) return null;
+    const bin = await (await fetch(dataUrl)).blob();
+    const via = `/storage/v1/object/avatar/${id}/ritratto.jpg`;
+    await fetch(CFG.supabaseUrl.replace(/\/$/,'') + via, {
+      method:'POST',
+      headers:{'apikey':CFG.supabaseKey, 'Authorization':'Bearer '+this.sess.access_token,
+               'x-upsert':'true', 'Content-Type':'image/jpeg'},
+      body: bin
+    });
+    return CFG.supabaseUrl.replace(/\/$/,'') + `/storage/v1/object/public/avatar/${id}/ritratto.jpg?t=` + Date.now();
+  },
+
+  /* Sincronizzazione: la copia locale resta quella di lavoro, il server e'
+     lo specchio. A parita' di chiave vince la versione modificata piu' di
+     recente; le cancellazioni lasciano una lapide, altrimenti un posto
+     tolto su un telefono tornerebbe indietro dall'altro. */
+  async sincronizza(){
+    if(!this.dentro()) return;
+    this.stato = 'attesa'; disegnaConto();
+    try{
+      const id = this.sess.user.id;
+      const [remoti, lapidi] = await Promise.all([
+        this.chiama('/rest/v1/salvati?select=*'),
+        this.chiama('/rest/v1/cancellati?select=chiave,tolto_il')
+      ]);
+      const locali = Archivio.leggi();
+      const tolti = new Map((lapidi||[]).map(x=>[x.chiave, x.tolto_il]));
+      const perServer = [];
+
+      for(const r of (remoti||[])){
+        const l = locali[r.chiave];
+        if(!l || new Date(r.aggiornato_il) > new Date(l.agg || 0)){
+          locali[r.chiave] = {
+            k:r.chiave, nome:r.nome, lat:r.lat, lng:r.lng, modo:r.modo,
+            liv:r.liv, cat:r.cat, tipo:r.tipo, comune:r.comune, tel:r.tel, sito:r.sito,
+            coll:r.coll, stato:r.stato, nota:r.nota||'', orari:r.orari||'',
+            creato:r.creato_il, agg:r.aggiornato_il
+          };
+        }
+      }
+      const suServer = new Map((remoti||[]).map(x=>[x.chiave, x]));
+      for(const [k, l] of Object.entries(locali)){
+        const t = tolti.get(k);
+        if(t && new Date(t) > new Date(l.agg || 0)){ delete locali[k]; continue; }
+        const r = suServer.get(k);
+        if(!r || new Date(l.agg || 0) > new Date(r.aggiornato_il)){
+          perServer.push({
+            utente_id:id, chiave:l.k, nome:l.nome, lat:l.lat, lng:l.lng, modo:l.modo,
+            liv:l.liv||null, cat:l.cat||null, tipo:l.tipo||null, comune:l.comune||null,
+            tel:l.tel||null, sito:l.sito||null,
+            coll:l.coll||'I miei posti', stato:l.stato||'da_provare',
+            nota:l.nota||'', orari:l.orari||''
+          });
+        }
+      }
+      Archivio.scrivi(locali);
+
+      if(perServer.length){
+        await this.chiama('/rest/v1/salvati?on_conflict=utente_id,chiave',
+          {method:'POST', headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+           body:JSON.stringify(perServer)});
+      }
+      // cancellazioni rimaste in attesa perche' eravamo senza rete
+      const coda = Archivio.codaTolti();
+      for(const k of coda){
+        await this.chiama(`/rest/v1/salvati?chiave=eq.${encodeURIComponent(k)}`, {method:'DELETE'});
+        await this.chiama('/rest/v1/cancellati?on_conflict=utente_id,chiave',
+          {method:'POST', headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+           body:JSON.stringify([{utente_id:id, chiave:k}])});
+      }
+      Archivio.svuotaCoda();
+
+      this.stato = 'acceso';
+      disegnaSalvati(); disegnaValigia();
+    }catch(e){
+      this.stato = 'errore';
+      console.warn('sincronizzazione non riuscita:', e.message);
+    }
+    disegnaConto();
+  },
+
+  async avvia(){
+    if(!this.attiva()) return;
+    const s = this.leggiSess();
+    if(!s) return disegnaConto();
+    this.sess = s;
+    try{ await this.leggiProfilo(); }catch(e){}
+    disegnaConto();
+    this.sincronizza();
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════
    SALVATI, NOTE, DIARIO DI VIAGGIO
    ══════════════════════════════════════════════════════════════════ */
 function raccoltaCorrente(){
@@ -2094,6 +2346,209 @@ function apriVetrina(html){
   tieniAcceso(true);
 }
 function chiudiVetrina(){ $('#vetrina').hidden = true; tieniAcceso(false); }
+
+/* ── account ──────────────────────────────────────────────────────── */
+function disegnaConto(){
+  const box = $('#conto'); if(!box) return;
+  if(!Nube.attiva()){ box.innerHTML=''; return; }
+
+  if(!Nube.dentro()){
+    box.innerHTML = `<div class="conto ospite" role="button" tabindex="0" id="b-accedi">
+      <div class="faccia">${icona('i-nube','ico lg')}</div>
+      <div class="chi"><b>Salva i tuoi posti per sempre</b>
+        <span>Con un account li ritrovi su qualsiasi telefono</span></div>
+      <span class="via">${icona('i-freccia')}</span></div>`;
+    const b=$('#b-accedi');
+    b.querySelector('.via').style.transform='scaleX(-1)';
+    b.addEventListener('click', apriAccesso);
+    b.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); apriAccesso(); } });
+    return;
+  }
+
+  const p = Nube.profilo || {};
+  const n = Archivio.tutti().length;
+  const etichetta = {acceso:'sincronizzato', attesa:'sincronizzo…', errore:'non sincronizzato', spento:''}[Nube.stato] || '';
+  box.innerHTML = `<div class="conto" role="button" tabindex="0" id="b-profilo-utente">
+    <div class="faccia">${p.avatar_url ? `<img src="${esc(p.avatar_url)}" alt="">` : icona('i-io','ico lg')}</div>
+    <div class="chi"><b>${esc(p.nome || 'Il mio account')}</b>
+      <span>${n} ${n===1?'posto salvato':'posti salvati'}</span>
+      <span class="stato-nube ${Nube.stato==='acceso'?'':Nube.stato}"><span class="luce"></span>${esc(etichetta)}</span></div>
+    <span class="via">${icona('i-freccia')}</span></div>`;
+  const b=$('#b-profilo-utente');
+  b.querySelector('.via').style.transform='scaleX(-1)';
+  b.addEventListener('click', apriAccount);
+  b.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); apriAccount(); } });
+}
+
+function apriAccesso(){
+  let modo = 'accedi';
+  const disegna = () => {
+    $('#foglio').innerHTML = `
+      <div class="f-testa">
+        <div class="f-nastro" style="background:var(--l2)"></div>
+        <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+        <h2>${modo==='accedi' ? 'Accedi' : 'Crea un account'}</h2>
+        <div class="tipo">i tuoi posti su ogni telefono</div>
+      </div>
+      <div class="pannello">
+        <div class="scelta-modo">
+          <button data-scelta="accedi" aria-pressed="${modo==='accedi'}">Ho gi&agrave; un account</button>
+          <button data-scelta="registra" aria-pressed="${modo==='registra'}">Sono nuovo</button>
+        </div>
+        <div id="msg"></div>
+        ${modo==='registra' ? `<div class="campo"><label>Come ti chiami</label>
+          <input id="a-nome" type="text" autocomplete="name" placeholder="il nome che vedrai nell&rsquo;app"></div>` : ''}
+        <div class="campo"><label>Email</label>
+          <input id="a-email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" placeholder="tu@esempio.it"></div>
+        <div class="campo"><label>Password</label>
+          <input id="a-pwd" type="password" autocomplete="${modo==='accedi'?'current-password':'new-password'}" placeholder="${modo==='accedi'?'la tua password':'almeno 8 caratteri'}"></div>
+        <button class="btn btn-pieno" id="a-vai" style="width:100%">
+          ${icona('i-nube','ico sm')}${modo==='accedi' ? 'Accedi' : 'Crea account'}</button>
+        ${modo==='accedi' ? `<button class="mini" id="a-scordata" style="width:100%;margin-top:10px">Password dimenticata</button>` : ''}
+      </div>
+      <div class="pannello">
+        <div class="occhiello">Cosa viene salvato online</div>
+        <div class="riga"><span>I posti salvati e le note</span><span>s&igrave;</span></div>
+        <div class="riga"><span>Nome e foto profilo</span><span>s&igrave;</span></div>
+        <div class="riga"><span>Il tuo profilo di sensibilit&agrave;</span><span>no</span></div>
+        <div class="riga"><span>La foto della tessera</span><span>no</span></div>
+        <div class="riga"><span>Buoni e importi</span><span>no</span></div>
+        <div class="avviso-privacy">${icona('i-scudo','ico sm')}
+          <div>Le informazioni sulla tua salute restano su questo telefono e non vengono inviate da nessuna parte.
+          La password non passa mai da noi: la custodisce il servizio di autenticazione.</div></div>
+      </div>`;
+    $('#foglio').classList.add('aperto');
+    $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+    document.querySelectorAll('[data-scelta]').forEach(b=>b.addEventListener('click',()=>{
+      modo=b.dataset.scelta; disegna();
+    }));
+    $('#a-vai').addEventListener('click', procedi);
+    const sc=$('#a-scordata'); if(sc) sc.addEventListener('click', scordata);
+  };
+
+  const dimmi = (testo, buono) => {
+    $('#msg').innerHTML = `<div class="${buono?'avviso-privacy':'errore'}">${esc(testo)}</div>`;
+  };
+
+  const procedi = async () => {
+    const email = $('#a-email').value.trim();
+    const pwd = $('#a-pwd').value;
+    const nome = $('#a-nome') ? $('#a-nome').value.trim() : '';
+    if(!email.includes('@')) return dimmi('Controlla l\u2019indirizzo email.');
+    if(pwd.length < 8) return dimmi('La password deve avere almeno 8 caratteri.');
+    if(modo==='registra' && !nome) return dimmi('Scrivi come ti chiami.');
+    const b=$('#a-vai'); b.disabled=true; b.style.opacity='.6';
+    try{
+      if(modo==='registra'){
+        const r = await Nube.registra(email, pwd, nome);
+        if(!r.entrato){
+          dimmi('Ti ho mandato una email di conferma: aprila, poi torna qui e accedi.', true);
+          b.disabled=false; b.style.opacity='1'; return;
+        }
+      }else{
+        await Nube.accedi(email, pwd);
+      }
+      await Nube.leggiProfilo();
+      $('#foglio').classList.remove('aperto');
+      disegnaConto();
+      await Nube.sincronizza();
+    }catch(e){
+      const m = /Invalid login/i.test(e.message) ? 'Email o password non corrette.'
+              : /already registered/i.test(e.message) ? 'Questa email ha gi\u00e0 un account: prova ad accedere.'
+              : e.message;
+      dimmi(m);
+      b.disabled=false; b.style.opacity='1';
+    }
+  };
+
+  const scordata = async () => {
+    const email = $('#a-email').value.trim();
+    if(!email.includes('@')) return dimmi('Scrivi prima la tua email, poi tocca di nuovo.');
+    try{
+      await Nube.chiama('/auth/v1/recover', {method:'POST', body:JSON.stringify({email})}, false);
+      dimmi('Ti ho mandato le istruzioni per reimpostarla.', true);
+    }catch(e){ dimmi(e.message); }
+  };
+
+  disegna();
+}
+
+function apriAccount(){
+  const p = Nube.profilo || {};
+  const n = Archivio.tutti().length;
+  $('#foglio').innerHTML = `
+    <div class="f-testa">
+      <div class="f-nastro" style="background:var(--l1)"></div>
+      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+      <h2>${esc(p.nome || 'Il mio account')}</h2>
+      <div class="tipo">${esc(Nube.sess?.user?.email || '')}</div>
+    </div>
+    <div class="pannello">
+      <div class="occhiello">Profilo</div>
+      <div class="campo"><label>Nome</label>
+        <input id="p-nome" type="text" value="${esc(p.nome||'')}"></div>
+      <div class="campo"><label>Foto</label>
+        <input id="p-foto" type="file" accept="image/*"></div>
+      ${p.avatar_url ? `<img src="${esc(p.avatar_url)}" alt="" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:1px solid var(--linea)">` : ''}
+      <div class="eroe-azioni" style="padding:14px 0 4px">
+        <button class="btn btn-pieno" id="p-salva">${icona('i-scudo','ico sm')}Salva</button>
+        <button class="btn btn-vuoto" id="p-sincro">${icona('i-nube','ico sm')}Sincronizza</button>
+      </div>
+    </div>
+    <div class="pannello">
+      <div class="occhiello">Sincronizzazione</div>
+      <div class="riga"><span>Posti salvati</span><span>${n}</span></div>
+      <div class="riga"><span>Stato</span><span>${{acceso:'aggiornato',attesa:'in corso',errore:'non riuscita',spento:'inattiva'}[Nube.stato]}</span></div>
+      <div class="avviso-privacy">${icona('i-scudo','ico sm')}
+        <div>Profilo di sensibilit&agrave;, tessera e buoni non vengono sincronizzati: restano su questo telefono.
+        Se cambi telefono vanno reinseriti.</div></div>
+    </div>
+    <div class="pannello">
+      <div class="occhiello">Account</div>
+      <button class="mini" id="p-esci" style="width:100%;margin-bottom:10px">${icona('i-esci','ico sm')}Esci</button>
+      <button class="mini" id="p-elimina" style="width:100%;background:#FBE8EA;color:#7A1421">Elimina l&rsquo;account e tutti i dati</button>
+    </div>`;
+  $('#foglio').classList.add('aperto');
+  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+
+  let ritratto = null;
+  $('#p-foto').addEventListener('change', async e=>{
+    const f=e.target.files?.[0]; if(!f) return;
+    try{ ritratto = await riduciImmagine(f, 512, .85); }
+    catch(err){ apriModale('Immagine non leggibile','<p>Prova con un altro scatto.</p>'); }
+  });
+  $('#p-salva').addEventListener('click', async ()=>{
+    try{
+      const campi = {nome: $('#p-nome').value.trim() || 'Senza nome'};
+      if(ritratto) campi.avatar_url = await Nube.caricaRitratto(ritratto);
+      await Nube.scriviProfilo(campi);
+      disegnaConto(); apriAccount();
+    }catch(e){ apriModale('Non riesco a salvare', `<p>${esc(e.message)}</p>`); }
+  });
+  $('#p-sincro').addEventListener('click', ()=>Nube.sincronizza().then(apriAccount));
+  $('#p-esci').addEventListener('click', ()=>{
+    apriModale('Uscire dall\u2019account?',
+      `<p>I posti restano sul server e li ritrovi al prossimo accesso. Su questo telefono la copia locale resta com\u2019&egrave;.</p>
+       <button class="mini" id="conferma-esci" style="width:100%;margin-top:6px">S&igrave;, esci</button>`);
+    $('#conferma-esci').addEventListener('click', async ()=>{
+      $('#modale').hidden=true; $('#foglio').classList.remove('aperto'); await Nube.esci();
+    });
+  });
+  $('#p-elimina').addEventListener('click', ()=>{
+    apriModale('Eliminare tutto?',
+      `<p>Vengono cancellati l\u2019account, i posti salvati e le note dal server. L\u2019operazione non si pu\u00f2 annullare.</p>
+       <button class="mini" id="conferma-elimina" style="width:100%;margin-top:6px;background:#FBE8EA;color:#7A1421">S&igrave;, elimina definitivamente</button>`);
+    $('#conferma-elimina').addEventListener('click', async ()=>{
+      try{
+        await Nube.chiama('/rest/v1/rpc/elimina_mio_account', {method:'POST', body:'{}'});
+        Nube.scriviSess(null); Nube.profilo=null; Nube.stato='spento';
+        $('#modale').hidden=true; $('#foglio').classList.remove('aperto');
+        disegnaConto();
+        apriModale('Account eliminato','<p>Sul telefono i posti restano: puoi cancellarli uno per uno dalla scheda Io.</p>');
+      }catch(e){ apriModale('Non riesco a eliminare', `<p>${esc(e.message)}</p>`); }
+    });
+  });
+}
 
 /* ── carta del celiaco ─────────────────────────────────────────────── */
 function apriCarta(){
@@ -2805,7 +3260,7 @@ $('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiLancio()
    finisce per guardare una versione vecchia senza accorgersene.
    Qui la pagina confronta se stessa con quella sul server e lo dice.
    ══════════════════════════════════════════════════════════════════ */
-const VERSIONE = '0.7';
+const VERSIONE = '0.9';
 
 async function controllaVersione(){
   try{

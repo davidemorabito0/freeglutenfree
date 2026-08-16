@@ -378,6 +378,37 @@ svg{display:block}
 .esiti button:active{background:var(--grano)}
 .esiti .reg{color:var(--muto);font-size:12px;margin-left:auto;text-align:right}
 
+/* riga filtri: deve stare sopra ogni elenco, non solo sulla mappa */
+.filtri{
+  display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
+  padding:14px 14px 4px;
+}
+.filtri::-webkit-scrollbar{display:none}
+.filtri:empty{display:none}
+.f-chip{
+  flex:0 0 auto;display:flex;align-items:center;gap:7px;
+  border:1.5px solid var(--linea);background:var(--carta);
+  border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;
+  color:var(--inchiostro);white-space:nowrap;min-height:38px;
+}
+.f-chip .n{
+  font-family:Fraunces,serif;font-weight:700;font-size:12px;
+  color:var(--muto);font-variation-settings:"opsz" 14;
+}
+.f-chip .pt{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.f-chip[aria-pressed="true"]{background:var(--bordeaux);border-color:var(--bordeaux);color:#fff}
+.f-chip[aria-pressed="true"] .n{color:#D9BFC5}
+.f-chip:active{transform:scale(.96)}
+.gruppo-titolo{
+  display:flex;align-items:center;gap:9px;margin:16px 0 9px;
+  font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muto);
+}
+.gruppo-titolo::after{content:"";flex:1;height:1px;background:var(--linea)}
+.mostra-tutti{
+  width:100%;text-align:center;padding:11px;border-radius:var(--r-s);
+  background:var(--grano-2);color:var(--bordeaux);font-size:12.5px;font-weight:600;margin-bottom:12px;
+}
+
 /* ─────────────────────────── salvati e note ──────────────────────────────── */
 .collezione{margin:18px 14px 6px}
 .collezione-testa{display:flex;align-items:baseline;gap:9px;margin-bottom:10px}
@@ -659,6 +690,7 @@ svg{display:block}
 
   <div class="eroe" id="eroe"></div>
   <div id="lo-sapevi"></div>
+  <div class="filtri" id="filtri-vicino" role="group" aria-label="Filtra"></div>
   <div class="blocco" id="lista-vicino"></div>
 
   <div class="blocco">
@@ -722,6 +754,7 @@ svg{display:block}
   </header>
   <div class="esiti" id="esiti" hidden></div>
 
+  <div class="filtri" id="filtri-viaggio" role="group" aria-label="Filtra"></div>
   <div class="valigia" id="valigia"></div>
   <div class="blocco" id="lista-viaggio"></div>
 </section>
@@ -767,7 +800,7 @@ const CFG = {
   supabaseUrl:'', supabaseKey:'',            // da riempire quando il DB e' pronto
   overpass:['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'],
   maxDiagKm:45,
-  raggioVicino:[3000, 10000, 28000]           // allarga finche' non trova qualcosa
+  raggioVicino:{mangiare:[5000, 15000, 35000], comprare:[1500, 4000, 12000]}           // allarga finche' non trova qualcosa
 };
 
 /* Mapping pessimista, voluto: su OpenStreetMap "yes" dice solo che esistono
@@ -813,9 +846,10 @@ const SPESA = {
 const TIPI = {ristorante:'Ristorante',pizzeria:'Pizzeria',fast_food:'Fast food',caffetteria:'Caffetteria',
   bar:'Bar',pub:'Pub',birreria:'Birreria',gelateria:'Gelateria',panificio:'Panificio',pasticceria:'Pasticceria',
   negozio:'Negozio',supermercato:'Supermercato',hotel:'Hotel',b_and_b:'B&B',ostello:'Ostello',
-  agriturismo:'Agriturismo',altro:'Locale'};
+  agriturismo:'Agriturismo',rosticceria:'Rosticceria',farmacia:'Farmacia',altro:'Locale'};
 
-const MAP_TIPO = {'amenity:restaurant':'ristorante','amenity:fast_food':'fast_food','amenity:cafe':'caffetteria',
+const MAP_TIPO = {'amenity:restaurant':'ristorante','shop:butcher':'rosticceria',
+  'amenity:food_court':'rosticceria','shop:deli':'rosticceria','amenity:fast_food':'fast_food','amenity:cafe':'caffetteria',
   'amenity:bar':'bar','amenity:pub':'pub','amenity:biergarten':'birreria','amenity:ice_cream':'gelateria',
   'shop:bakery':'panificio','shop:pastry':'pasticceria','shop:confectionery':'pasticceria',
   'shop:supermarket':'supermercato','shop:deli':'negozio','shop:health_food':'negozio',
@@ -940,34 +974,27 @@ function queryBox(s,w,n,e){
 }
 const RE_NOME = 'senza glutine|gluten ?free|glutenfree|celiac';
 function corpoQuery(f){
-  return `[out:json][timeout:60];
+  return `[out:json][timeout:30];
 (
   nwr["diet:gluten_free"]${f};
   nwr["gluten_free"]${f};
   nwr["diet:celiac"]${f};
-  nwr["diet:coeliac"]${f};
-  nwr["cuisine"~"gluten_free|celiac",i]${f};
+  nwr["cuisine"~"gluten_free",i]${f};
   nwr["amenity"]["name"~"${RE_NOME}",i]${f};
   nwr["shop"]["name"~"${RE_NOME}",i]${f};
-  nwr["amenity"]["description"~"glutine|gluten",i]${f};
-  nwr["shop"]["description"~"glutine|gluten",i]${f};
 );
-out center tags;`;
+out center tags 400;`;
 }
 function queryRaggio(lat,lng,m){ return corpoQuery(`(around:${m},${lat},${lng})`); }
 
 function corpoSpesa(f){
-  return `[out:json][timeout:70];
+  return `[out:json][timeout:30];
 (
   nwr["amenity"="pharmacy"]${f};
-  nwr["shop"="chemist"]${f};
-  nwr["shop"="health_food"]${f};
-  nwr["shop"="herbalist"]${f};
-  nwr["shop"="organic"]${f};
-  nwr["shop"="supermarket"]${f};
+  nwr["shop"~"^(chemist|health_food|herbalist|organic|supermarket)$"]${f};
   nwr["shop"]["diet:gluten_free"]${f};
 );
-out center tags;`;
+out center tags 600;`;
 }
 const spesaBox = (s,w,n,e) => corpoSpesa(`(${s.toFixed(5)},${w.toFixed(5)},${n.toFixed(5)},${e.toFixed(5)})`);
 const spesaRaggio = (lat,lng,m) => corpoSpesa(`(around:${m},${lat},${lng})`);
@@ -1175,13 +1202,13 @@ async function caricaIntorno(){
       if(vicini().length){ Prog.fine(`${vicini().length} risultati`); return; }
     }
     let i = 0;
-    for(const r of CFG.raggioVicino){
+    for(const r of CFG.raggioVicino[modo]){
       const d = await interroga(qPerModo(S.posizione.lat,S.posizione.lng,r));
       if(mio !== richiesta) return;                 // l'utente ha cambiato idea
       assorbi(d, modo);
       i++;
       const n = vicini().length;
-      Prog.passo(30 + i*22, n ? `${n} trovati entro ${Math.round(CFG.raggioVicino[i-1]/1000)} km` : 'Allargo la ricerca…');
+      Prog.passo(30 + i*22, n ? `${n} trovati entro ${Math.round(CFG.raggioVicino[modo][i-1]/1000)} km` : 'Allargo la ricerca…');
       if(n){ disegnaVicino(); disegnaMappa(); disegnaComune(); break; }   // mostro subito i primi
     }
     if(mio !== richiesta) return;
@@ -1254,11 +1281,92 @@ function disegnaVicino(){
       </div>
     </div>`;
 
+  disegnaFiltri('#filtri-vicino', v);
+  const elenco = bilancia(v.slice(1), 8).slice(0, 40);
   $('#lista-vicino').innerHTML =
     `<div class="occhiello">Altri vicino a te</div>` +
-    v.slice(1,25).map(l=>cardRiga(l, formatoDist(l.d), minutiPiedi(l.d)+'′ a piedi')).join('');
+    elenco.map(l=>cardRiga(l, formatoDist(l.d), minutiPiedi(l.d)+'′ a piedi')).join('');
 
   collega();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FILTRI — costruiti su cio' che c'e' davvero, con i conteggi
+   ------------------------------------------------------------------
+   Un tocco isola una categoria, un secondo tocco torna a mostrarle
+   tutte: e' il gesto che la gente si aspetta da una riga di chip.
+   ══════════════════════════════════════════════════════════════════ */
+function chiaveFiltro(l){ return l.modo==='comprare' ? l.cat : l.tipo; }
+
+function attiviFiltro(){
+  return S.modo==='comprare' ? S.categorie : S.tipi;
+}
+
+function etichettaFiltro(id){
+  return S.modo==='comprare' ? (SPESA[id]?.breve || id) : (TIPI[id] || id);
+}
+function coloreFiltro(id){
+  return S.modo==='comprare' ? (SPESA[id]?.c || 'var(--muto)') : 'transparent';
+}
+
+function tuttiAttivi(chiavi){
+  const a = attiviFiltro();
+  if(S.modo==='mangiare') return a.size === 0;
+  return chiavi.every(k => a.has(k));
+}
+
+function toccaFiltro(id, chiavi){
+  const a = attiviFiltro();
+  const soloQuesto = a.size === 1 && a.has(id);
+  if(S.modo==='mangiare'){
+    if(soloQuesto) a.clear();                 // torno a tutti
+    else { a.clear(); a.add(id); }
+  }else{
+    if(soloQuesto) chiavi.forEach(k=>a.add(k));
+    else { a.clear(); a.add(id); }
+  }
+  S.alta = false;
+  costruisciSpettro();
+  sincronizza();
+}
+
+function disegnaFiltri(contenitore, insiemeDati){
+  const el = $(contenitore); if(!el) return;
+  const conta = {};
+  for(const l of insiemeDati){
+    if(l.modo !== S.modo) continue;
+    const k = chiaveFiltro(l); if(!k) continue;
+    conta[k] = (conta[k]||0) + 1;
+  }
+  const chiavi = Object.keys(conta).sort((a,b)=>conta[b]-conta[a]);
+  if(chiavi.length < 2){ el.innerHTML=''; return; }
+  const a = attiviFiltro();
+  el.innerHTML = chiavi.map(k=>{
+    const acceso = S.modo==='mangiare' ? (a.size===1 && a.has(k)) : (a.size===1 && a.has(k));
+    const pt = S.modo==='comprare' ? `<span class="pt" style="background:${SPESA[k].c}"></span>` : '';
+    return `<button class="f-chip" data-filtro="${esc(k)}" aria-pressed="${acceso}">
+      ${pt}${esc(etichettaFiltro(k))}<span class="n">${conta[k]}</span></button>`;
+  }).join('');
+  el.querySelectorAll('[data-filtro]').forEach(b=>
+    b.addEventListener('click',()=>toccaFiltro(b.dataset.filtro, chiavi)));
+}
+
+/* Con tutte le categorie accese una lista di farmacie seppellisce il resto.
+   Le mescolo a giro: prima la piu' vicina di ogni categoria, poi la seconda,
+   e cosi' via. Chi vuole solo le farmacie tocca il chip. */
+function bilancia(lista, quota){
+  const a = attiviFiltro();
+  const filtrato = (S.modo==='comprare' ? a.size < Object.keys(SPESA).length : a.size > 0);
+  if(filtrato) return lista;
+  const gruppi = {};
+  for(const l of lista){ (gruppi[chiaveFiltro(l)] ||= []).push(l); }
+  const chiavi = Object.keys(gruppi);
+  if(chiavi.length < 2) return lista;
+  const fuori = [];
+  for(let i=0; i<quota; i++){
+    for(const k of chiavi){ if(gruppi[k][i]) fuori.push(gruppi[k][i]); }
+  }
+  return fuori;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1323,6 +1431,7 @@ function sincronizza(){
   disegnaMappa();
   if(S.posizione){ disegnaVicino(); disegnaComune(); }
   if(S.cittaScelta) disegnaViaggio();
+  else disegnaFiltri('#filtri-viaggio', []);
 }
 
 function disegnaMappa(){
@@ -1337,8 +1446,13 @@ function disegnaMappa(){
   }
   document.querySelectorAll('[data-n]').forEach(e=>e.textContent=conta[e.dataset.n]||0);
 
+  // Prima disegnavo ogni punto caricato, anche a mille chilometri di distanza:
+  // con qualche migliaio di record la mappa diventava melassa. Ora solo la vista.
+  let disegnati = 0;
   for(const l of S.locali.values()){
     if(!ammesso(l)) continue;
+    if(!b.contains([l.lat,l.lng])) continue;
+    if(++disegnati > 700) break;
     L.circleMarker([l.lat,l.lng],{
       radius:(l.livello==='gf_100'||l.cat==='specializzato')?9:7, fillColor:stile(l).c,
       color:'#FFFDF8', weight:2.5, opacity:1, fillOpacity:.95
@@ -1405,7 +1519,7 @@ async function scegliCitta(nome, esterna){
       const q = [...S.locali.values()].filter(l=>l.modo===modo && distanza(c.lat,c.lng,l.lat,l.lng)<9000).length;
       if(q){ Prog.fine(`${q} risultati a ${c.n}`); return; }
     }
-    const d = await interroga(qPerModo(c.lat,c.lng,7000));
+    const d = await interroga(qPerModo(c.lat,c.lng, modo==='comprare'?4000:9000));
     if(mio !== richiesta) return;
     Prog.passo(70,'Preparo i risultati');
     assorbi(d, modo);
@@ -1428,19 +1542,33 @@ function disegnaViaggio(){
   const lista = [...S.locali.values()]
     .filter(l => ammesso(l) && distanza(c.lat,c.lng,l.lat,l.lng) < 9000)
     .map(l=>({...l, completo:[l.telefono,l.sito,l.orari,l.indirizzo].filter(Boolean).length}))
-    .sort((a,b)=> stile(a).ord-stile(b).ord || b.completo-a.completo || a.nome.localeCompare(b.nome,'it'))
-    .slice(0,40);
+    .sort((a,b)=> S.modo==='comprare'
+        ? distanza(c.lat,c.lng,a.lat,a.lng) - distanza(c.lat,c.lng,b.lat,b.lng)
+        : (stile(a).ord-stile(b).ord || b.completo-a.completo || a.nome.localeCompare(b.nome,'it')))
+    .slice(0,400);
 
   if(!lista.length){
     $('#lista-viaggio').innerHTML = `<div class="vuoto">${icona('i-spiga','ico lg')}<b>Nulla a ${esc(c.n)} con questi filtri</b>
       <p>Prova a riaccendere qualche livello dalla scheda Mappa.</p></div>`;
     return;
   }
-  const alti = lista.filter(l=>stile(l).alta).length;
+  disegnaFiltri('#filtri-viaggio', lista);
+  const mostrati = bilancia(lista, 8).slice(0, 60);
+  const cappello = S.modo==='comprare'
+    ? `${esc(c.n)} · ${lista.length} punti vendita`
+    : `${esc(c.n)} · ${lista.length} luoghi, ${lista.filter(l=>stile(l).alta).length} ad alta sicurezza`;
   $('#lista-viaggio').innerHTML =
-    `<div class="occhiello">${esc(c.n)} · ${lista.length} luoghi, ${alti} ad alta sicurezza</div>` +
-    lista.map(l=>cardRiga(l,'','',true)).join('');
+    `<div class="occhiello">${cappello}</div>` +
+    mostrati.map(l=>cardRiga(l, formatoDist(distanza(c.lat,c.lng,l.lat,l.lng)), 'dal centro')).join('') +
+    (mostrati.length < lista.length
+      ? `<button class="mostra-tutti" id="b-tutti-viaggio">Mostra tutti i ${lista.length} risultati</button>` : '');
   collega();
+  const bt=$('#b-tutti-viaggio');
+  if(bt) bt.addEventListener('click',()=>{
+    $('#lista-viaggio').innerHTML = `<div class="occhiello">${cappello}</div>` +
+      lista.map(l=>cardRiga(l, formatoDist(distanza(c.lat,c.lng,l.lat,l.lng)), 'dal centro')).join('');
+    collega();
+  });
 }
 
 function disegnaValigia(){

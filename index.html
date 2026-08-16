@@ -335,6 +335,121 @@ svg{display:block}
 .pie a{border-bottom:1px solid var(--linea)}
 
 
+/* ─────────────────────── caricamento, dove guarda l'occhio ────────────────
+   Prima stava incollata al bordo superiore dello schermo: chi legge
+   "Cerco…" guarda li', non in cima. Ora l'indicatore nasce sotto la
+   scritta, con anello tratteggiato e percentuale leggibile. */
+.carico{
+  background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-l);
+  padding:18px 17px;display:flex;align-items:center;gap:15px;
+}
+.anello{width:52px;height:52px;flex:0 0 auto}
+.anello circle{fill:none;stroke-linecap:round}
+.anello .traccia{stroke:var(--grano-2);stroke-width:4;stroke-dasharray:4 7}
+.anello .arco{
+  stroke:var(--bordeaux-3);stroke-width:4.5;
+  stroke-dasharray:119.38;stroke-dashoffset:119.38;
+  transform:rotate(-90deg);transform-origin:50% 50%;
+  transition:stroke-dashoffset .45s cubic-bezier(.25,.9,.3,1);
+}
+.anello .gira{animation:ruota 2.4s linear infinite;transform-origin:50% 50%}
+@keyframes ruota{to{transform:rotate(360deg)}}
+.carico-corpo{flex:1;min-width:0}
+.carico-corpo .pct{
+  font-family:Fraunces,serif;font-weight:900;font-size:26px;line-height:1;
+  font-variation-settings:"opsz" 34;color:var(--bordeaux);
+}
+.carico-corpo .eti{display:block;font-size:13px;color:var(--muto);margin-top:5px;line-height:1.4}
+.carico-barra{height:5px;border-radius:3px;background:var(--grano-2);overflow:hidden;margin-top:14px}
+.carico-barra div{height:100%;background:var(--bordeaux-3);width:0;border-radius:3px;transition:width .45s cubic-bezier(.25,.9,.3,1)}
+.carico.lento .arco{stroke:var(--l4)}
+.carico.lento .carico-barra div{background:var(--l4)}
+.carico.lento .pct{color:var(--l4)}
+
+/* ─────────────────────────── menu iniziale ───────────────────────────────
+   Quattro mete disposte a rombo: una in alto, due ai lati, una in basso. */
+.lancio{
+  position:fixed;inset:0;z-index:1850;
+  background:linear-gradient(165deg,#5E1522,#3A0B16 60%,#2A0710);
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:calc(var(--st) + 26px) 20px calc(16px + var(--sb));
+  transition:opacity .34s ease,visibility .34s;overflow:hidden;
+}
+.lancio::after{
+  content:"";position:absolute;left:50%;top:32%;width:132vw;height:132vw;
+  transform:translate(-50%,-50%);pointer-events:none;
+  background:radial-gradient(circle,rgba(227,210,176,.13),transparent 62%);
+}
+.lancio > *{position:relative;z-index:1}
+.lancio-alto{display:flex;flex-direction:column;align-items:center;gap:12px}
+.sigillo-g{
+  width:64px;height:64px;border-radius:19px;background:var(--carta);
+  display:grid;place-items:center;box-shadow:0 10px 26px rgba(0,0,0,.34);
+}
+.marca-g{
+  font-family:Fraunces,serif;font-weight:900;font-size:23px;color:#fff;
+  letter-spacing:.05em;font-variation-settings:"opsz" 40;line-height:1;
+}
+.marca-g .barrato{position:relative;color:var(--grano-3)}
+.marca-g .barrato::after{
+  content:"";position:absolute;left:0;right:.05em;top:50%;height:2.5px;
+  background:var(--grano-3);border-radius:2px;
+}
+.lancio-basso{display:flex;flex-direction:column;align-items:center;gap:3px;width:100%}
+.lancio-basso p{font-size:11.5px;color:#C9A8AF}
+.lancio-basso a{font-size:12px;color:#EFDDE1;font-weight:600}
+.lancio-basso .righino{display:flex;gap:12px;margin-top:2px}
+.lancio-basso .righino button{font-size:11px;color:#A98790;text-decoration:underline;text-underline-offset:2px}
+.carico-mini{
+  display:flex;align-items:center;gap:8px;margin-top:12px;
+  background:rgba(20,4,9,.6);border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;padding:7px 15px;
+}
+.carico-mini .pulsa{
+  width:7px;height:7px;border-radius:50%;background:var(--grano-3);
+  animation:pulsante 1.3s ease-in-out infinite;
+}
+.carico-mini.finito .pulsa{background:#7FE0A2;animation:none}
+@keyframes pulsante{0%,100%{opacity:.28;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
+.carico-mini span{font-size:11.5px;color:#E2CBD0;font-weight:600;letter-spacing:.02em}
+.carico-mini b{font-family:Fraunces,serif;font-weight:900;font-variation-settings:"opsz" 14}
+.lancio[hidden]{display:none}
+.lancio.via{opacity:0;visibility:hidden;pointer-events:none}
+.lancio .sotto{
+  font-size:12.5px;color:#D8B7BE;text-align:center;line-height:1.45;
+  min-height:34px;max-width:290px;
+}
+.lancio .sotto b{color:#fff;font-weight:700}
+.rombo{
+  position:relative;width:min(300px,80vw);aspect-ratio:1;margin:0;
+}
+.meta{
+  position:absolute;width:33%;display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.meta.su{top:0;left:50%;transform:translateX(-50%)}
+.meta.giu{bottom:0;left:50%;transform:translateX(-50%)}
+.meta.sx{left:0;top:50%;transform:translateY(-50%)}
+.meta.dx{right:0;top:50%;transform:translateY(-50%)}
+.meta .globo{
+  width:100%;aspect-ratio:1;border-radius:50%;background:var(--carta);
+  display:grid;place-items:center;color:var(--bordeaux);
+  box-shadow:0 10px 26px rgba(0,0,0,.34);
+  border:3px solid rgba(227,210,176,.42);
+  transition:transform .16s;
+}
+.meta:active .globo{transform:scale(.93)}
+.meta .globo svg{width:38%;height:38%;stroke-width:1.6}
+.meta .nome{
+  background:var(--grano);color:var(--bordeaux);border-radius:999px;
+  padding:5px 13px;font-size:12px;font-weight:700;white-space:nowrap;
+  box-shadow:0 3px 10px rgba(0,0,0,.22);
+}
+@media (max-height:700px){
+  .rombo{width:min(250px,68vw)}
+  .sigillo-g{width:54px;height:54px}
+  .marca-g{font-size:20px}
+}
+
 /* barra di avanzamento: se una richiesta e' lenta si deve vedere che vive */
 .progresso{
   position:fixed;left:0;right:0;top:0;z-index:1700;pointer-events:none;
@@ -714,45 +829,6 @@ svg{display:block}
 </svg>
 
 
-<!-- ════════════════════════════ SPLASH ════════════════════════════ -->
-<div class="splash" id="splash">
-  <img class="splash-foto" src="splash.jpg" alt="" onerror="this.remove()">
-  <div class="splash-velo"></div>
-  <svg class="splash-grana" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>
-
-  <div class="avviso-carico" id="avviso-carico">Cerco i posti senza glutine qui intorno&hellip;</div>
-
-  <div class="splash-mid">
-  <div class="disco">
-    <svg width="82" height="82" viewBox="0 0 100 100" aria-hidden="true">
-      <rect x="47" y="30" width="6" height="52" rx="3" fill="#4A0F1C"/>
-      <g fill="#4A0F1C">
-        <ellipse cx="36" cy="66" rx="7.5" ry="13" transform="rotate(-32 36 66)"/>
-        <ellipse cx="64" cy="66" rx="7.5" ry="13" transform="rotate(32 64 66)"/>
-        <ellipse cx="36" cy="49" rx="7.5" ry="13" transform="rotate(-32 36 49)"/>
-        <ellipse cx="64" cy="49" rx="7.5" ry="13" transform="rotate(32 64 49)"/>
-        <ellipse cx="36" cy="32" rx="7.5" ry="13" transform="rotate(-32 36 32)"/>
-      </g>
-      <ellipse cx="64" cy="32" rx="7.5" ry="13" transform="rotate(32 64 32)" fill="#C9962E"/>
-      <ellipse cx="50" cy="20" rx="6.5" ry="12" fill="#4A0F1C"/>
-    </svg>
-  </div>
-
-  <div class="logotipo">free<span class="barrato">gluten</span>free</div>
-  <div class="slogan">mangiare sicuro in Italia</div>
-
-  <div class="contatore" id="contatore">dati aperti dalla community di OpenStreetMap</div>
-
-  </div>
-
-  <div class="firma">
-    <p>Un&rsquo;applicazione realizzata da Davide Morabito</p>
-    <a class="sito" href="https://www.davidemorabito.com" target="_blank" rel="noopener">www.davidemorabito.com</a>
-    <div class="rondella"></div>
-    <p class="versione">v0.1 &middot; 2026-08-16 &middot; <button id="s-livelli">Livelli</button> &middot; <button id="s-fonti">Fonti</button></p>
-  </div>
-</div>
-
 <!-- ════════════════════════════ 1. VICINO A ME ════════════════════════════ -->
 <section class="vista attiva" id="v-vicino">
   <header class="cappello">
@@ -867,14 +943,60 @@ svg{display:block}
 
 <div class="vetrina" id="vetrina" hidden></div>
 
-<!-- ═════════════════════════════ dettaglio + modale ═══════════════════════ -->
-<div class="progresso" id="progresso" hidden aria-live="polite">
-  <div class="binario"><div class="riempi" id="prog-riempi"></div></div>
-  <span class="etichetta" id="prog-etichetta">Carico…</span>
-</div>
+<!-- ═════════════════ SCHERMATA D'AVVIO: scegli mentre carico ═══════════════
+     Lo splash non e' piu' un'attesa passiva: mentre l'utente decide dove
+     entrare, in sottofondo arrivano gia' i dati della sua zona. Quando
+     sceglie, quasi sempre e' tutto pronto. -->
+<div class="lancio" id="lancio">
+  <div class="lancio-alto">
+    <div class="sigillo-g">
+      <svg width="38" height="38" viewBox="0 0 100 100" aria-hidden="true">
+        <rect x="47" y="30" width="6" height="52" rx="3" fill="#4A0F1C"/>
+        <g fill="#4A0F1C">
+          <ellipse cx="36" cy="66" rx="7.5" ry="13" transform="rotate(-32 36 66)"/>
+          <ellipse cx="64" cy="66" rx="7.5" ry="13" transform="rotate(32 64 66)"/>
+          <ellipse cx="36" cy="49" rx="7.5" ry="13" transform="rotate(-32 36 49)"/>
+          <ellipse cx="64" cy="49" rx="7.5" ry="13" transform="rotate(32 64 49)"/>
+          <ellipse cx="36" cy="32" rx="7.5" ry="13" transform="rotate(-32 36 32)"/>
+        </g>
+        <ellipse cx="64" cy="32" rx="7.5" ry="13" transform="rotate(32 64 32)" fill="#C9962E"/>
+        <ellipse cx="50" cy="20" rx="6.5" ry="12" fill="#4A0F1C"/>
+      </svg>
+    </div>
+    <div class="marca-g">free<span class="barrato">gluten</span>free</div>
+    <div class="sotto" id="lancio-sotto">Preparo la mappa&hellip;</div>
+  </div>
 
-<article class="foglio" id="foglio" aria-live="polite"></article>
-<div class="modale" id="modale" hidden><div class="box" id="modale-box"></div></div>
+  <div class="rombo">
+    <button class="meta su" data-meta="v-vicino">
+      <span class="globo"><svg><use href="#i-vicino"/></svg></span>
+      <span class="nome">Posizione</span></button>
+    <button class="meta sx" data-meta="v-mappa">
+      <span class="globo"><svg><use href="#i-mappa"/></svg></span>
+      <span class="nome">Mappa</span></button>
+    <button class="meta dx" data-meta="v-viaggi">
+      <span class="globo"><svg><use href="#i-valigia"/></svg></span>
+      <span class="nome">Viaggi</span></button>
+    <button class="meta giu" data-meta="v-salvati">
+      <span class="globo"><svg><use href="#i-io"/></svg></span>
+      <span class="nome">Io</span></button>
+  </div>
+
+  <div class="lancio-basso">
+    <p>Un&rsquo;applicazione realizzata da Davide Morabito</p>
+    <a href="https://www.davidemorabito.com" target="_blank" rel="noopener">www.davidemorabito.com</a>
+    <a href="mailto:info@davidemorabito.com">info@davidemorabito.com</a>
+    <div class="righino">
+      <button id="s-livelli">Livelli</button>
+      <button id="s-fonti">Fonti</button>
+      <span style="font-size:11px;color:#A98790">v0.2 &middot; 2026-08-16</span>
+    </div>
+    <div class="carico-mini" id="carico-mini">
+      <span class="pulsa"></span>
+      <span>caricamento <b id="lancio-pct">0%</b></span>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════════════════ barra schede ═══════════════════════════ -->
 <nav class="schede" role="tablist">
@@ -1090,6 +1212,7 @@ const STATI = {
    ══════════════════════════════════════════════════════════════════ */
 const S = {
   modo:'mangiare',
+  tickArea:null,
   comune:null,
   categorie:new Set(Object.keys(SPESA)),
   locali:new Map(),
@@ -1324,7 +1447,7 @@ function daCompatto(c, modo){
 /* ══════════════════════════════════════════════════════════════════
    VISTA 1 — VICINO A ME
    ══════════════════════════════════════════════════════════════════ */
-function scheletroEroe(testo){
+function scheletroEroe(testo){   // usato solo per la ricerca della posizione
   $('#eroe').innerHTML = `<div class="eroe-card"><div class="eroe-top">
     <div class="eroe-anello" style="background:var(--grano-2);color:var(--muto)">${icona('i-vicino','ico lg')}</div>
     <div class="eroe-info"><h2 style="font-size:16px">${esc(testo)}</h2>
@@ -1332,18 +1455,17 @@ function scheletroEroe(testo){
 }
 
 // La posizione si chiede una volta sola; i dati si ricaricano quando serve.
-function avviaVicino(){
+async function avviaVicino(){
   if(S.posizione) return caricaIntorno();
-  if(!navigator.geolocation){ eroeSenzaPosizione(); return; }
   scheletroEroe('Cerco dove sei…');
-  navigator.geolocation.getCurrentPosition(p=>{
-    S.posizione = {lat:p.coords.latitude, lng:p.coords.longitude};
-    mappa.setView([S.posizione.lat,S.posizione.lng],15);
-    if(cerchioIo) cerchioIo.remove();
-    cerchioIo = L.circleMarker([S.posizione.lat,S.posizione.lng],
-      {radius:8,color:'#fff',weight:3,fillColor:'#4A0F1C',fillOpacity:1}).addTo(mappa);
-    caricaIntorno();
-  }, eroeSenzaPosizione, {timeout:12000, enableHighAccuracy:true, maximumAge:60000});
+  const pos = await posizioneUtente();
+  if(!pos) return eroeSenzaPosizione();
+  S.posizione = pos;
+  mappa.setView([pos.lat,pos.lng],15);
+  if(cerchioIo) cerchioIo.remove();
+  cerchioIo = L.circleMarker([pos.lat,pos.lng],
+    {radius:8,color:'#fff',weight:3,fillColor:'#4A0F1C',fillOpacity:1}).addTo(mappa);
+  return caricaIntorno();
 }
 
 // Un contatore di richieste: cambiando modalita' la vecchia viene abbandonata
@@ -1353,8 +1475,9 @@ let richiesta = 0;
 async function caricaIntorno(){
   if(!S.posizione) return;
   const mio = ++richiesta, modo = S.modo;
-  scheletroEroe(modo==='comprare' ? 'Cerco dove fare la spesa…' : 'Cerco i posti più vicini…');
-  Prog.avvia(modo==='comprare' ? 'Cerco negozi e farmacie' : 'Cerco posti senza glutine');
+  $('#eroe').innerHTML = '';
+  $('#lista-vicino').innerHTML = '';
+  Prog.avvia(modo==='comprare' ? 'Cerco negozi e farmacie qui intorno' : 'Cerco i posti senza glutine più vicini', '#eroe');
   try{
     // prima l'archivio gia' raccolto: se c'e', la risposta e' istantanea
     const pronti = await Dati.prendi(S.posizione.lat, S.posizione.lng, modo);
@@ -1631,9 +1754,11 @@ async function cercaArea(silenzioso){
     return;
   }
   S.caricando=true;
-  $('#t-area').textContent='Cerco…';
+  $('#t-area').textContent='Cerco… 0%';
   $('#b-area').insertAdjacentHTML('afterbegin','<span class="rotella"></span>');
-  Prog.avvia('Cerco in questa zona');
+  clearInterval(S.tickArea);
+  S.tickArea = setInterval(()=>{ if(Prog.attivo) $('#t-area').textContent = 'Cerco… ' + Math.round(Prog.v) + '%'; }, 380);
+  Prog.avvia('Cerco in questa zona', null);
   try{
     assorbi(await interroga(qBoxPerModo(b)), S.modo);
     disegnaMappa();
@@ -1641,6 +1766,7 @@ async function cercaArea(silenzioso){
     if(!silenzioso) apriModale('Ricerca non riuscita',`<p>OpenStreetMap non ha risposto. Può capitare quando il servizio è sotto carico: riprova fra qualche secondo.</p>`);
   }finally{
     S.caricando=false;
+    clearInterval(S.tickArea);
     document.querySelector('.rotella')?.remove();
     $('#t-area').textContent='Cerca in quest\u2019area';
     Prog.fine();
@@ -1670,8 +1796,8 @@ async function scegliCitta(nome, esterna){
   const mio = ++richiesta, modo = S.modo;
   S.cittaScelta = c;
   document.querySelectorAll('[data-citta]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.citta===c.n));
-  $('#lista-viaggio').innerHTML = `<div class="vuoto">${icona('i-bussola','ico lg')}<b>Cerco a ${esc(c.n)}</b><p>Sto interrogando OpenStreetMap.</p></div>`;
-  Prog.avvia(`Cerco a ${c.n}`);
+  $('#lista-viaggio').innerHTML = `<div style="padding:18px 14px 4px"><div class="occhiello">Cerco a ${esc(c.n)}</div></div><div id="carico-viaggio"></div>`;
+  Prog.avvia(`Interrogo OpenStreetMap su ${c.n}`, '#carico-viaggio');
   try{
     const pronti = await Dati.prendi(c.lat, c.lng, modo);
     if(mio !== richiesta) return;
@@ -1753,435 +1879,64 @@ function disegnaValigia(){
    AVANZAMENTO — una richiesta lenta deve sembrare viva, non rotta
    ══════════════════════════════════════════════════════════════════ */
 const Prog = {
-  t:null, lento:null, attivo:false,
-  avvia(testo){
-    this.attivo=true;
-    $('#progresso').hidden=false;
-    $('#progresso').classList.remove('lento');
-    $('#prog-riempi').style.width='8%';
-    $('#prog-etichetta').textContent=testo;
-    // avanzamento lento e continuo: non arriva mai a 100 da solo
+  t:null, lento:null, attivo:false, dove:null, v:0,
+
+  disegno(){
+    return `<div class="carico" id="carico">
+      <svg class="anello" viewBox="0 0 44 44" aria-hidden="true">
+        <g class="gira"><circle class="traccia" cx="22" cy="22" r="19"/></g>
+        <circle class="arco" id="prog-arco" cx="22" cy="22" r="19"/>
+      </svg>
+      <div class="carico-corpo">
+        <span class="pct" id="prog-pct">0%</span>
+        <span class="eti" id="prog-eti">Un attimo…</span>
+        <div class="carico-barra"><div id="prog-barra"></div></div>
+      </div>
+    </div>`;
+  },
+
+  avvia(testo, dove){
+    this.dove = dove || null;
+    this.attivo = true; this.v = 4;
+    const cont = this.dove ? $(this.dove) : null;
+    if(cont) cont.innerHTML = this.disegno();
+    this.mostra(testo);
     clearInterval(this.t);
-    let v=8;
-    this.t=setInterval(()=>{ v=Math.min(v+ (v<60?2.5:0.7), 92);
-      $('#prog-riempi').style.width=v+'%'; },420);
+    // avanza da sola ma non tocca mai il 100: se si ferma, si vede
+    this.t = setInterval(()=>{
+      this.v = Math.min(this.v + (this.v < 55 ? 2.6 : (this.v < 80 ? 1.1 : .35)), 94);
+      this.mostra();
+    }, 380);
     clearTimeout(this.lento);
-    this.lento=setTimeout(()=>{
+    this.lento = setTimeout(()=>{
       if(!this.attivo) return;
-      $('#progresso').classList.add('lento');
-      $('#prog-etichetta').textContent='Ci sta mettendo più del solito… ancora un momento';
-    },9000);
+      $('#carico')?.classList.add('lento');
+      this.mostra('Ci sta mettendo più del solito, ma sta ancora lavorando');
+    }, 9000);
   },
-  passo(pct,testo){
+
+  mostra(testo){
+    const pct = Math.round(this.v);
+    const p = $('#prog-pct'); if(p) p.textContent = pct + '%';
+    const a = $('#prog-arco'); if(a) a.style.strokeDashoffset = (119.38 * (1 - pct/100)).toFixed(2);
+    const b = $('#prog-barra'); if(b) b.style.width = pct + '%';
+    if(testo){ const e = $('#prog-eti'); if(e) e.textContent = testo; }
+  },
+
+  passo(pct, testo){
     if(!this.attivo) return;
-    $('#prog-riempi').style.width=Math.max(pct,parseFloat($('#prog-riempi').style.width)||0)+'%';
-    if(testo) $('#prog-etichetta').textContent=testo;
+    this.v = Math.max(this.v, pct);
+    this.mostra(testo);
   },
+
   fine(testo){
     clearInterval(this.t); clearTimeout(this.lento);
-    this.attivo=false;
-    $('#prog-riempi').style.width='100%';
-    if(testo) $('#prog-etichetta').textContent=testo;
-    setTimeout(()=>{ $('#progresso').hidden=true; $('#prog-riempi').style.width='0'; }, testo?900:380);
+    this.attivo = false;
+    this.v = 100; this.mostra(testo);
+    const c = $('#carico');
+    if(c) setTimeout(()=>{ c.style.transition='opacity .3s'; c.style.opacity='0'; }, 420);
   }
 };
-
-/* ══════════════════════════════════════════════════════════════════
-   SALVATI, NOTE, DIARIO DI VIAGGIO
-   ══════════════════════════════════════════════════════════════════ */
-function raccoltaCorrente(){
-  if(S.cittaScelta && document.querySelector('#v-viaggi.attiva')) return S.cittaScelta.n;
-  return S.comune || (S.cittaScelta ? S.cittaScelta.n : 'I miei posti');
-}
-
-function salvaLocale(l, coll){
-  if(!l) return;
-  Archivio.salva({
-    k:l.k, nome:l.nome, lat:l.lat, lng:l.lng, modo:l.modo,
-    liv:l.livello||null, cat:l.cat||null, tipo:l.tipo||null,
-    comune:l.comune||null, tel:l.telefono||null, sito:l.sito||null,
-    coll: coll || raccoltaCorrente(),
-    stato: Archivio.prendi(l.k)?.stato || 'da_provare',
-    nota: Archivio.prendi(l.k)?.nota || '',
-    orari: Archivio.prendi(l.k)?.orari || '',
-    creato: Archivio.prendi(l.k)?.creato || new Date().toISOString()
-  });
-}
-
-function coloreVoce(v){
-  return v.modo==='comprare' ? (SPESA[v.cat]?.c||'#77604F') : (LIV[v.liv]?.c||'#9C8A78');
-}
-function icoVoce(v){
-  return v.modo==='comprare' ? (SPESA[v.cat]?.ico||'i-carrello') : (LIV[v.liv]?.ico||'i-spiga');
-}
-
-function disegnaSalvati(){
-  const g = Archivio.collezioni();
-  const nomi = Object.keys(g).sort((a,b)=>a.localeCompare(b,'it'));
-  const corpo = $('#salvati-corpo');
-  if(!nomi.length){
-    corpo.innerHTML = `<div class="vuoto">${icona('i-stella','ico lg')}
-      <b>Ancora niente di salvato</b>
-      <p>Tocca la stella accanto a un locale per tenerlo da parte. Puoi aggiungere una nota,
-      gli orari che ti sei fatto confermare al telefono e raggrupparli per città o per viaggio.</p></div>`;
-    return;
-  }
-  corpo.innerHTML = nomi.map(nome=>{
-    const voci = g[nome].sort((a,b)=>a.nome.localeCompare(b.nome,'it'));
-    return `<div class="collezione">
-      <div class="collezione-testa"><h3>${esc(nome)}</h3><span>${voci.length} ${voci.length===1?'posto':'posti'}</span></div>
-      ${voci.map(v=>{
-        const st = STATI[v.stato]||STATI.da_provare;
-        return `<div class="salvato">
-          <div class="salvato-cima">
-            <div class="gemma" style="background:${coloreVoce(v)}">${icona(icoVoce(v),'ico sm')}</div>
-            <div style="flex:1;min-width:0">
-              <h4>${esc(v.nome)}</h4>
-              <div class="meta">${esc(v.comune||'')}${v.tipo&&v.comune?' · ':''}${esc(TIPI[v.tipo]||'')}</div>
-              <span class="stato-pill" style="background:${st.c}1F;color:${st.c}">${esc(st.et)}</span>
-            </div>
-          </div>
-          ${v.orari?`<div class="nota"><b>Orari:</b> ${esc(v.orari)}</div>`:''}
-          ${v.nota?`<div class="nota">${esc(v.nota)}</div>`:`<div class="nota-vuota">Nessuna nota</div>`}
-          <div class="salvato-azioni">
-            <button class="mini pieno" data-nota="${esc(v.k)}">${icona('i-matita','ico sm')}Nota</button>
-            ${v.tel?`<a class="mini" href="tel:${esc(v.tel)}">${icona('i-tel','ico sm')}Chiama</a>`:''}
-            <a class="mini" href="https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}" target="_blank" rel="noopener">${icona('i-naviga','ico sm')}Vai</a>
-            <button class="mini" data-elimina="${esc(v.k)}" aria-label="Rimuovi">${icona('i-x','ico sm')}</button>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  }).join('') + `<div style="padding:6px 14px 8px">
-      <button class="mini" id="b-esporta" style="width:100%">${icona('i-lista','ico sm')}Copia tutto come testo</button>
-    </div>`;
-
-  corpo.querySelectorAll('[data-nota]').forEach(b=>b.addEventListener('click',()=>modaleNota(b.dataset.nota)));
-  corpo.querySelectorAll('[data-elimina]').forEach(b=>b.addEventListener('click',()=>{
-    Archivio.togli(b.dataset.elimina); disegnaSalvati(); disegnaValigia();
-  }));
-  const es=$('#b-esporta');
-  if(es) es.addEventListener('click',esportaSalvati);
-}
-
-function modaleNota(k){
-  const v = Archivio.prendi(k); if(!v) return;
-  const raccolte = [...new Set(Archivio.tutti().map(x=>x.coll).filter(Boolean))];
-  apriModale(esc(v.nome), `
-    <div class="campo"><label>Come lo consideri</label>
-      <div class="griglia-chip" id="g-stato">
-        ${Object.entries(STATI).map(([id,s])=>
-          `<button class="chip" data-stato="${id}" aria-pressed="${v.stato===id}">${s.et}</button>`).join('')}
-      </div>
-    </div>
-    <div class="campo"><label>Orari, come li hai verificati tu</label>
-      <input id="c-orari" type="text" value="${esc(v.orari||'')}" placeholder="es. chiuso il lunedì, confermato al telefono"></div>
-    <div class="campo"><label>Raccolta</label>
-      <input id="c-coll" type="text" list="l-coll" value="${esc(v.coll||'')}" placeholder="es. Milano, oppure Sicilia 2026">
-      <datalist id="l-coll">${raccolte.map(r=>`<option value="${esc(r)}">`).join('')}</datalist></div>
-    <div class="campo"><label>Nota</label>
-      <textarea id="c-nota" placeholder="Cosa hai chiesto, cosa ti hanno risposto, cosa ordinare, cosa evitare…">${esc(v.nota||'')}</textarea></div>
-  `);
-  let stato = v.stato;
-  document.querySelectorAll('[data-stato]').forEach(b=>b.addEventListener('click',()=>{
-    stato = b.dataset.stato;
-    document.querySelectorAll('[data-stato]').forEach(x=>x.setAttribute('aria-pressed', x===b));
-  }));
-  $('#m-ok').textContent = 'Salva';
-  $('#m-ok').addEventListener('click',()=>{
-    Archivio.salva({k, stato,
-      orari:$('#c-orari').value.trim(),
-      coll:$('#c-coll').value.trim() || 'I miei posti',
-      nota:$('#c-nota').value.trim()});
-    disegnaSalvati();
-  });
-}
-
-function esportaSalvati(){
-  const g = Archivio.collezioni();
-  const testo = Object.entries(g).map(([nome,voci]) =>
-    `${nome.toUpperCase()}\n` + voci.map(v=>{
-      const st=(STATI[v.stato]||STATI.da_provare).et;
-      return `• ${v.nome}${v.comune?' — '+v.comune:''} [${st}]`
-        + (v.orari?`\n  Orari: ${v.orari}`:'')
-        + (v.nota?`\n  ${v.nota}`:'');
-    }).join('\n')
-  ).join('\n\n') + '\n\nfreeglutenfree · dati OpenStreetMap (ODbL)';
-  navigator.clipboard?.writeText(testo).then(
-    ()=>apriModale('Copiato','<p>L’elenco è negli appunti: puoi incollarlo in una nota, in un messaggio o in una mail.</p>'),
-    ()=>apriModale('I tuoi posti',`<div class="campo"><textarea readonly style="min-height:220px">${esc(testo)}</textarea></div>`)
-  );
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   AREA PERSONALE
-   ══════════════════════════════════════════════════════════════════ */
-let sveglia = null;
-async function tieniAcceso(si){
-  try{
-    if(si && 'wakeLock' in navigator){ sveglia = await navigator.wakeLock.request('screen'); }
-    else if(sveglia){ sveglia.release(); sveglia = null; }
-  }catch(e){}
-}
-
-function apriVetrina(html){
-  $('#vetrina').innerHTML =
-    `<button class="chiudi-v" id="v-chiudi">${icona('i-x','ico sm')}Chiudi</button>` + html;
-  $('#vetrina').hidden = false;
-  $('#v-chiudi').addEventListener('click', chiudiVetrina);
-  tieniAcceso(true);
-}
-function chiudiVetrina(){ $('#vetrina').hidden = true; tieniAcceso(false); }
-
-/* ── carta del celiaco ─────────────────────────────────────────────── */
-function foglioCarta(){
-  const scelta = Pref.leggi('lingua','it');
-  $('#foglio').innerHTML = `
-    <div class="f-testa">
-      <div class="f-nastro" style="background:var(--l1)"></div>
-      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
-      <h2>Carta del celiaco</h2>
-      <div class="tipo">da mostrare al personale</div>
-      <div class="f-livello" style="border-left-color:var(--l1)">
-        <strong>${icona('i-carta','ico sm')}A cosa serve</strong>
-        <p>Spiega in poche righe che la celiachia è una malattia autoimmune e che il problema non è solo l’ingrediente, ma la contaminazione. Funziona meglio di qualunque spiegazione a voce, soprattutto all’estero.</p>
-      </div>
-    </div>
-    <div class="pannello">
-      <div class="occhiello">Lingua</div>
-      <div class="lingue" id="lingue">
-        ${Object.entries(CARTA).map(([id,c])=>
-          `<button class="lingua" data-lingua="${id}" aria-pressed="${id===scelta}">${esc(c.lin)}</button>`).join('')}
-      </div>
-      <div class="carta-testo" id="anteprima"></div>
-      <div class="eroe-azioni" style="padding:14px 0 4px">
-        <button class="btn btn-pieno" id="b-mostra">${icona('i-carta','ico sm')}Mostra a schermo pieno</button>
-      </div>
-    </div>
-    <p class="pie">Testo redatto per questa applicazione. Non sostituisce un certificato medico:
-    se ti serve un documento formale, chiedilo al tuo centro di riferimento.</p>`;
-  $('#foglio').classList.add('aperto');
-  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
-
-  const dipingi = () => {
-    const l = Pref.leggi('lingua','it'), c = CARTA[l];
-    $('#anteprima').innerHTML = `<span class="titolo">${esc(c.tit)}</span>${esc(c.txt).replace(/\n/g,'<br>')}`;
-    document.querySelectorAll('[data-lingua]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lingua===l));
-  };
-  document.querySelectorAll('[data-lingua]').forEach(b=>b.addEventListener('click',()=>{
-    Pref.scrivi('lingua', b.dataset.lingua); dipingi();
-  }));
-  $('#b-mostra').addEventListener('click',()=>{
-    const c = CARTA[Pref.leggi('lingua','it')];
-    apriVetrina(`<div class="fascia"><b>${esc(c.tit)}</b><span>freeglutenfree</span></div>
-      <div class="corpo">${esc(c.txt).replace(/\n/g,'<br>')}</div>`);
-  });
-  dipingi();
-}
-
-/* ── tessera e codice ──────────────────────────────────────────────── */
-async function riduciImmagine(file, lato=1500, q=.82){
-  const bmp = await createImageBitmap(file);
-  const s = Math.min(1, lato / Math.max(bmp.width, bmp.height));
-  const c = document.createElement('canvas');
-  c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
-  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-  let out = c.toDataURL('image/jpeg', q);
-  // la memoria del browser e' limitata: se la foto e' ancora pesante, stringo
-  while(out.length > 2_600_000 && q > .4){ q -= .12; out = c.toDataURL('image/jpeg', q); }
-  return out;
-}
-
-function foglioTessera(){
-  const t = Pref.leggi('tessera', {});
-  $('#foglio').innerHTML = `
-    <div class="f-testa">
-      <div class="f-nastro" style="background:var(--bordeaux-3)"></div>
-      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
-      <h2>La mia tessera</h2>
-      <div class="tipo">codice e foto per il banco</div>
-      <div class="f-livello" style="border-left-color:var(--bordeaux-3)">
-        <strong>${icona('i-macchina-foto','ico sm')}Come funziona</strong>
-        <p>Fotografa la tessera o il buono e scrivi il codice: li ritrovi qui anche senza rete, da mostrare in farmacia o alla cassa. Restano solo su questo telefono.</p>
-      </div>
-    </div>
-    <div class="pannello">
-      <div class="occhiello">Dati</div>
-      <div class="campo"><label>Ente o Regione</label>
-        <input id="t-ente" type="text" value="${esc(t.ente||'')}" placeholder="es. ASL Città di Milano"></div>
-      <div class="campo"><label>Codice</label>
-        <input id="t-codice" type="text" inputmode="text" autocapitalize="characters"
-               value="${esc(t.codice||'')}" placeholder="il codice stampato sulla tessera"></div>
-      <div class="campo"><label>Foto della tessera</label>
-        <input id="t-foto" type="file" accept="image/*" capture="environment"></div>
-      ${t.foto?`<img src="${t.foto}" alt="Tessera salvata" style="width:100%;border-radius:12px;border:1px solid var(--linea)">`:''}
-      <div class="eroe-azioni" style="padding:14px 0 4px">
-        <button class="btn btn-pieno" id="b-salva-t">${icona('i-scudo','ico sm')}Salva</button>
-        ${(t.codice||t.foto)?`<button class="btn btn-vuoto" id="b-mostra-t">${icona('i-carta','ico sm')}Mostra</button>`:''}
-      </div>
-      ${(t.codice||t.foto)?`<button class="mini" id="b-canc-t" style="width:100%;margin-top:10px">${icona('i-x','ico sm')}Cancella tutto</button>`:''}
-    </div>
-    <p class="pie">Foto e codice non lasciano il telefono: nessun invio, nessun account.
-    Se cancelli i dati del browser vanno persi.</p>`;
-  $('#foglio').classList.add('aperto');
-  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
-
-  let foto = t.foto || null;
-  $('#t-foto').addEventListener('change', async e=>{
-    const f = e.target.files?.[0]; if(!f) return;
-    try{ foto = await riduciImmagine(f); apriModale('Foto pronta','<p>Tocca Salva per conservarla.</p>'); }
-    catch(err){ apriModale('Non riesco a leggere l’immagine','<p>Prova con un altro scatto o un altro formato.</p>'); }
-  });
-  $('#b-salva-t').addEventListener('click',()=>{
-    Pref.scrivi('tessera',{ente:$('#t-ente').value.trim(), codice:$('#t-codice').value.trim().toUpperCase(), foto});
-    foglioTessera();
-  });
-  const m=$('#b-mostra-t'); if(m) m.addEventListener('click',mostraTessera);
-  const c=$('#b-canc-t'); if(c) c.addEventListener('click',()=>{ Pref.scrivi('tessera',{}); foglioTessera(); });
-}
-
-function mostraTessera(){
-  const t = Pref.leggi('tessera', {});
-  apriVetrina(`
-    <div class="fascia"><b>${esc(t.ente||'La mia tessera')}</b><span>alza la luminosità dello schermo</span></div>
-    ${t.foto?`<img src="${t.foto}" alt="Tessera">`:''}
-    ${t.codice?`<div class="codicione">${esc(t.codice)}</div>`:''}
-    <p style="font-size:13px;color:#666;line-height:1.5">Se il lettore non riesce a inquadrare lo schermo,
-    detta il codice: è scritto qui sopra apposta in grande.</p>`);
-}
-
-/* ── buoni mensili ─────────────────────────────────────────────────── */
-const meseOggi = () => new Date().toISOString().slice(0,7);
-const euro = n => (n||0).toLocaleString('it-IT',{minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
-
-function foglioBuoni(){
-  const b = Pref.leggi('buoni', {importo:0, spese:[]});
-  const mese = meseOggi();
-  const delMese = (b.spese||[]).filter(s=>s.data.slice(0,7)===mese);
-  const speso = delMese.reduce((t,s)=>t+s.importo, 0);
-  const resta = Math.max(0, (b.importo||0) - speso);
-  const pct = b.importo ? Math.min(100, speso / b.importo * 100) : 0;
-
-  $('#foglio').innerHTML = `
-    <div class="f-testa">
-      <div class="f-nastro" style="background:var(--l3)"></div>
-      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
-      <h2>Buoni mensili</h2>
-      <div class="tipo">${new Date().toLocaleDateString('it-IT',{month:'long',year:'numeric'})}</div>
-    </div>
-
-    <div class="pannello">
-      <div class="occhiello">Questo mese</div>
-      <div style="display:flex;align-items:baseline;gap:10px">
-        <span class="cifra">${esc(euro(resta))}</span>
-        <span style="font-size:13px;color:var(--muto)">ancora disponibili</span>
-      </div>
-      <div class="barra-buoni"><div style="width:${pct}%"></div></div>
-      <div style="font-size:12.5px;color:var(--muto)">${esc(euro(speso))} spesi su ${esc(euro(b.importo||0))}</div>
-      ${!b.importo?`<div class="avviso" style="margin-top:14px">${icona('i-avviso','ico sm')}
-        <div>Imposta qui sotto il tuo importo mensile: cambia da Regione a Regione e in base a età e sesso,
-        quindi non posso indovinarlo. Lo trovi nella comunicazione della tua ASL.</div></div>`:''}
-    </div>
-
-    <div class="pannello">
-      <div class="occhiello">Aggiungi una spesa</div>
-      <div class="due-campi">
-        <div class="campo"><label>Importo</label>
-          <input id="sp-importo" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00"></div>
-        <div class="campo"><label>Dove</label>
-          <input id="sp-dove" type="text" placeholder="farmacia, negozio…"></div>
-      </div>
-      <button class="btn btn-pieno" id="b-add-spesa" style="width:100%">${icona('i-piu','ico sm')}Registra</button>
-    </div>
-
-    ${delMese.length?`<div class="pannello">
-      <div class="occhiello">Spese di questo mese</div>
-      ${delMese.slice().reverse().map((s,i)=>`<div class="spesa-riga">
-        ${icona('i-buono','ico sm')}
-        <span>${esc(s.dove||'Spesa')}<br><span style="color:var(--muto);font-size:12px">${new Date(s.data).toLocaleDateString('it-IT')}</span></span>
-        <span class="imp">${esc(euro(s.importo))}</span>
-        <button data-canc="${esc(s.id)}" style="color:var(--muto);padding:6px">${icona('i-x','ico sm')}</button>
-      </div>`).join('')}
-    </div>`:''}
-
-    <div class="pannello">
-      <div class="occhiello">Impostazioni</div>
-      <div class="campo"><label>Importo mensile riconosciuto</label>
-        <input id="b-importo" type="number" inputmode="decimal" step="0.01" min="0" value="${b.importo||''}" placeholder="es. 90,00"></div>
-      <button class="btn btn-vuoto" id="b-salva-imp" style="width:100%">Salva importo</button>
-    </div>
-
-    <div class="pannello">
-      <div class="occhiello">Come funziona</div>
-      <p style="font-size:13.5px;line-height:1.6;padding-bottom:12px">
-      Chi ha una diagnosi di celiachia ha diritto a un contributo mensile per l’acquisto di alimenti senza glutine,
-      erogato dal Servizio Sanitario. L’importo dipende da età e sesso ed è stabilito a livello nazionale, ma
-      <b>modalità di erogazione ed esercizi accreditati cambiano da Regione a Regione</b>: in alcune si usa una
-      tessera o un’app dedicata, in altre si ritira in farmacia.<br><br>
-      Il residuo di norma non si accumula da un mese all’altro. Per le regole aggiornate della tua Regione,
-      la fonte da consultare è la tua ASL.</p>
-    </div>`;
-  $('#foglio').classList.add('aperto');
-  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
-
-  $('#b-salva-imp').addEventListener('click',()=>{
-    const v = parseFloat(($('#b-importo').value||'0').replace(',','.')) || 0;
-    Pref.scrivi('buoni', {...b, importo:v}); foglioBuoni();
-  });
-  $('#b-add-spesa').addEventListener('click',()=>{
-    const v = parseFloat(($('#sp-importo').value||'0').replace(',','.')) || 0;
-    if(v<=0) return;
-    const spese = [...(b.spese||[]), {id:String(Date.now()), data:new Date().toISOString(),
-      importo:v, dove:$('#sp-dove').value.trim()}];
-    Pref.scrivi('buoni', {...b, spese}); foglioBuoni();
-  });
-  document.querySelectorAll('[data-canc]').forEach(x=>x.addEventListener('click',()=>{
-    Pref.scrivi('buoni', {...b, spese:(b.spese||[]).filter(s=>s.id!==x.dataset.canc)}); foglioBuoni();
-  }));
-}
-
-/* ── profilo di sensibilita' ───────────────────────────────────────── */
-function applicaProfilo(id){
-  const p = PROFILI[id]; if(!p) return;
-  Pref.scrivi('profilo', id);
-  S.livelli = new Set(p.livelli);
-  S.alta = (id === 'celiachia_alta');
-  costruisciSpettro();
-  sincronizza();
-}
-
-function foglioProfilo(primoAvvio){
-  const attuale = Pref.leggi('profilo', null);
-  $('#foglio').innerHTML = `
-    <div class="f-testa">
-      <div class="f-nastro" style="background:var(--l2)"></div>
-      ${primoAvvio ? '' : `<button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>`}
-      <h2>${primoAvvio ? 'Prima di iniziare' : 'Il mio profilo'}</h2>
-      <div class="tipo">quanto devi stare attento</div>
-      <div class="f-livello" style="border-left-color:var(--l2)">
-        <strong>${icona('i-scudo-cuore','ico sm')}Perché te lo chiedo</strong>
-        <p>È l’unica cosa che cambia davvero tutto il resto: da qui decido quali locali mostrarti di default. Puoi cambiarla quando vuoi dalla scheda Io.</p>
-      </div>
-    </div>
-    <div class="pannello">
-      ${Object.entries(PROFILI).map(([id,p])=>`
-        <button class="riga-card" data-profilo="${id}" style="width:100%;${attuale===id?'border-color:var(--bordeaux);border-width:2px':''}">
-          <div class="gemma" style="background:${id==='sensibilita'?'var(--l4)':'var(--l1)'}">${icona('i-scudo','ico sm')}</div>
-          <div class="riga-corpo">
-            <h3>${esc(p.et)}</h3>
-            <div class="meta" style="white-space:normal">${esc(p.desc)}</div>
-          </div>
-        </button>`).join('')}
-    </div>
-    <p class="pie">Nessuna di queste informazioni esce dal telefono.</p>`;
-  $('#foglio').classList.add('aperto');
-  const ch=$('#f-chiudi'); if(ch) ch.addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
-  document.querySelectorAll('[data-profilo]').forEach(b=>b.addEventListener('click',()=>{
-    applicaProfilo(b.dataset.profilo);
-    $('#foglio').classList.remove('aperto');
-    if(primoAvvio && S.posizione) caricaIntorno();
-  }));
-}
 
 /* ══════════════════════════════════════════════════════════════════
    DETTAGLIO
@@ -2467,6 +2222,109 @@ if(profiloSalvato && PROFILI[profiloSalvato]){
   S.alta = (profiloSalvato === 'celiachia_alta');
 }
 
+
+costruisciSpettro();
+costruisciCitta();
+disegnaSalvati();
+precarica();
+
+/* ══════════════════════════════════════════════════════════════════
+   SPLASH — due conteggi reali, nessun numero inventato
+   ══════════════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   AVVIO — la schermata di scelta e' anche il caricamento
+   ══════════════════════════════════════════════════════════════════ */
+const Avvio = {
+  v:0, chiuso:false,
+  a(pct, testo){
+    this.v = Math.max(this.v, pct);
+    const n = $('#lancio-pct'); if(n) n.textContent = Math.round(this.v) + '%';
+    if(testo) sottotitolo(testo);
+    if(this.v >= 100){
+      $('#carico-mini')?.classList.add('finito');
+      const s = $('#lancio-pct')?.parentElement;
+      if(s) s.innerHTML = 'tutto pronto';
+    }
+  }
+};
+
+function sottotitolo(html){ const s=$('#lancio-sotto'); if(s) s.innerHTML = html; }
+
+function posizioneUtente(){
+  return new Promise(res=>{
+    if(!navigator.geolocation) return res(null);
+    navigator.geolocation.getCurrentPosition(
+      p => res({lat:p.coords.latitude, lng:p.coords.longitude}),
+      () => res(null),
+      {timeout:12000, enableHighAccuracy:true, maximumAge:60000});
+  });
+}
+
+/* Scarica una modalita' senza toccare l'interfaccia: serve per portarsi
+   avanti sulla modalita' che l'utente non ha ancora aperto. */
+async function precaricaModo(modo, lat, lng, raggio){
+  try{
+    const locali = await Dati.prendi(lat, lng, modo);
+    if(locali !== 0) return;
+    const q = modo==='comprare' ? spesaRaggio(lat,lng,raggio) : queryRaggio(lat,lng,raggio);
+    assorbi(await interroga(q), modo);
+  }catch(e){}
+}
+
+async function precarica(){
+  Avvio.a(6, 'Cerco dove sei&hellip;');
+  const pos = await posizioneUtente();
+
+  if(!pos){
+    Avvio.a(100);
+    sottotitolo('Posizione non attiva. Puoi comunque partire dalla <b>Mappa</b> o dai <b>Viaggi</b>.');
+    return;
+  }
+
+  S.posizione = pos;
+  mappa.setView([pos.lat,pos.lng],15);
+  if(cerchioIo) cerchioIo.remove();
+  cerchioIo = L.circleMarker([pos.lat,pos.lng],
+    {radius:8,color:'#fff',weight:3,fillColor:'#4A0F1C',fillOpacity:1}).addTo(mappa);
+  Avvio.a(24, 'Ti ho trovato. Preparo i posti vicini&hellip;');
+
+  // la modalita' attiva viene caricata per intero e disegnata
+  const orologio = setInterval(()=>{ if(Prog.attivo) Avvio.a(24 + Prog.v*0.48); }, 340);
+  await caricaIntorno();
+  clearInterval(orologio);
+  Avvio.a(74);
+
+  await disegnaComune();
+  const n = vicini().length;
+  sottotitolo(S.comune
+    ? `Sei a <b>${esc(S.comune)}</b>: ho trovato <b>${n}</b> ${n===1?'posto':'posti'} nei dintorni.`
+    : `Ho trovato <b>${n}</b> ${n===1?'posto':'posti'} nei dintorni.`);
+
+  // e gia' che ci siamo, ci portiamo avanti sull'altra modalita'
+  Avvio.a(82);
+  await precaricaModo(S.modo==='comprare' ? 'mangiare' : 'comprare', pos.lat, pos.lng, 2500);
+  Avvio.a(100);
+}
+
+function chiudiLancio(vista){
+  if(Avvio.chiuso) return;
+  Avvio.chiuso = true;
+  const l = $('#lancio');
+  l.classList.add('via');
+  setTimeout(()=>{ l.hidden = true; }, 360);
+  if(vista){
+    const t = document.querySelector(`[data-vista="${vista}"]`);
+    if(t) t.click();
+  }
+  // il profilo si chiede una volta sola, e solo dopo che si e' entrati
+  if(!Pref.leggi('profilo', null)) setTimeout(()=>foglioProfilo(true), 520);
+}
+
+document.querySelectorAll('[data-meta]').forEach(b=>
+  b.addEventListener('click',()=>chiudiLancio(b.dataset.meta)));
+
 costruisciSpettro();
 costruisciCitta();
 disegnaSalvati();
@@ -2475,172 +2333,39 @@ avviaVicino();   // la posizione si chiede subito
 /* ══════════════════════════════════════════════════════════════════
    SPLASH — due conteggi reali, nessun numero inventato
    ══════════════════════════════════════════════════════════════════ */
-const APERTURA = Date.now();
-const MIN_SPLASH = 2500;
-const attesa = ms => new Promise(r=>setTimeout(()=>r(null), ms));
 
-function qCount(dentro){
-  return `[out:json][timeout:40];
-${dentro.pre||''}
-(
-  nwr["diet:gluten_free"]${dentro.f};
-  nwr["gluten_free"]${dentro.f};
-);
-out count;`;
+
+/* Il menu compare a ogni apertura, non solo la prima volta: e' il punto da
+   cui si sceglie dove entrare. La scelta non viene ricordata di proposito. */
+function apriLancio(){
+  const l = $('#lancio');
+  l.hidden = false;
+  requestAnimationFrame(()=>l.classList.remove('via'));
 }
 
-async function conta(q){
-  const r = await interroga(q);
-  const t = r.elements?.[0]?.tags?.total;
-  const n = parseInt(t, 10);
-  if (!Number.isFinite(n)) throw new Error('conteggio non disponibile');
-  return n;
-}
-
-async function contaCitta(){
-  // fino a tre tentativi: una citta' con zero risultati non e' una bella frase
-  const rimaste = [...CITTA];
-  for (let i = 0; i < 3 && rimaste.length; i++){
-    const c = rimaste.splice(Math.floor(Math.random()*rimaste.length), 1)[0];
-    try{
-      const n = await conta(qCount({f:`(around:12000,${c.lat},${c.lng})`}));
-      if (n > 0) return {citta:c, n};
-    }catch(e){ /* provo la prossima */ }
+function chiudiLancio(vista){
+  const l = $('#lancio');
+  l.classList.add('via');
+  setTimeout(()=>{ l.hidden = true; }, 360);
+  if(vista){
+    const t = document.querySelector(`[data-vista="${vista}"]`);
+    if(t) t.click();
   }
-  return null;
+  // il profilo si chiede una volta sola, e solo dopo che si e' entrati
+  if(!Pref.leggi('profilo', null)) setTimeout(()=>foglioProfilo(true), 520);
 }
 
-function fraseCitta(d){
-  if (!d) return null;
-  const plurale = d.n === 1 ? 'posto segnalato' : 'posti segnalati';
-  return `A <b>${esc(d.citta.n)}</b> risultano <b>${d.n}</b> ${plurale} senza glutine.`;
-}
+document.querySelectorAll('[data-meta]').forEach(b=>
+  b.addEventListener('click',()=>chiudiLancio(b.dataset.meta)));
 
-async function avviaSplash(){
-  // Lo splash aspetta SOLO la frase sulla citta': una query leggera.
-  // Il totale nazionale e' lento e viaggia per conto suo, senza bloccare nulla.
-  contaItalia();
-
-  let frase = null;
-  try{ frase = fraseCitta(await Promise.race([contaCitta(), attesa(2100)])); }catch(e){}
-
-  if(frase){
-    $('#avviso-carico').innerHTML = frase;   // solo qui: in home mostro dove sei
-  }else{
-    $('#avviso-carico').textContent = 'Pronto.';
-  }
-
-  setTimeout(chiudiSplash, Math.max(0, MIN_SPLASH - (Date.now() - APERTURA)));
-}
-
-/* Dove sono davvero. Prima provo a dedurlo dai dati gia' scaricati
-   (molti punti hanno addr:city): zero richieste in piu'. Solo se non
-   basta chiedo a Nominatim, una volta sola. */
-async function deduciComune(){
-  const v = vicini().slice(0,14).map(l=>l.comune).filter(Boolean);
-  if(v.length){
-    const c={}; v.forEach(x=>c[x]=(c[x]||0)+1);
-    return Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0];
-  }
-  try{
-    const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=12&accept-language=it&lat=${S.posizione.lat}&lon=${S.posizione.lng}`;
-    const r = await fetch(u); const j = await r.json(); const a = j.address||{};
-    return a.city || a.town || a.village || a.municipality || a.county || null;
-  }catch(e){ return null; }
-}
-
-async function disegnaComune(){
-  const box = $('#lo-sapevi');
-  if(!S.posizione){ box.innerHTML=''; return; }
-  if(!S.comune) S.comune = await deduciComune();
-  const n = vicini().length;
-  if(!S.comune && !n){ box.innerHTML=''; return; }
-  const cosa = S.modo==='comprare' ? 'punti dove fare la spesa' : 'posti segnalati senza glutine';
-  box.innerHTML = `<div class="lo-sapevi">${icona('i-pin')}
-    <div><h4>Sei qui</h4>
-      ${S.comune?`<span class="citta-nome">${esc(S.comune)}</span>`:''}
-      <p><b>${n}</b> ${cosa} nei dintorni</p></div>
-    <button class="altrove" id="b-altrove" aria-label="Cerca in un'altra citt&agrave;">${icona('i-freccia')}</button></div>`;
-  const b=$('#b-altrove');
-  if(b){ b.style.transform='scaleX(-1)';
-    b.addEventListener('click',()=>document.querySelector('[data-vista="v-viaggi"]').click()); }
-}
-
-async function contaItalia(){
-  try{
-    const n = await conta(qCount({pre:'area["ISO3166-1"="IT"][admin_level=2]->.a;', f:'(area.a)'}));
-    $('#contatore').innerHTML = `<b>${n.toLocaleString('it-IT')}</b> luoghi mappati dalla community in Italia`;
-  }catch(e){ /* resta la riga sulla fonte: nessun numero inventato */ }
-}
-
-function dettaglioSpesa(l){
-  const C = SPESA[l.cat];
-  const d = S.posizione ? distanza(S.posizione.lat,S.posizione.lng,l.lat,l.lng) : null;
-  $('#foglio').innerHTML=`
-    <div class="f-testa">
-      <div class="f-nastro" style="background:${C.c}"></div>
-      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
-      <h2>${esc(l.nome)}</h2>
-      <div class="tipo">${esc(C.et)}${l.comune?' · '+esc(l.comune):''}${d?' · '+formatoDist(d):''}</div>
-      <div class="f-livello" style="border-left-color:${C.c}"><strong>${icona(C.ico,'ico sm')}Cosa trovi qui</strong><p>${esc(C.desc)}</p></div>
-      <div class="eroe-azioni" style="padding:14px 0 0">
-        <button class="btn" id="f-salva" style="background:rgba(255,255,255,.19);color:#fff">
-          ${icona('i-stella','ico sm')}<span id="f-salva-t">${Archivio.ha(l.k)?'Salvato':'Salva'}</span></button>
-        ${l.telefono?`<a class="btn" href="tel:${esc(l.telefono)}" style="background:var(--grano);color:var(--bordeaux)">${icona('i-tel','ico sm')}Chiama</a>`:''}
-      </div>
-    </div>
-
-    ${l.cat==='farmacia'?`<div style="padding:0 14px"><div class="avviso">${icona('i-buono','ico sm')}
-      <div>Chi ha una diagnosi di celiachia ha diritto a un contributo mensile per gli alimenti senza glutine.
-      Importi e negozi convenzionati cambiano da Regione a Regione: controlla sul sito della tua ASL se questa
-      struttura &egrave; tra quelle accreditate.</div></div></div>`:''}
-
-    <div class="pannello">
-      <div class="occhiello">Informazioni</div>
-      ${riga('Insegna', l.marca?esc(l.marca):'')}
-      ${riga('Indirizzo', l.indirizzo?esc(l.indirizzo):'')}
-      ${riga('Orari', l.orari?esc(l.orari):'')}
-      ${riga('Telefono', l.telefono?`<a href="tel:${esc(l.telefono)}">${esc(l.telefono)}</a>`:'')}
-      ${riga('Sito', l.sito?`<a href="${esc(l.sito)}" target="_blank" rel="noopener">apri</a>`:'')}
-      ${riga('Indicazioni', `<a href="https://www.google.com/maps/dir/?api=1&destination=${l.lat},${l.lng}" target="_blank" rel="noopener">apri nelle mappe</a>`)}
-      ${riga('Reparto senza glutine', l.tagGf?'segnalato su OpenStreetMap':'non sappiamo')}
-    </div>
-
-    <div class="pannello">
-      <div class="occhiello">Prima di andare</div>
-      <p style="font-size:13px;color:var(--muto);line-height:1.55;padding-bottom:12px">
-        La presenza di un reparto senza glutine non &egrave; garantita in tutti i punti vendita della stessa insegna.
-        Se ti serve qualcosa di preciso, una telefonata evita il viaggio a vuoto.</p>
-    </div>
-
-    <div class="pannello">
-      <div class="occhiello">Migliora i dati</div>
-      ${riga('Correggi', `<a href="https://www.openstreetmap.org/${l.osmType}/${l.osmId}" target="_blank" rel="noopener">su OpenStreetMap</a>`)}
-    </div>
-
-    <p class="pie">Dati &copy; OpenStreetMap contributors, ODbL 1.0.</p>`;
-  $('#foglio').classList.add('aperto');
-  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
-  legaSalva(l);
-}
-
-function chiudiSplash(){
-  $('#splash').classList.add('via');
-  // la domanda si fa una volta sola, subito dopo lo splash
-  if(!Pref.leggi('profilo', null)) setTimeout(()=>foglioProfilo(true), 420);
-}
-
-$('#s-livelli').addEventListener('click', e=>{ e.stopPropagation(); chiudiSplash(); modaleGuida(); });
-$('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiSplash();
+$('#s-livelli').addEventListener('click', e=>{ e.stopPropagation(); chiudiLancio(); modaleGuida(); });
+$('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiLancio();
   apriModale('Da dove vengono i dati',
     `<p>I luoghi arrivano da <b>OpenStreetMap</b>, la mappa libera costruita dalla community, con licenza ODbL 1.0.</p>
      <p>Le altre piattaforme italiane dedicate alla celiachia hanno database propri: qui non vengono copiati. Quando ci sar&agrave; un accordo, le vedrai citate nelle schede con il link diretto.</p>
      <p>Questa applicazione non certifica nessun locale e non &egrave; collegata ad alcuna associazione.</p>`);
 });
-$('#splash').addEventListener('click', chiudiSplash);
-setTimeout(chiudiSplash, 6000);   // rete lenta: non si resta mai bloccati
 
-avviaSplash();
 
 </script>
 </body>

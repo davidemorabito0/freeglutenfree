@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4A0F1C">
+<meta name="robots" content="noindex, nofollow">
+<title>freeglutenfree — amministrazione</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   AMMINISTRAZIONE — stessa lingua visiva dell'applicazione.
+   Su telefono: schede in basso. Su computer: colonna a sinistra.
+   Nessuna libreria: i grafici sono disegnati a mano in SVG.
+   ══════════════════════════════════════════════════════════════════ */
+:root{
+  --bordeaux:#4A0F1C; --bordeaux-2:#6B1526; --bordeaux-3:#8C1D33;
+  --grano:#F7F0E3; --grano-2:#EDE0C8; --grano-3:#E3D2B0;
+  --carta:#FFFDF8; --inchiostro:#33202A; --muto:#77604F; --linea:#E7DAC2;
+  --ok:#2E7D4F; --attesa:#D97828; --male:#C0203A; --oro:#C9962E;
+  --r-s:10px; --r-m:16px; --r-l:22px;
+  --sb:env(safe-area-inset-bottom,0px); --st:env(safe-area-inset-top,0px);
+  --tab:calc(62px + var(--sb));
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;height:100dvh;width:100%}
+body{
+  font-family:"Instrument Sans",system-ui,sans-serif;background:var(--grano);
+  color:var(--inchiostro);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;text-align:left}
+a{color:inherit;text-decoration:none}
+svg{display:block}
+.ico{width:20px;height:20px;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none;flex:0 0 auto}
+.ico.sm{width:16px;height:16px;stroke-width:1.9}
+.ico.lg{width:26px;height:26px}
+:focus-visible{outline:2.5px solid var(--bordeaux-3);outline-offset:2px;border-radius:6px}
+
+/* ───────────────────────────────────────────────────────── accesso */
+.porta{
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:24px;
+  background:linear-gradient(165deg,#5E1522,#3A0B16 62%,#2A0710);
+}
+.porta[hidden]{display:none}
+.porta .sigillo{
+  width:64px;height:64px;border-radius:19px;background:var(--carta);
+  display:grid;place-items:center;margin-bottom:14px;box-shadow:0 10px 26px rgba(0,0,0,.34);
+}
+.porta h1{
+  font-family:Fraunces,serif;font-weight:900;font-size:22px;color:#fff;letter-spacing:.04em;
+}
+.porta .sotto{font-size:12px;color:#D8B7BE;margin-top:6px;letter-spacing:.14em;text-transform:uppercase}
+.porta form{width:100%;max-width:360px;margin-top:26px}
+.campo{margin-bottom:13px}
+.campo label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muto);margin-bottom:6px}
+.porta .campo label{color:#C9A8AF}
+.campo input,.campo select,.campo textarea{
+  width:100%;border:1.5px solid var(--linea);border-radius:var(--r-s);background:var(--carta);
+  padding:11px 12px;font:inherit;font-size:14px;color:var(--inchiostro);
+}
+.campo input:focus,.campo select:focus{outline:none;border-color:var(--bordeaux-3)}
+.bottone{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  background:var(--grano);color:var(--bordeaux);border-radius:var(--r-s);
+  padding:13px;font-weight:700;font-size:14.5px;
+}
+.bottone:active{transform:scale(.98)}
+.errore{background:#FBE8EA;color:#7A1421;border-radius:var(--r-s);padding:11px 12px;font-size:13px;margin-bottom:13px}
+
+/* ─────────────────────────────────────────────── impalcatura */
+.guscio{display:none;height:100%}
+.guscio.dentro{display:block}
+.testata{
+  position:sticky;top:0;z-index:40;background:var(--bordeaux);color:#fff;
+  padding:calc(var(--st) + 12px) 16px 12px;display:flex;align-items:center;gap:11px;
+}
+.testata .sigillo{width:34px;height:34px;border-radius:10px;background:var(--grano-3);display:grid;place-items:center;color:var(--bordeaux)}
+.testata h1{font-family:Fraunces,serif;font-weight:900;font-size:17px;letter-spacing:.02em}
+.testata .chi{margin-left:auto;font-size:12px;color:#DCC3C9;text-align:right}
+.testata .esci{color:#F0DFE3;padding:8px;border-radius:8px}
+
+.corpo{padding:16px 14px calc(var(--tab) + 20px);max-width:1180px;margin:0 auto}
+.pagina{display:none}
+.pagina.attiva{display:block}
+
+.schede{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;height:var(--tab);padding-bottom:var(--sb);
+  background:var(--bordeaux);display:grid;grid-template-columns:repeat(4,1fr);
+}
+.scheda{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:#C8A9AF;font-size:10px;font-weight:600;position:relative;
+}
+.scheda[aria-selected="true"]{color:#fff}
+.scheda[aria-selected="true"]::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:26px;height:2.5px;border-radius:0 0 3px 3px;background:var(--grano-3);
+}
+.pastiglia{
+  position:absolute;top:6px;right:calc(50% - 22px);background:var(--male);color:#fff;
+  border-radius:999px;min-width:17px;height:17px;padding:0 4px;font-size:10px;
+  font-weight:700;display:grid;place-items:center;
+}
+
+/* ───────────────────────────────────────────── pezzi comuni */
+.occhiello{
+  font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.13em;
+  color:var(--muto);display:flex;align-items:center;gap:8px;margin:22px 0 11px;
+}
+.occhiello::after{content:"";flex:1;height:1px;background:var(--linea)}
+.riquadro{background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);padding:16px;margin-bottom:12px}
+
+.numeri{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.numero{background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);padding:14px}
+.numero b{
+  display:block;font-family:Fraunces,serif;font-weight:900;font-size:30px;line-height:1;
+  font-variation-settings:"opsz" 40;color:var(--bordeaux);
+}
+.numero span{display:block;font-size:11.5px;color:var(--muto);margin-top:6px;line-height:1.3}
+.numero.allerta b{color:var(--male)}
+
+.barre{display:flex;align-items:flex-end;gap:3px;height:120px;margin-top:6px}
+.barra{flex:1;background:var(--bordeaux-3);border-radius:3px 3px 0 0;min-height:2px;position:relative}
+.barra:hover{background:var(--bordeaux)}
+.asse{display:flex;justify-content:space-between;font-size:10px;color:var(--muto);margin-top:6px}
+
+.riga-voto{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.riga-voto .et{font-size:12px;width:52px;color:var(--muto);display:flex;align-items:center;gap:3px}
+.riga-voto .canale{flex:1;height:10px;background:var(--grano-2);border-radius:5px;overflow:hidden}
+.riga-voto .pieno{height:100%;background:var(--oro);border-radius:5px}
+.riga-voto .n{font-size:12px;width:34px;text-align:right;font-weight:600}
+
+.ciambella{display:flex;align-items:center;gap:18px}
+.legenda{font-size:12.5px}
+.legenda div{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.legenda i{width:11px;height:11px;border-radius:3px;display:block}
+
+/* ───────────────────────────────────────────── recensioni */
+.filtri{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filtri select,.filtri input{
+  border:1.5px solid var(--linea);border-radius:999px;background:var(--carta);
+  padding:9px 14px;font:inherit;font-size:13px;color:var(--inchiostro);
+}
+.filtri input{flex:1;min-width:150px}
+
+.rec{background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);padding:15px;margin-bottom:11px}
+.rec.segnalata{border-color:var(--male);border-width:2px;padding:14px}
+.rec.nascosta{opacity:.62}
+.rec-cima{display:flex;align-items:flex-start;gap:11px;margin-bottom:10px}
+.faccia{
+  width:40px;height:40px;border-radius:50%;overflow:hidden;flex:0 0 auto;
+  background:var(--grano-2);display:grid;place-items:center;color:var(--bordeaux);font-weight:700;
+}
+.faccia img{width:100%;height:100%;object-fit:cover}
+.rec-chi{flex:1;min-width:0}
+.rec-chi b{display:block;font-size:14px;font-weight:600}
+.rec-chi span{font-size:11.5px;color:var(--muto)}
+.rec-luogo{
+  font-family:Fraunces,serif;font-weight:700;font-size:15px;margin-top:2px;
+  font-variation-settings:"opsz" 18;
+}
+.stelle{display:inline-flex;gap:2px;color:var(--oro)}
+.stelle svg{width:15px;height:15px}
+.stelle .spenta{color:var(--linea)}
+.rec-testo{font-size:13.5px;line-height:1.55;white-space:pre-wrap;margin:8px 0}
+.foto-fila{display:flex;gap:8px;overflow-x:auto;margin:10px 0;scrollbar-width:none}
+.foto-fila::-webkit-scrollbar{display:none}
+.foto-fila img{height:120px;border-radius:var(--r-s);border:1px solid var(--linea);flex:0 0 auto;object-fit:cover;cursor:zoom-in}
+.stato-tag{
+  display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 10px;
+  font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+}
+.motivi{background:#FBE8EA;border-radius:var(--r-s);padding:10px 12px;font-size:12.5px;color:#7A1421;margin:10px 0}
+.motivi b{display:block;margin-bottom:4px}
+.azioni{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.azione{
+  border:1.5px solid var(--linea);border-radius:var(--r-s);padding:9px 13px;
+  font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px;background:var(--carta);
+}
+.azione:active{transform:scale(.97)}
+.azione.verde{background:var(--ok);color:#fff;border-color:var(--ok)}
+.azione.gialla{background:var(--attesa);color:#fff;border-color:var(--attesa)}
+.azione.rossa{background:#FBE8EA;color:#7A1421;border-color:#F3D3D7}
+
+/* ───────────────────────────────────────────── utenti */
+.tabella{width:100%;border-collapse:collapse;font-size:13.5px}
+.tabella th{
+  text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--muto);padding:9px 8px;border-bottom:1px solid var(--linea);font-weight:700;
+}
+.tabella td{padding:11px 8px;border-bottom:1px solid var(--linea);vertical-align:middle}
+.tabella tr:last-child td{border-bottom:none}
+.utente{display:flex;align-items:center;gap:10px}
+.badge-admin{background:var(--bordeaux);color:#fff;border-radius:999px;padding:2px 8px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+.vuoto{padding:44px 20px;text-align:center;color:var(--muto)}
+.vuoto b{display:block;font-family:Fraunces,serif;font-weight:700;font-size:16px;color:var(--inchiostro);margin-bottom:6px}
+.caricando{padding:36px;text-align:center;color:var(--muto);font-size:13.5px}
+.anello{width:34px;height:34px;margin:0 auto 12px;border:3px solid var(--grano-2);border-top-color:var(--bordeaux-3);border-radius:50%;animation:gira .8s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+
+.lente{position:fixed;inset:0;z-index:90;background:rgba(20,4,9,.86);display:grid;place-items:center;padding:20px}
+.lente[hidden]{display:none}
+.lente img{max-width:100%;max-height:86vh;border-radius:var(--r-m)}
+.lente button{position:absolute;top:calc(var(--st) + 14px);right:16px;color:#fff;background:rgba(255,255,255,.16);border-radius:999px;padding:10px 16px;font-weight:700;font-size:13px}
+
+.avviso{
+  display:flex;gap:10px;background:#FBF2DF;border-radius:var(--r-s);
+  padding:12px;font-size:12.5px;line-height:1.5;color:#6B4E12;margin-bottom:14px;
+}
+
+/* ───────────────────────────────────────── su schermo grande */
+@media (min-width:900px){
+  .guscio.dentro{display:grid;grid-template-columns:236px 1fr;height:100vh;height:100dvh}
+  .schede{
+    position:static;height:100%;grid-template-columns:1fr;align-content:start;
+    padding:calc(var(--st) + 18px) 12px;gap:4px;
+  }
+  .scheda{
+    flex-direction:row;justify-content:flex-start;gap:12px;font-size:14px;
+    padding:12px 14px;border-radius:var(--r-s);
+  }
+  .scheda[aria-selected="true"]{background:rgba(255,255,255,.13)}
+  .scheda[aria-selected="true"]::before{display:none}
+  .scheda .ico{width:20px;height:20px}
+  .pastiglia{position:static;margin-left:auto}
+  .destra{overflow-y:auto;height:100%}
+  .testata{border-radius:0}
+  .corpo{padding:20px 24px 40px}
+  .numeri{grid-template-columns:repeat(4,1fr)}
+  .marca-lato{
+    color:#E8CDD3;font-family:Fraunces,serif;font-weight:900;font-size:15px;
+    padding:0 14px 18px;letter-spacing:.04em;
+  }
+  .marca-lato span{color:var(--grano-3);text-decoration:line-through}
+}
+@media (max-width:899px){ .marca-lato{display:none} }
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true"><defs>
+  <symbol id="i-spiga" viewBox="0 0 24 24">
+    <path d="M12 21V9"/><path d="M12 9c0-2.2 1.3-4 3-4 0 2.2-1.3 4-3 4Z"/><path d="M12 9c0-2.2-1.3-4-3-4 0 2.2 1.3 4 3 4Z"/>
+    <path d="M12 14c0-2.2 1.3-4 3-4 0 2.2-1.3 4-3 4Z"/><path d="M12 14c0-2.2-1.3-4-3-4 0 2.2 1.3 4 3 4Z"/>
+    <path d="M12 19c0-2.2 1.3-4 3-4 0 2.2-1.3 4-3 4Z"/><path d="M12 19c0-2.2-1.3-4-3-4 0 2.2 1.3 4 3 4Z"/>
+  </symbol>
+  <symbol id="i-grafico" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-bandiera" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-1.8 3.6L16 11H5"/></symbol>
+  <symbol id="i-lista" viewBox="0 0 24 24"><path d="M8.5 6.5h12M8.5 12h12M8.5 17.5h12M3.6 6.5h.01M3.6 12h.01M3.6 17.5h.01"/></symbol>
+  <symbol id="i-utenti" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.6"/><path d="M2.6 20.4a6.4 6.4 0 0 1 12.8 0"/><path d="M16.5 4.8a3.6 3.6 0 0 1 0 6.9M17.5 14.2a6.4 6.4 0 0 1 3.9 6.2"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="m5 12.5 4.6 4.6L19 7.4"/></symbol>
+  <symbol id="i-occhio-no" viewBox="0 0 24 24"><path d="M9.9 5.1A9.6 9.6 0 0 1 12 4.9c5.2 0 9 5.1 9 7.1a11 11 0 0 1-2.3 3.6M6.3 6.7C3.7 8.4 3 11 3 12c0 2 3.8 7.1 9 7.1 1.6 0 3-.5 4.2-1.2"/><path d="m3 3 18 18"/><path d="M10.2 10.4a2.4 2.4 0 0 0 3.3 3.4"/></symbol>
+  <symbol id="i-cestino" viewBox="0 0 24 24"><path d="M4 6.5h16M9.5 6.5V4.6a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2v1.9"/><path d="M6.4 6.5 7.3 20a1.4 1.4 0 0 0 1.4 1.3h6.6a1.4 1.4 0 0 0 1.4-1.3l.9-13.5"/></symbol>
+  <symbol id="i-esci" viewBox="0 0 24 24"><path d="M9.5 20.5H5.6A1.6 1.6 0 0 1 4 18.9V5.1a1.6 1.6 0 0 1 1.6-1.6h3.9"/><path d="M16 16.2 20.2 12 16 7.8M20.2 12H9.4"/></symbol>
+  <symbol id="i-stella-piena" viewBox="0 0 24 24"><path d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9L12 3.4Z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-aggiorna" viewBox="0 0 24 24"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v5h-5"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s7-6.1 7-11.1a7 7 0 1 0-14 0c0 5 7 11.1 7 11.1Z"/><circle cx="12" cy="10.2" r="2.6"/></symbol>
+</defs></svg>
+
+<!-- ═══════════════════════════ ACCESSO ═══════════════════════════ -->
+<div class="porta" id="porta">
+  <div class="sigillo">
+    <svg width="36" height="36" viewBox="0 0 100 100" aria-hidden="true">
+      <rect x="47" y="30" width="6" height="52" rx="3" fill="#4A0F1C"/>
+      <g fill="#4A0F1C">
+        <ellipse cx="36" cy="66" rx="7.5" ry="13" transform="rotate(-32 36 66)"/>
+        <ellipse cx="64" cy="66" rx="7.5" ry="13" transform="rotate(32 64 66)"/>
+        <ellipse cx="36" cy="49" rx="7.5" ry="13" transform="rotate(-32 36 49)"/>
+        <ellipse cx="64" cy="49" rx="7.5" ry="13" transform="rotate(32 64 49)"/>
+        <ellipse cx="36" cy="32" rx="7.5" ry="13" transform="rotate(-32 36 32)"/>
+      </g>
+      <ellipse cx="64" cy="32" rx="7.5" ry="13" transform="rotate(32 64 32)" fill="#C9962E"/>
+      <ellipse cx="50" cy="20" rx="6.5" ry="12" fill="#4A0F1C"/>
+    </svg>
+  </div>
+  <h1>freeglutenfree</h1>
+  <div class="sotto">amministrazione</div>
+  <form id="modulo">
+    <div id="msg"></div>
+    <div class="campo"><label>Email</label>
+      <input id="a-email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" required></div>
+    <div class="campo"><label>Password</label>
+      <input id="a-pwd" type="password" autocomplete="current-password" required></div>
+    <button class="bottone" type="submit" id="a-vai">Entra</button>
+  </form>
+</div>
+
+<!-- ═══════════════════════════ PANNELLO ══════════════════════════ -->
+<div class="guscio" id="guscio">
+  <nav class="schede" role="tablist">
+    <div class="marca-lato">free<span>gluten</span>free</div>
+    <button class="scheda" role="tab" aria-selected="true" data-pagina="p-riepilogo">
+      <svg class="ico"><use href="#i-grafico"/></svg>Riepilogo</button>
+    <button class="scheda" role="tab" aria-selected="false" data-pagina="p-coda">
+      <svg class="ico"><use href="#i-bandiera"/></svg>Da controllare
+      <span class="pastiglia" id="pastiglia-coda" hidden>0</span></button>
+    <button class="scheda" role="tab" aria-selected="false" data-pagina="p-recensioni">
+      <svg class="ico"><use href="#i-lista"/></svg>Recensioni</button>
+    <button class="scheda" role="tab" aria-selected="false" data-pagina="p-utenti">
+      <svg class="ico"><use href="#i-utenti"/></svg>Utenti</button>
+  </nav>
+
+  <div class="destra">
+    <header class="testata">
+      <div class="sigillo"><svg class="ico"><use href="#i-spiga"/></svg></div>
+      <h1 id="titolo-pagina">Riepilogo</h1>
+      <div class="chi" id="chi"></div>
+      <button class="esci" id="b-aggiorna" aria-label="Aggiorna"><svg class="ico"><use href="#i-aggiorna"/></svg></button>
+      <button class="esci" id="b-esci" aria-label="Esci"><svg class="ico"><use href="#i-esci"/></svg></button>
+    </header>
+
+    <div class="corpo">
+      <section class="pagina attiva" id="p-riepilogo"></section>
+      <section class="pagina" id="p-coda"></section>
+      <section class="pagina" id="p-recensioni"></section>
+      <section class="pagina" id="p-utenti"></section>
+    </div>
+  </div>
+</div>
+
+<div class="lente" id="lente" hidden><button id="l-chiudi">Chiudi</button><img id="l-img" alt=""></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   CONFIGURAZIONE — la stessa dell'applicazione.
+   ══════════════════════════════════════════════════════════════════ */
+const CFG = {
+  url: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseUrl) || 'https://ovafetpgmumrtfsauxpy.supabase.co',
+  key: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseKey) || 'sb_publishable_TXBt0fjaoYNp7iUphWYKxQ_9BGrJmgQ'
+};
+
+const $ = s => document.querySelector(s);
+const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icona = (id, cls='ico') => `<svg class="${cls}"><use href="#${id}"/></svg>`;
+const quando = iso => new Date(iso).toLocaleString('it-IT', {day:'2-digit', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit'});
+const giorno = iso => new Date(iso).toLocaleDateString('it-IT', {day:'2-digit', month:'2-digit'});
+const stelline = n => `<span class="stelle">${[1,2,3,4,5].map(i=>
+  `<svg class="${i<=n?'':'spenta'}"><use href="#i-stella-piena"/></svg>`).join('')}</span>`;
+
+const STATI = {
+  pubblicata:{et:'pubblicata', c:'#2E7D4F'},
+  nascosta:  {et:'nascosta',   c:'#D97828'},
+  rimossa:   {et:'rimossa',    c:'#C0203A'}
+};
+const MOTIVI = {
+  offensiva:'offensiva', falsa:'falsa o ingannevole', pubblicita:'pubblicit\u00e0',
+  dati_personali:'dati personali altrui', altro:'altro'
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   COLLEGAMENTO
+   ══════════════════════════════════════════════════════════════════ */
+const Sessione = {
+  chiave:'fgf.admin.sessione',
+  dati:null,
+  leggi(){ try{ return JSON.parse(localStorage.getItem(this.chiave)||'null'); }catch(e){ return null; } },
+  scrivi(s){ this.dati=s; try{ s?localStorage.setItem(this.chiave,JSON.stringify(s)):localStorage.removeItem(this.chiave); }catch(e){} }
+};
+
+async function chiama(via, opz={}, riprova=true){
+  const t = {'Content-Type':'application/json','apikey':CFG.key, ...(opz.headers||{})};
+  if(Sessione.dati?.access_token) t['Authorization'] = 'Bearer ' + Sessione.dati.access_token;
+  const r = await fetch(CFG.url.replace(/\/$/,'') + via, {...opz, headers:t});
+  if(r.status === 401 && riprova && Sessione.dati?.refresh_token){
+    if(await rinnova()) return chiama(via, opz, false);
+  }
+  const testo = await r.text();
+  let d = null;
+  try{ d = testo ? JSON.parse(testo) : null; }catch(e){ d = testo; }
+  if(!r.ok) throw new Error(d?.msg || d?.message || d?.error_description || d?.error || ('errore ' + r.status));
+  return d;
+}
+
+async function rinnova(){
+  try{
+    const d = await chiama('/auth/v1/token?grant_type=refresh_token',
+      {method:'POST', body:JSON.stringify({refresh_token:Sessione.dati.refresh_token})}, false);
+    Sessione.scrivi(d);
+    return true;
+  }catch(e){ Sessione.scrivi(null); return false; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DATI
+   ══════════════════════════════════════════════════════════════════ */
+const D = { riepilogo:null, recensioni:[], utenti:[], caricato:false };
+
+async function scarica(){
+  const [riep, rec, ut] = await Promise.all([
+    chiama('/rest/v1/rpc/riepilogo_admin', {method:'POST', body:'{}'}).catch(()=>null),
+    chiama('/rest/v1/coda_moderazione?select=*&order=creato_il.desc').catch(()=>[]),
+    chiama('/rest/v1/rpc/elenco_utenti', {method:'POST', body:'{}'}).catch(()=>[])
+  ]);
+  D.riepilogo = Array.isArray(riep) ? riep[0] : riep;
+  D.recensioni = Array.isArray(rec) ? rec : [];
+  D.utenti = Array.isArray(ut) ? ut : [];
+  D.caricato = true;
+  const inCoda = D.recensioni.filter(r => r.segnalazioni > 0 || r.stato === 'nascosta').length;
+  const p = $('#pastiglia-coda');
+  p.hidden = inCoda === 0;
+  p.textContent = inCoda;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   1 · RIEPILOGO
+   ══════════════════════════════════════════════════════════════════ */
+function disegnaRiepilogo(){
+  const r = D.riepilogo || {};
+  const rec = D.recensioni;
+
+  // recensioni degli ultimi 30 giorni, una barra al giorno
+  const oggi = new Date(); oggi.setHours(0,0,0,0);
+  const giorni = [...Array(30)].map((_,i)=>{
+    const d = new Date(oggi); d.setDate(d.getDate() - (29 - i));
+    return {d, n: rec.filter(x => { const q = new Date(x.creato_il); q.setHours(0,0,0,0);
+      return q.getTime() === d.getTime(); }).length};
+  });
+  const massimo = Math.max(1, ...giorni.map(g=>g.n));
+
+  // come si distribuiscono i voti
+  const voti = [5,4,3,2,1].map(v => ({v, n: rec.filter(x=>x.voto===v).length}));
+  const totVoti = Math.max(1, rec.length);
+
+  // stati, in ciambella
+  const stati = Object.keys(STATI).map(s => ({s, n: rec.filter(x=>x.stato===s).length}));
+  const totStati = Math.max(1, stati.reduce((t,x)=>t+x.n,0));
+  let angolo = 0;
+  const fette = stati.filter(x=>x.n).map(x=>{
+    const quota = x.n / totStati, inizio = angolo; angolo += quota;
+    const arco = (p0, p1, raggio) => {
+      const a0 = p0*2*Math.PI - Math.PI/2, a1 = p1*2*Math.PI - Math.PI/2;
+      return [50+raggio*Math.cos(a0), 50+raggio*Math.sin(a0), 50+raggio*Math.cos(a1), 50+raggio*Math.sin(a1)];
+    };
+    const [x0,y0,x1,y1] = arco(inizio, angolo, 40);
+    const grande = quota > .5 ? 1 : 0;
+    return `<path d="M ${x0} ${y0} A 40 40 0 ${grande} 1 ${x1} ${y1}" fill="none"
+             stroke="${STATI[x.s].c}" stroke-width="17" stroke-linecap="butt"/>`;
+  }).join('');
+
+  // i luoghi più recensiti
+  const perLuogo = {};
+  rec.forEach(x => { (perLuogo[x.luogo_nome] ||= {n:0, somma:0, comune:x.comune});
+    perLuogo[x.luogo_nome].n++; perLuogo[x.luogo_nome].somma += x.voto; });
+  const classifica = Object.entries(perLuogo)
+    .map(([nome,v]) => ({nome, n:v.n, media:v.somma/v.n, comune:v.comune}))
+    .sort((a,b) => b.n - a.n || b.media - a.media).slice(0, 8);
+
+  // le città più attive
+  const perComune = {};
+  rec.forEach(x => { if(x.comune) perComune[x.comune] = (perComune[x.comune]||0) + 1; });
+  const citta = Object.entries(perComune).sort((a,b)=>b[1]-a[1]).slice(0, 8);
+
+  $('#p-riepilogo').innerHTML = `
+    <div class="occhiello">In breve</div>
+    <div class="numeri">
+      <div class="numero"><b>${r.recensioni_totali ?? rec.length}</b><span>recensioni in tutto</span></div>
+      <div class="numero ${(r.segnalate||0) > 0 ? 'allerta':''}"><b>${r.segnalate ?? 0}</b><span>con segnalazioni</span></div>
+      <div class="numero"><b>${r.utenti ?? D.utenti.length}</b><span>persone iscritte</span></div>
+      <div class="numero"><b>${r.luoghi_recensiti ?? 0}</b><span>locali recensiti</span></div>
+      <div class="numero"><b>${r.voto_medio ? String(r.voto_medio).replace('.',',') : '—'}</b><span>voto medio</span></div>
+      <div class="numero"><b>${r.recensioni_7g ?? 0}</b><span>negli ultimi 7 giorni</span></div>
+      <div class="numero"><b>${r.nascoste ?? 0}</b><span>nascoste</span></div>
+      <div class="numero"><b>${r.rimosse ?? 0}</b><span>rimosse</span></div>
+    </div>
+
+    <div class="occhiello">Ultimi 30 giorni</div>
+    <div class="riquadro">
+      <div class="barre">
+        ${giorni.map(g=>`<div class="barra" style="height:${Math.round(g.n/massimo*100)}%"
+          title="${giorno(g.d)}: ${g.n}"></div>`).join('')}
+      </div>
+      <div class="asse"><span>${giorno(giorni[0].d)}</span><span>${giorno(giorni[29].d)}</span></div>
+    </div>
+
+    <div class="occhiello">Come votano</div>
+    <div class="riquadro">
+      ${voti.map(v=>`<div class="riga-voto">
+        <span class="et">${v.v} ${icona('i-stella-piena','ico sm')}</span>
+        <span class="canale"><span class="pieno" style="width:${Math.round(v.n/totVoti*100)}%"></span></span>
+        <span class="n">${v.n}</span></div>`).join('')}
+    </div>
+
+    <div class="occhiello">Stato delle recensioni</div>
+    <div class="riquadro">
+      <div class="ciambella">
+        <svg viewBox="0 0 100 100" style="width:118px;height:118px;flex:0 0 auto">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--grano-2)" stroke-width="17"/>
+          ${fette}
+          <text x="50" y="54" text-anchor="middle" font-family="Fraunces,serif" font-weight="900"
+                font-size="20" fill="#4A0F1C">${rec.length}</text>
+        </svg>
+        <div class="legenda">
+          ${stati.map(x=>`<div><i style="background:${STATI[x.s].c}"></i>${STATI[x.s].et}: <b>${x.n}</b></div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="occhiello">Locali più recensiti</div>
+    <div class="riquadro">
+      ${classifica.length ? `<table class="tabella">
+        <tr><th>Locale</th><th>Voti</th><th>Media</th></tr>
+        ${classifica.map(c=>`<tr>
+          <td><b>${esc(c.nome)}</b><br><span style="color:var(--muto);font-size:12px">${esc(c.comune||'')}</span></td>
+          <td>${c.n}</td><td>${c.media.toFixed(1).replace('.',',')}</td></tr>`).join('')}
+      </table>` : '<p style="color:var(--muto);font-size:13.5px">Ancora nessuna recensione.</p>'}
+    </div>
+
+    <div class="occhiello">Città più attive</div>
+    <div class="riquadro">
+      ${citta.length ? citta.map(([c,n])=>`<div class="riga-voto">
+        <span class="et" style="width:auto;min-width:92px">${esc(c)}</span>
+        <span class="canale"><span class="pieno" style="width:${Math.round(n/citta[0][1]*100)}%;background:var(--bordeaux-3)"></span></span>
+        <span class="n">${n}</span></div>`).join('')
+      : '<p style="color:var(--muto);font-size:13.5px">Nessun dato.</p>'}
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   2 · DA CONTROLLARE  ·  3 · TUTTE LE RECENSIONI
+   ══════════════════════════════════════════════════════════════════ */
+function scheda(r){
+  const st = STATI[r.stato] || STATI.pubblicata;
+  const motivi = r.motivi || [];
+  return `<div class="rec ${r.segnalazioni>0?'segnalata':''} ${r.stato!=='pubblicata'?'nascosta':''}">
+    <div class="rec-cima">
+      <div class="faccia">${r.avatar_url ? `<img src="${esc(r.avatar_url)}" alt="">`
+        : esc((r.autore||'?').slice(0,1).toUpperCase())}</div>
+      <div class="rec-chi">
+        <b>${esc(r.autore || 'Utente sconosciuto')}</b>
+        <span>${quando(r.creato_il)}${r.aggiornato_il && r.aggiornato_il !== r.creato_il ? ' &middot; modificata' : ''}</span>
+        <div class="rec-luogo">${esc(r.luogo_nome)}</div>
+        <span>${esc(r.comune || '')}</span>
+      </div>
+      <div style="text-align:right">
+        ${stelline(r.voto)}
+        <div style="margin-top:7px"><span class="stato-tag" style="background:${st.c}1F;color:${st.c}">${st.et}</span></div>
+      </div>
+    </div>
+
+    ${r.testo ? `<div class="rec-testo">${esc(r.testo)}</div>` : '<div class="rec-testo" style="color:var(--muto)">(nessun testo)</div>'}
+
+    ${(r.foto_urls||[]).length ? `<div class="foto-fila">
+      ${r.foto_urls.map(f=>`<img src="${esc(f)}" alt="" data-lente="${esc(f)}">`).join('')}
+    </div>` : ''}
+
+    ${motivi.length ? `<div class="motivi">
+      <b>${motivi.length} ${motivi.length===1?'segnalazione':'segnalazioni'}</b>
+      ${motivi.map(m=>`&bull; ${esc(MOTIVI[m.motivo]||m.motivo)}${m.nota?': '+esc(m.nota):''}`).join('<br>')}
+    </div>` : ''}
+
+    <div class="azioni">
+      ${r.stato !== 'pubblicata' ? `<button class="azione verde" data-modera="${r.id}" data-stato="pubblicata">
+        ${icona('i-ok','ico sm')}Pubblica</button>` : ''}
+      ${r.stato !== 'nascosta' ? `<button class="azione gialla" data-modera="${r.id}" data-stato="nascosta">
+        ${icona('i-occhio-no','ico sm')}Nascondi</button>` : ''}
+      ${r.segnalazioni > 0 ? `<button class="azione" data-modera="${r.id}" data-stato="${r.stato}" data-azzera="1">
+        ${icona('i-bandiera','ico sm')}Segnalazioni infondate</button>` : ''}
+      <button class="azione rossa" data-elimina="${r.id}">${icona('i-cestino','ico sm')}Elimina</button>
+      ${r.lat ? `<a class="azione" href="https://www.google.com/maps?q=${r.lat},${r.lng}" target="_blank" rel="noopener">
+        ${icona('i-pin','ico sm')}Vedi dov'&egrave;</a>` : ''}
+    </div>
+  </div>`;
+}
+
+function disegnaCoda(){
+  const daVedere = D.recensioni
+    .filter(r => r.segnalazioni > 0 || r.stato === 'nascosta')
+    .sort((a,b) => b.segnalazioni - a.segnalazioni || new Date(b.creato_il) - new Date(a.creato_il));
+
+  $('#p-coda').innerHTML = daVedere.length ? `
+    <div class="avviso">${icona('i-bandiera','ico sm')}
+      <div>Qui finisce quello che qualcuno ha segnalato o che &egrave; stato nascosto in automatico
+      alla terza segnalazione. Controlla e decidi: pubblicare, tenere nascosto o eliminare.</div></div>
+    <div class="occhiello">${daVedere.length} da controllare</div>
+    ${daVedere.map(scheda).join('')}`
+  : `<div class="vuoto">${icona('i-ok','ico lg')}<b>Niente da controllare</b>
+     <p>Nessuna segnalazione in sospeso.</p></div>`;
+  collega();
+}
+
+let filtri = {stato:'', voto:'', cerca:''};
+
+function disegnaRecensioni(){
+  let elenco = [...D.recensioni];
+  if(filtri.stato) elenco = elenco.filter(r=>r.stato===filtri.stato);
+  if(filtri.voto)  elenco = elenco.filter(r=>String(r.voto)===filtri.voto);
+  if(filtri.cerca){
+    const q = filtri.cerca.toLowerCase();
+    elenco = elenco.filter(r => (r.luogo_nome||'').toLowerCase().includes(q)
+      || (r.testo||'').toLowerCase().includes(q) || (r.autore||'').toLowerCase().includes(q)
+      || (r.comune||'').toLowerCase().includes(q));
+  }
+
+  $('#p-recensioni').innerHTML = `
+    <div class="filtri">
+      <select id="f-stato">
+        <option value="">Tutti gli stati</option>
+        ${Object.entries(STATI).map(([id,s])=>`<option value="${id}" ${filtri.stato===id?'selected':''}>${s.et}</option>`).join('')}
+      </select>
+      <select id="f-voto">
+        <option value="">Tutti i voti</option>
+        ${[5,4,3,2,1].map(v=>`<option value="${v}" ${filtri.voto===String(v)?'selected':''}>${v} stelle</option>`).join('')}
+      </select>
+      <input id="f-cerca" type="search" placeholder="Cerca locale, testo, autore, citt&agrave;" value="${esc(filtri.cerca)}">
+    </div>
+    <div class="occhiello">${elenco.length} ${elenco.length===1?'recensione':'recensioni'}</div>
+    ${elenco.length ? elenco.map(scheda).join('')
+      : `<div class="vuoto">${icona('i-lista','ico lg')}<b>Nessun risultato</b><p>Prova a togliere qualche filtro.</p></div>`}`;
+
+  $('#f-stato').addEventListener('change', e=>{ filtri.stato=e.target.value; disegnaRecensioni(); });
+  $('#f-voto').addEventListener('change',  e=>{ filtri.voto=e.target.value;  disegnaRecensioni(); });
+  let tempo;
+  $('#f-cerca').addEventListener('input', e=>{
+    clearTimeout(tempo); const v=e.target.value;
+    tempo=setTimeout(()=>{ filtri.cerca=v; disegnaRecensioni();
+      const c=$('#f-cerca'); if(c){ c.focus(); c.setSelectionRange(v.length,v.length); } }, 350);
+  });
+  collega();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   4 · UTENTI
+   ══════════════════════════════════════════════════════════════════ */
+function disegnaUtenti(){
+  const u = D.utenti;
+  $('#p-utenti').innerHTML = `
+    <div class="avviso">${icona('i-utenti','ico sm')}
+      <div>Di ogni persona vedi solo quello che serve a moderare. I dati sulla salute
+      (condizione, tessera, buoni) non sono accessibili da qui: non servono, e la legge non lo consente.</div></div>
+    <div class="occhiello">${u.length} ${u.length===1?'iscritto':'iscritti'}</div>
+    <div class="riquadro" style="padding:6px 10px">
+      ${u.length ? `<table class="tabella">
+        <tr><th>Persona</th><th>Recensioni</th><th>Luoghi</th><th></th></tr>
+        ${u.map(x=>`<tr>
+          <td><div class="utente">
+            <div class="faccia" style="width:34px;height:34px">${x.avatar_url?`<img src="${esc(x.avatar_url)}" alt="">`:esc((x.nome||'?').slice(0,1).toUpperCase())}</div>
+            <div><b>${esc(x.nome||'Senza nome')}</b>${x.amministratore?'<span class="badge-admin">admin</span>':''}
+              <br><span style="color:var(--muto);font-size:12px">${esc(x.email||'')}</span>
+              <br><span style="color:var(--muto);font-size:11.5px">dal ${x.iscritto_il?quando(x.iscritto_il):'—'}</span></div>
+          </div></td>
+          <td>${x.recensioni}</td>
+          <td>${x.luoghi}</td>
+          <td>${x.amministratore ? '' : `<button class="azione rossa" data-utente="${x.id}" data-nome="${esc(x.nome||'')}">
+            ${icona('i-cestino','ico sm')}Elimina</button>`}</td>
+        </tr>`).join('')}
+      </table>` : '<p style="color:var(--muto);font-size:13.5px;padding:14px">Nessun iscritto.</p>'}
+    </div>`;
+  collega();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AZIONI
+   ══════════════════════════════════════════════════════════════════ */
+function collega(){
+  document.querySelectorAll('[data-lente]').forEach(im=>im.addEventListener('click',()=>{
+    $('#l-img').src = im.dataset.lente; $('#lente').hidden = false;
+  }));
+
+  document.querySelectorAll('[data-modera]').forEach(b=>b.addEventListener('click', async ()=>{
+    b.disabled = true; b.style.opacity = '.5';
+    try{
+      await chiama('/rest/v1/rpc/modera', {method:'POST', body:JSON.stringify({
+        p_id: +b.dataset.modera, p_stato: b.dataset.stato, p_azzera: b.dataset.azzera === '1'
+      })});
+      await aggiorna();
+    }catch(e){ avvisa('Non riesco: ' + e.message); b.disabled=false; b.style.opacity='1'; }
+  }));
+
+  document.querySelectorAll('[data-elimina]').forEach(b=>b.addEventListener('click', async ()=>{
+    if(!confirm('Eliminare questa recensione? Sparisce per tutti e non si recupera.')) return;
+    try{
+      await chiama(`/rest/v1/recensioni?id=eq.${b.dataset.elimina}`, {method:'DELETE'});
+      await aggiorna();
+    }catch(e){ avvisa('Non riesco: ' + e.message); }
+  }));
+
+  document.querySelectorAll('[data-utente]').forEach(b=>b.addEventListener('click', async ()=>{
+    const nome = b.dataset.nome || 'questa persona';
+    if(!confirm(`Eliminare ${nome}? Spariscono account, recensioni e tutto quello che ha salvato. Non si recupera.`)) return;
+    try{
+      await chiama('/rest/v1/rpc/elimina_utente', {method:'POST', body:JSON.stringify({p_id: b.dataset.utente})});
+      await aggiorna();
+    }catch(e){ avvisa('Non riesco: ' + e.message); }
+  }));
+}
+
+function avvisa(t){ alert(t); }
+
+/* ══════════════════════════════════════════════════════════════════
+   NAVIGAZIONE
+   ══════════════════════════════════════════════════════════════════ */
+const TITOLI = {'p-riepilogo':'Riepilogo','p-coda':'Da controllare','p-recensioni':'Recensioni','p-utenti':'Utenti'};
+
+document.querySelectorAll('.scheda').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.scheda').forEach(x=>x.setAttribute('aria-selected', x===t));
+  document.querySelectorAll('.pagina').forEach(p=>p.classList.toggle('attiva', p.id===t.dataset.pagina));
+  $('#titolo-pagina').textContent = TITOLI[t.dataset.pagina];
+  $('.destra')?.scrollTo(0,0);
+  window.scrollTo(0,0);
+}));
+
+$('#l-chiudi').addEventListener('click',()=>{ $('#lente').hidden = true; });
+$('#lente').addEventListener('click', e=>{ if(e.target.id==='lente') $('#lente').hidden = true; });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') $('#lente').hidden = true; });
+
+/* ══════════════════════════════════════════════════════════════════
+   ACCESSO E AVVIO
+   ══════════════════════════════════════════════════════════════════ */
+function attesa(dove){
+  $(dove).innerHTML = `<div class="caricando"><div class="anello"></div>Carico&hellip;</div>`;
+}
+
+async function aggiorna(){
+  ['#p-riepilogo','#p-coda','#p-recensioni','#p-utenti'].forEach(attesa);
+  try{
+    await scarica();
+    disegnaRiepilogo(); disegnaCoda(); disegnaRecensioni(); disegnaUtenti();
+  }catch(e){
+    $('#p-riepilogo').innerHTML = `<div class="vuoto"><b>Non riesco a leggere i dati</b><p>${esc(e.message)}</p></div>`;
+  }
+}
+
+async function entra(){
+  // la prova vera: il server risponde solo a chi e' amministratore
+  let admin = false;
+  try{ admin = await chiama('/rest/v1/rpc/sono_admin', {method:'POST', body:'{}'}); }catch(e){ admin = false; }
+  if(!admin){
+    Sessione.scrivi(null);
+    $('#msg').innerHTML = `<div class="errore">Questo account non &egrave; un amministratore.</div>`;
+    $('#porta').hidden = false;
+    $('#guscio').classList.remove('dentro');
+    return;
+  }
+  $('#porta').hidden = true;
+  $('#guscio').classList.add('dentro');
+  $('#chi').textContent = Sessione.dati?.user?.email || '';
+  await aggiorna();
+}
+
+$('#modulo').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const b = $('#a-vai'); b.disabled = true; b.style.opacity = '.6'; b.textContent = 'Un attimo…';
+  $('#msg').innerHTML = '';
+  try{
+    const d = await chiama('/auth/v1/token?grant_type=password',
+      {method:'POST', body:JSON.stringify({email:$('#a-email').value.trim(), password:$('#a-pwd').value})}, false);
+    Sessione.scrivi(d);
+    await entra();
+  }catch(err){
+    $('#msg').innerHTML = `<div class="errore">${/Invalid login/i.test(err.message)
+      ? 'Email o password non corrette.' : esc(err.message)}</div>`;
+  }
+  b.disabled = false; b.style.opacity = '1'; b.textContent = 'Entra';
+});
+
+$('#b-esci').addEventListener('click', async ()=>{
+  try{ await chiama('/auth/v1/logout', {method:'POST'}); }catch(e){}
+  Sessione.scrivi(null);
+  $('#guscio').classList.remove('dentro');
+  $('#porta').hidden = false;
+});
+$('#b-aggiorna').addEventListener('click', aggiorna);
+
+/* ─────────────────────────────── avvio */
+Sessione.dati = Sessione.leggi();
+if(Sessione.dati) entra(); else $('#porta').hidden = false;
+</script>
+</body>
+</html>

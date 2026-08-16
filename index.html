@@ -496,6 +496,173 @@ svg{display:block}
 .esiti button:active{background:var(--grano)}
 .esiti .reg{color:var(--muto);font-size:12px;margin-left:auto;text-align:right}
 
+/* ───────────────── la parte tecnica, richiudibile ──────────────────────
+   La provenienza del dato serve a chi vuole capire perche' un locale e'
+   classificato cosi'. A chi vuole solo sapere dove mangiare, no: quindi
+   sta chiusa, e si apre solo se la si cerca. */
+.tecnica{background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);margin-bottom:12px;overflow:hidden}
+.apri-tecnica{
+  width:100%;padding:15px 16px;display:flex;align-items:center;gap:9px;
+  font-size:12.5px;font-weight:600;color:var(--muto);
+}
+.apri-tecnica .freccetta{margin-left:auto;transform:rotate(-90deg);transition:transform .2s}
+.apri-tecnica[aria-expanded="true"] .freccetta{transform:rotate(90deg)}
+.apri-tecnica[aria-expanded="true"]{border-bottom:1px solid var(--linea)}
+.tecnica .dentro{padding:14px 16px 4px}
+.tecnica .dentro[hidden]{display:none}
+
+.azioni-testa{display:flex;gap:8px;padding:14px 0 0;flex-wrap:wrap}
+.azioni-testa .btn{flex:1 1 30%;min-width:96px}
+
+/* ─────────────────────────── recensioni ───────────────────────────────── */
+.stelle{display:inline-flex;gap:2px;color:var(--l3)}
+.stelle svg{width:16px;height:16px}
+.stelle .spenta{color:var(--linea)}
+.stelle-grandi{display:flex;gap:8px;justify-content:center;margin:6px 0 14px}
+.stelle-grandi button{padding:5px;color:var(--linea)}
+.stelle-grandi button[aria-pressed="true"]{color:var(--l3)}
+.stelle-grandi svg{width:38px;height:38px}
+.voce-voto{text-align:center;font-size:13px;color:var(--muto);margin-bottom:16px;min-height:18px}
+
+.media{display:flex;align-items:center;gap:12px;padding-bottom:14px}
+.media .cifra-voto{
+  font-family:Fraunces,serif;font-weight:900;font-size:34px;line-height:1;
+  font-variation-settings:"opsz" 40;color:var(--bordeaux);
+}
+.media .quante{font-size:12.5px;color:var(--muto)}
+
+.rece{padding:14px 0;border-top:1px solid var(--linea)}
+.rece-testa{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rece-faccia{
+  width:36px;height:36px;border-radius:50%;overflow:hidden;flex:0 0 auto;
+  background:var(--grano-2);display:grid;place-items:center;color:var(--bordeaux);
+}
+.rece-faccia img{width:100%;height:100%;object-fit:cover}
+.rece-chi{flex:1;min-width:0}
+.rece-chi b{display:block;font-size:13.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rece-chi span{font-size:11.5px;color:var(--muto)}
+.rece-testo{font-size:13.5px;line-height:1.55;white-space:pre-wrap;margin-top:4px}
+.rece-azioni{display:flex;gap:14px;margin-top:9px}
+.rece-azioni button{font-size:11.5px;font-weight:600;color:var(--muto);display:flex;align-items:center;gap:5px}
+.rece-mia{background:var(--grano);border-radius:var(--r-s);padding:12px;margin-top:12px;border-top:none}
+.etichetta-mia{
+  background:var(--bordeaux);color:#fff;border-radius:999px;padding:2px 8px;
+  font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-left:6px;
+}
+.nascosta{opacity:.55}
+.avviso-pubblico{
+  display:flex;gap:10px;background:#FBF2DF;border-radius:var(--r-s);
+  padding:12px;font-size:12.5px;line-height:1.5;color:#6B4E12;margin-bottom:14px;
+}
+
+/* ─────────────────── aggiunta di un luogo proprio ─────────────────────── */
+.galleria{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.scatto{
+  position:relative;aspect-ratio:1;border-radius:var(--r-s);overflow:hidden;
+  border:1px solid var(--linea);background:var(--grano-2);
+}
+.scatto img{width:100%;height:100%;object-fit:cover;display:block}
+.scatto .togli-foto{
+  position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;
+  background:rgba(20,4,9,.72);color:#fff;display:grid;place-items:center;
+}
+.scatto .togli-foto svg{width:14px;height:14px;stroke-width:2.4}
+.scatto .primo{
+  position:absolute;left:5px;bottom:5px;background:var(--bordeaux);color:#fff;
+  border-radius:999px;padding:2px 7px;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;
+}
+.aggiungi-scatto{
+  aspect-ratio:1;border:1.5px dashed var(--linea);border-radius:var(--r-s);
+  display:grid;place-items:center;color:var(--muto);background:var(--carta);
+}
+.aggiungi-scatto:active{transform:scale(.96)}
+.striscia-foto{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px}
+.striscia-foto::-webkit-scrollbar{display:none}
+.striscia-foto img{
+  height:150px;border-radius:var(--r-s);border:1px solid var(--linea);
+  flex:0 0 auto;object-fit:cover;
+}
+.quota{font-size:11.5px;color:var(--muto);margin-top:8px;text-align:center}
+.piu-fisso{
+  position:fixed;right:16px;bottom:calc(var(--tab) + 16px);z-index:950;
+  width:56px;height:56px;border-radius:50%;background:var(--bordeaux);color:#fff;
+  display:grid;place-items:center;box-shadow:0 6px 20px rgba(74,15,28,.4);
+}
+.piu-fisso:active{transform:scale(.93)}
+.piu-fisso svg{width:26px;height:26px;stroke-width:2}
+
+/* Il segnaposto sta fermo al centro ed e' la mappa a scorrere sotto:
+   con un dito solo si punta molto piu' facilmente che trascinando. */
+.scegli-mappa{
+  position:relative;height:230px;border-radius:var(--r-m);overflow:hidden;
+  border:1px solid var(--linea);margin-bottom:6px;
+}
+.scegli-mappa .tela{position:absolute;inset:0}
+.scegli-mappa .mirino{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);
+  pointer-events:none;color:var(--bordeaux);z-index:500;
+}
+.scegli-mappa .mirino svg{width:36px;height:36px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.scegli-mappa .perno{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:8px;height:8px;border-radius:50%;background:var(--bordeaux);
+  box-shadow:0 0 0 3px rgba(255,253,248,.9);pointer-events:none;z-index:500;
+}
+.scegli-mappa .qui{
+  position:absolute;right:10px;bottom:10px;z-index:600;
+  background:var(--carta);border-radius:999px;padding:8px 13px;
+  font-size:12px;font-weight:700;color:var(--bordeaux);
+  box-shadow:0 3px 10px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px;
+}
+.coord{font-size:11.5px;color:var(--muto);text-align:center;margin-bottom:16px}
+
+.griglia-liv{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.sc-liv{
+  display:flex;align-items:center;gap:11px;padding:11px 12px;
+  border:1.5px solid var(--linea);border-radius:var(--r-s);background:var(--carta);
+}
+.sc-liv[aria-pressed="true"]{border-color:var(--bordeaux);border-width:2px;padding:10.5px 11.5px}
+.sc-liv .pallo{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+.sc-liv b{font-size:13.5px;font-weight:600;flex:1}
+.anteprima-foto{width:100%;border-radius:var(--r-s);border:1px solid var(--linea);margin-top:10px}
+.marchio-mio{
+  display:inline-flex;align-items:center;gap:4px;background:var(--bordeaux);color:#fff;
+  border-radius:999px;padding:2px 8px;font-size:9.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.07em;margin-left:6px;
+}
+
+/* ─────────────────────── consenso e dati sanitari ─────────────────────── */
+.interruttore{
+  display:flex;align-items:center;gap:13px;padding:14px;border-radius:var(--r-m);
+  background:var(--carta);border:1.5px solid var(--linea);margin-bottom:14px;
+}
+.interruttore .testo{flex:1;min-width:0}
+.interruttore b{display:block;font-size:14.5px;font-weight:600;margin-bottom:3px}
+.interruttore span{font-size:12.5px;color:var(--muto);line-height:1.45}
+.leva{
+  flex:0 0 auto;width:52px;height:31px;border-radius:999px;background:var(--grano-3);
+  position:relative;transition:background .2s;
+}
+.leva::after{
+  content:"";position:absolute;top:3px;left:3px;width:25px;height:25px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.28);transition:transform .2s;
+}
+.leva[aria-checked="true"]{background:var(--l1)}
+.leva[aria-checked="true"]::after{transform:translateX(21px)}
+
+.chip-multi{display:flex;flex-wrap:wrap;gap:7px}
+.chip-multi button{
+  border:1.5px solid var(--linea);background:var(--carta);border-radius:999px;
+  padding:8px 13px;font-size:12.5px;font-weight:500;
+}
+.chip-multi button[aria-pressed="true"]{background:var(--bordeaux);color:#fff;border-color:var(--bordeaux)}
+.legge{font-size:12px;color:var(--muto);line-height:1.6}
+.legge h4{font-size:13px;font-weight:700;color:var(--inchiostro);margin:14px 0 5px}
+.legge p{margin-bottom:8px}
+.legge ul{margin:0 0 8px 18px}
+.legge li{margin-bottom:4px}
+
 /* ─────────────────────────── account ──────────────────────────────────── */
 .conto{
   margin:16px 14px 0;background:var(--carta);border:1px solid var(--linea);
@@ -813,6 +980,12 @@ svg{display:block}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-filtro" viewBox="0 0 24 24"><path d="M3.5 5.5h17M6.5 12h11M10 18.5h4"/></symbol>
   <symbol id="i-lente" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><path d="m16.3 16.3 4.2 4.2"/></symbol>
+  <symbol id="i-stella-piena" viewBox="0 0 24 24">
+    <path d="m12 3.4 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9L12 3.4Z" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-bandiera" viewBox="0 0 24 24">
+    <path d="M5 21V4M5 4h11l-1.8 3.6L16 11H5"/>
+  </symbol>
   <symbol id="i-nube" viewBox="0 0 24 24">
     <path d="M7 19.4a4.4 4.4 0 0 1-.5-8.8 6 6 0 0 1 11.5 1.6 3.9 3.9 0 0 1-.6 7.2H7Z"/>
   </symbol>
@@ -889,7 +1062,7 @@ svg{display:block}
       <div class="gemma" style="background:var(--bordeaux)"><svg class="ico sm"><use href="#i-piu"/></svg></div>
       <div class="testo">
         <h3>Aggiungilo tu, in un minuto</h3>
-        <p>Conosci un posto sicuro che qui non c&rsquo;&egrave;? Inseriscilo su OpenStreetMap: comparir&agrave; qui e in tutte le app che usano gli stessi dati.</p>
+        <p>Conosci un posto sicuro che qui non c&rsquo;&egrave;? Segna nome, punto sulla mappa, foto e note: resta fra i tuoi posti e ti segue ovunque.</p>
       </div>
     </div>
   </div>
@@ -968,12 +1141,18 @@ svg{display:block}
     <button class="scorc" id="s-buoni">
       <span class="cerchio"><svg class="ico sm"><use href="#i-buono"/></svg></span>
       <b>Buoni mensili</b><span>Quanto ti resta questo mese</span></button>
+    <button class="scorc" id="s-recensioni">
+      <span class="cerchio"><svg class="ico sm"><use href="#i-stella"/></svg></span>
+      <b>Le mie recensioni</b><span>Rileggile e correggile</span></button>
     <button class="scorc" id="s-profilo">
       <span class="cerchio"><svg class="ico sm"><use href="#i-scudo-cuore"/></svg></span>
       <b>Il mio profilo</b><span>Quanto devo stare attento</span></button>
   </div>
   <div id="salvati-corpo"></div>
 </section>
+
+<button class="piu-fisso" id="b-nuovo" aria-label="Aggiungi un locale">
+  <svg class="ico"><use href="#i-piu"/></svg></button>
 
 <div class="vetrina" id="vetrina" hidden></div>
 
@@ -1023,7 +1202,7 @@ svg{display:block}
     <div class="righino">
       <button id="s-livelli">Livelli</button>
       <button id="s-fonti">Fonti</button>
-      <span style="font-size:11px;color:#A98790">v1.0 &middot; 2026-08-16</span>
+      <span style="font-size:11px;color:#A98790">v1.5 &middot; 2026-08-16</span>
     </div>
     <div class="carico-mini" id="carico-mini">
       <span class="pulsa"></span>
@@ -1210,31 +1389,6 @@ const Pref = {
   }
 };
 
-/* I quattro profili non sono etichette decorative: cambiano davvero
-   quali livelli compaiono di default. Chi ha una diagnosi non deve
-   trovarsi in lista un locale senza garanzie sulla contaminazione. */
-const PROFILI = {
-  celiachia_alta:{
-    et:'Celiachia, alta sensibilità',
-    desc:'Anche tracce minime provocano una reazione. Mostro solo locali interamente senza glutine o con cucina fisicamente separata.',
-    livelli:['gf_100','cucina_dedicata']
-  },
-  celiachia:{
-    et:'Celiachia diagnosticata',
-    desc:'Mostro i locali sicuri e quelli certificati, più quelli da verificare. Resta fuori chi non offre garanzie sulla contaminazione.',
-    livelli:['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','dati_insufficienti']
-  },
-  cucino_per:{
-    et:'Cucino per un celiaco',
-    desc:'Stessa prudenza di chi ha la diagnosi: meglio scoprire ora che un locale non è adatto.',
-    livelli:['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','dati_insufficienti']
-  },
-  sensibilita:{
-    et:'Sensibilità al glutine',
-    desc:'Nessuna reazione autoimmune: mostro tutto, compresi i locali che offrono piatti senza glutine senza misure anti-contaminazione.',
-    livelli:['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','condivisa_senza_garanzie','dati_insufficienti']
-  }
-};
 
 /* Testo della carta. Formulazione volutamente netta: la parola che conta
    e' "malattia autoimmune", perche' e' quella che distingue una diagnosi
@@ -1257,6 +1411,163 @@ const CARTA = {
   zh:{lin:'中文', tit:'我患有乳糜泻',
     txt:'这是一种自身免疫性疾病，不是饮食偏好。\n\n我不能吃小麦、大麦、黑麦、斯佩尔特小麦、卡姆小麦和未经认证的燕麦。\n\n即使极少量的交叉污染也会让我生病：共用的器具、共用的煎炸油、料理台面、面包屑。\n\n请使用干净的器具和单独存放的食材为我准备餐食。如果做不到，也请告诉我。谢谢。'}
 };
+
+/* ══════════════════════════════════════════════════════════════════
+   PROFILO DI SALUTE
+   ------------------------------------------------------------------
+   Vive sul telefono come tutto il resto, ma puo' anche essere messo
+   al sicuro sul server. La differenza rispetto ai posti salvati e'
+   che qui serve un consenso esplicito, perche' sono dati sulla
+   salute: senza quel consenso non parte niente, e revocarlo cancella
+   subito quanto gia' caricato.
+   ══════════════════════════════════════════════════════════════════ */
+const INFORMATIVA_VERSIONE = '2026-08-16';
+
+const CONDIZIONI = {
+  celiachia:      'Celiachia diagnosticata',
+  dermatite:      'Dermatite erpetiforme',
+  sensibilita:    'Sensibilit\u00e0 al glutine non celiaca',
+  allergia_grano: 'Allergia al grano',
+  cucino_per:     'Cucino per un celiaco',
+  non_dico:       'Preferisco non dirlo'
+};
+
+const INTOLLERANZE = ['lattosio','frutta a guscio','arachidi','legumi','soia','uova',
+                      'pesce','crostacei','sesamo','nichel','solfiti','fruttosio','istamina'];
+
+const Salute = {
+  vuoto: {
+    condizione:'', sensibilita:'normale', diagnosi_il:'', centro:'', asl:'', regione:'',
+    intolleranze:[], farmaci:'', note:'', emergenza_nome:'', emergenza_tel:'',
+    tessera_ente:'', tessera_codice:'', tessera_scadenza:'', tessera_foto:null,
+    buoni_importo:0, buoni_spese:[]
+  },
+
+  dati(){
+    let d = Pref.leggi('salute', null);
+    if(!d){ d = this.migra(); Pref.scrivi('salute', d); }
+    return {...this.vuoto, ...d};
+  },
+
+  /* Le prime versioni tenevano tessera, buoni e profilo in tre cassetti
+     separati: li porto dentro l'unico deposito senza far perdere niente. */
+  migra(){
+    const d = {...this.vuoto};
+    const vecchioProfilo = Pref.leggi('profilo', null);
+    if(vecchioProfilo){
+      d.condizione = {celiachia_alta:'celiachia', celiachia:'celiachia',
+                      cucino_per:'cucino_per', sensibilita:'sensibilita'}[vecchioProfilo] || '';
+      d.sensibilita = vecchioProfilo === 'celiachia_alta' ? 'alta' : 'normale';
+    }
+    const t = Pref.leggi('tessera', null);
+    if(t){ d.tessera_ente=t.ente||''; d.tessera_codice=t.codice||''; d.tessera_foto=t.foto||null; }
+    const b = Pref.leggi('buoni', null);
+    if(b){ d.buoni_importo=b.importo||0; d.buoni_spese=b.spese||[]; }
+    return d;
+  },
+
+  scrivi(campi){
+    const d = {...this.dati(), ...campi};
+    Pref.scrivi('salute', d);
+    if(this.consenso() && Nube.dentro()){
+      clearTimeout(this._t);
+      this._t = setTimeout(()=>this.sincronizza(), 1200);
+    }
+    return d;
+  },
+
+  consenso(){ return Pref.leggi('consenso_salute', false) === true; },
+
+  async concedi(){
+    Pref.scrivi('consenso_salute', true);
+    Pref.scrivi('consenso_il', new Date().toISOString());
+    if(Nube.dentro()) await this.sincronizza();
+  },
+
+  async revoca(){
+    Pref.scrivi('consenso_salute', false);
+    Pref.scrivi('consenso_il', null);
+    if(Nube.dentro()){
+      try{ await Nube.chiama('/rest/v1/rpc/elimina_miei_dati_salute', {method:'POST', body:'{}'}); }
+      catch(e){ console.warn('revoca non propagata:', e.message); }
+    }
+  },
+
+  /* La foto della tessera sta in uno spazio non pubblico: per rivederla
+     serve un accesso valido, non basta indovinare l'indirizzo. */
+  async caricaFoto(dataUrl){
+    const id = Nube.sess?.user?.id; if(!id || !dataUrl) return null;
+    const bin = await (await fetch(dataUrl)).blob();
+    const via = `/storage/v1/object/tessere/${id}/tessera.jpg`;
+    await fetch(CFG.supabaseUrl.replace(/\/$/,'') + via, {
+      method:'POST',
+      headers:{'apikey':CFG.supabaseKey,'Authorization':'Bearer '+Nube.sess.access_token,
+               'x-upsert':'true','Content-Type':'image/jpeg'},
+      body: bin
+    });
+    return `${id}/tessera.jpg`;
+  },
+
+  async scaricaFoto(percorso){
+    if(!percorso || !Nube.dentro()) return null;
+    try{
+      const r = await fetch(CFG.supabaseUrl.replace(/\/$/,'') + '/storage/v1/object/tessere/' + percorso,
+        {headers:{'apikey':CFG.supabaseKey,'Authorization':'Bearer '+Nube.sess.access_token}});
+      if(!r.ok) return null;
+      const b = await r.blob();
+      return await new Promise(ok=>{ const f=new FileReader(); f.onload=()=>ok(f.result); f.readAsDataURL(b); });
+    }catch(e){ return null; }
+  },
+
+  async sincronizza(){
+    if(!this.consenso() || !Nube.dentro()) return;
+    const id = Nube.sess.user.id;
+    const d = this.dati();
+    const {tessera_foto, ...senzaFoto} = d;
+    try{
+      let percorso = null;
+      if(tessera_foto && tessera_foto.startsWith('data:')) percorso = await this.caricaFoto(tessera_foto);
+      await Nube.chiama('/rest/v1/profilo_salute?on_conflict=id',
+        {method:'POST', headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+         body:JSON.stringify([{
+           id, consenso:true, consenso_il: Pref.leggi('consenso_il', new Date().toISOString()),
+           consenso_versione: INFORMATIVA_VERSIONE,
+           dati: senzaFoto,
+           tessera_url: percorso || undefined
+         }])});
+    }catch(e){ console.warn('profilo di salute non sincronizzato:', e.message); }
+  },
+
+  async recupera(){
+    if(!Nube.dentro()) return;
+    try{
+      const r = await Nube.chiama(`/rest/v1/profilo_salute?id=eq.${Nube.sess.user.id}&select=*`);
+      const s = r?.[0]; if(!s || !s.consenso) return;
+      Pref.scrivi('consenso_salute', true);
+      if(s.consenso_il) Pref.scrivi('consenso_il', s.consenso_il);
+      const locale = this.dati();
+      const unito = {...locale, ...(s.dati||{})};
+      if(!unito.tessera_foto && s.tessera_url) unito.tessera_foto = await this.scaricaFoto(s.tessera_url);
+      Pref.scrivi('salute', unito);
+      applicaProfiloSalute();
+    }catch(e){ /* il profilo puo' non esistere ancora: nessun problema */ }
+  }
+};
+
+/* Il profilo di salute decide quali livelli mostrare di default. */
+function applicaProfiloSalute(){
+  const d = Salute.dati();
+  if(!d.condizione) return;
+  const rigido = d.sensibilita === 'alta' || d.condizione === 'dermatite';
+  const morbido = d.condizione === 'sensibilita';
+  S.livelli = new Set(
+    rigido  ? ['gf_100','cucina_dedicata'] :
+    morbido ? Object.keys(LIV) :
+              ['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','dati_insufficienti']);
+  S.alta = rigido;
+  disegnaSpettro();
+  sincronizza();
+}
 
 const STATI = {
   da_provare:{et:'Da provare', c:'#77604F'},
@@ -1746,7 +2057,7 @@ function cardRiga(l, destra1, destra2, stella=false){
   return `<div class="riga-card" role="button" tabindex="0" data-apri="${esc(l.k)}">
     <div class="gemma" style="background:${L1.c}">${icona('i-'+L1.ico.slice(2),'ico sm')}</div>
     <div class="riga-corpo">
-      <h3>${esc(l.nome)}</h3>
+      <h3>${esc(l.nome)}${l.origine==='mio'?`<span class="marchio-mio">tuo</span>`:''}</h3>
       <div class="meta">${esc(l.modo==='comprare' ? SPESA[l.cat].et : (TIPI[l.tipo]||''))}${l.marca?' · '+esc(l.marca):''}${l.comune?' · '+esc(l.comune):''}</div>
       <span class="tag-liv" style="background:${L1.c}1A;color:${L1.c}">${esc(L1.breve)}</span>
     </div>
@@ -2106,6 +2417,23 @@ const Nube = {
     this.profilo = {...(this.profilo||{}), ...campi};
   },
 
+  /* Uno scatto di un locale: spazio pubblico, come le foto profilo.
+     Non contiene nulla di sanitario, e l'indirizzo e' impossibile da indovinare. */
+  async caricaScatto(chiave, indice, dataUrl){
+    const id = this.sess?.user?.id; if(!id) return null;
+    try{
+      const bin = await (await fetch(dataUrl)).blob();
+      const nome = `${id}/${chiave.replace(/[^a-zA-Z0-9]/g,'_')}-${indice}.jpg`;
+      await fetch(CFG.supabaseUrl.replace(/\/$/,'') + '/storage/v1/object/luoghi/' + nome, {
+        method:'POST',
+        headers:{'apikey':CFG.supabaseKey,'Authorization':'Bearer '+this.sess.access_token,
+                 'x-upsert':'true','Content-Type':'image/jpeg'},
+        body: bin
+      });
+      return CFG.supabaseUrl.replace(/\/$/,'') + '/storage/v1/object/public/luoghi/' + nome;
+    }catch(e){ return null; }
+  },
+
   async caricaRitratto(dataUrl){
     const id = this.sess?.user?.id; if(!id) return null;
     const bin = await (await fetch(dataUrl)).blob();
@@ -2143,6 +2471,9 @@ const Nube = {
             k:r.chiave, nome:r.nome, lat:r.lat, lng:r.lng, modo:r.modo,
             liv:r.liv, cat:r.cat, tipo:r.tipo, comune:r.comune, tel:r.tel, sito:r.sito,
             coll:r.coll, stato:r.stato, nota:r.nota||'', orari:r.orari||'',
+            origine:r.origine||'osm', indirizzo:r.indirizzo||null,
+            foto: Array.isArray(r.foto_urls) && r.foto_urls.length ? r.foto_urls
+                : (r.foto_url ? [r.foto_url] : []),
             creato:r.creato_il, agg:r.aggiornato_il
           };
         }
@@ -2158,11 +2489,29 @@ const Nube = {
             liv:l.liv||null, cat:l.cat||null, tipo:l.tipo||null, comune:l.comune||null,
             tel:l.tel||null, sito:l.sito||null,
             coll:l.coll||'I miei posti', stato:l.stato||'da_provare',
-            nota:l.nota||'', orari:l.orari||''
+            nota:l.nota||'', orari:l.orari||'',
+            origine:l.origine||'osm', indirizzo:l.indirizzo||null,
+            foto_urls: (Array.isArray(l.foto) ? l.foto : (l.foto?[l.foto]:[]))
+                         .filter(f=>typeof f==='string' && f.startsWith('http'))
           });
         }
       }
       Archivio.scrivi(locali);
+
+      // gli scatti sono ancora dati grezzi nel telefono: li porto nello
+      // spazio file e sostituisco con l'indirizzo, altrimenti la memoria
+      // locale si riempie in fretta e non li rivedrei da un altro telefono
+      for(const l of Object.values(locali)){
+        if(l.origine !== 'mio' || !Array.isArray(l.foto)) continue;
+        let cambiato = false;
+        for(let i=0; i<l.foto.length; i++){
+          if(typeof l.foto[i] === 'string' && l.foto[i].startsWith('data:')){
+            const via = await this.caricaScatto(l.k, i, l.foto[i]);
+            if(via){ l.foto[i] = via; cambiato = true; }
+          }
+        }
+        if(cambiato){ l.agg = new Date().toISOString(); Archivio.salva(l); }
+      }
 
       if(perServer.length){
         await this.chiama('/rest/v1/salvati?on_conflict=utente_id,chiave',
@@ -2180,7 +2529,9 @@ const Nube = {
       Archivio.svuotaCoda();
 
       this.stato = 'acceso';
-      disegnaSalvati(); disegnaValigia();
+      Salute.recupera();
+      caricaMiei();
+      disegnaSalvati(); disegnaValigia(); disegnaMappa();
     }catch(e){
       this.stato = 'errore';
       console.warn('sincronizzazione non riuscita:', e.message);
@@ -2554,6 +2905,579 @@ function apriAccount(){
   });
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   RECENSIONI
+   ------------------------------------------------------------------
+   Sono pubbliche e firmate: chi le scrive lo sa prima di pubblicare.
+   Chiunque puo' leggerle, anche senza account. Chi trova qualcosa di
+   offensivo o falso puo' segnalarlo, e alla terza segnalazione la
+   recensione sparisce dalla vista in attesa di controllo.
+   ══════════════════════════════════════════════════════════════════ */
+const MOTIVI_ABUSO = {
+  offensiva:'Offensiva o irrispettosa',
+  falsa:'Falsa o ingannevole',
+  pubblicita:'Pubblicit\u00e0 o spam',
+  dati_personali:'Contiene dati personali altrui',
+  altro:'Altro'
+};
+
+const Rec = {
+  cache:new Map(),
+
+  async perLuogo(chiave, forza){
+    if(!Nube.attiva()) return [];
+    if(!forza && this.cache.has(chiave)) return this.cache.get(chiave);
+    try{
+      const via = `/rest/v1/recensioni?chiave=eq.${encodeURIComponent(chiave)}`
+                + `&select=*,autore:autori(nome,avatar_url)&order=creato_il.desc`;
+      const r = await Nube.chiama(via, {}, Nube.dentro());
+      const elenco = Array.isArray(r) ? r : [];
+      this.cache.set(chiave, elenco);
+      return elenco;
+    }catch(e){ return []; }
+  },
+
+  async mie(){
+    if(!Nube.dentro()) return [];
+    try{
+      const r = await Nube.chiama('/rest/v1/recensioni?select=*&order=creato_il.desc');
+      return Array.isArray(r) ? r : [];
+    }catch(e){ return []; }
+  },
+
+  async salva(luogo, voto, testo, foto){
+    const id = Nube.sess.user.id;
+    const indirizzi = [];
+    for(let i=0;i<foto.length;i++){
+      indirizzi.push(foto[i].startsWith('data:')
+        ? await this.caricaScatto(luogo.k, i, foto[i]) : foto[i]);
+    }
+    await Nube.chiama('/rest/v1/recensioni?on_conflict=autore_id,chiave',
+      {method:'POST', headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+       body:JSON.stringify([{
+         autore_id:id, chiave:luogo.k, luogo_nome:luogo.nome,
+         lat:luogo.lat, lng:luogo.lng, comune:luogo.comune||null,
+         voto, testo, foto_urls:indirizzi.filter(Boolean), stato:'pubblicata'
+       }])});
+    this.cache.delete(luogo.k);
+  },
+
+  async elimina(id, chiave){
+    await Nube.chiama(`/rest/v1/recensioni?id=eq.${id}`, {method:'DELETE'});
+    this.cache.delete(chiave);
+  },
+
+  async segnala(id, motivo, nota){
+    await Nube.chiama('/rest/v1/abusi',
+      {method:'POST', headers:{Prefer:'return=minimal'},
+       body:JSON.stringify([{recensione_id:id, chi:Nube.sess.user.id, motivo, nota:nota||null}])});
+  },
+
+  async caricaScatto(chiave, indice, dataUrl){
+    const id = Nube.sess?.user?.id; if(!id) return null;
+    try{
+      const bin = await (await fetch(dataUrl)).blob();
+      const nome = `${id}/${chiave.replace(/[^a-zA-Z0-9]/g,'_')}-r${indice}-${Date.now()}.jpg`;
+      await fetch(CFG.supabaseUrl.replace(/\/$/,'') + '/storage/v1/object/recensioni/' + nome, {
+        method:'POST',
+        headers:{'apikey':CFG.supabaseKey,'Authorization':'Bearer '+Nube.sess.access_token,
+                 'x-upsert':'true','Content-Type':'image/jpeg'},
+        body: bin
+      });
+      return CFG.supabaseUrl.replace(/\/$/,'') + '/storage/v1/object/public/recensioni/' + nome;
+    }catch(e){ return null; }
+  }
+};
+
+/* OpenStreetMap risponde in inglese: "yes", "no", "limited", "only".
+   Mostrarlo cosi' com'e' e' pigrizia, non trasparenza. */
+const DIETA = {yes:'s\u00ec', no:'no', only:'solo questo', limited:'in parte',
+               designated:'s\u00ec', dedicated:'s\u00ec'};
+const traduci = v => v ? (DIETA[String(v).toLowerCase()] || v) : '';
+
+const stelline = (n, grandi) =>
+  `<span class="stelle">${[1,2,3,4,5].map(i=>
+    `<svg class="${i<=n?'':'spenta'}"><use href="#i-stella-piena"/></svg>`).join('')}</span>`;
+
+const quandoBreve = iso => {
+  const g = Math.floor((Date.now() - new Date(iso)) / 86400000);
+  if(g < 1) return 'oggi';
+  if(g === 1) return 'ieri';
+  if(g < 30) return g + ' giorni fa';
+  return new Date(iso).toLocaleDateString('it-IT', {month:'long', year:'numeric'});
+};
+
+/* Il pannello che compare in fondo a ogni scheda di locale. */
+async function disegnaRecensioni(l){
+  const box = $('#pannello-rece'); if(!box) return;
+  if(!Nube.attiva()){ box.innerHTML=''; return; }
+
+  const tutte = (await Rec.perLuogo(l.k)) || [];
+  const mia = Nube.dentro() ? tutte.find(r=>r.autore_id === Nube.sess.user.id) : null;
+  const altrui = tutte.filter(r=>r!==mia && r.stato==='pubblicata');
+  const media = tutte.length ? (tutte.reduce((t,r)=>t+r.voto,0)/tutte.length) : 0;
+
+  box.innerHTML = `
+    <div class="occhiello">Recensioni</div>
+    ${tutte.length ? `<div class="media">
+      <span class="cifra-voto">${media.toFixed(1).replace('.',',')}</span>
+      <div>${stelline(Math.round(media))}
+        <div class="quante">${tutte.length} ${tutte.length===1?'recensione':'recensioni'}</div></div>
+    </div>` : `<p style="font-size:13px;color:var(--muto);line-height:1.5;padding-bottom:12px">
+      Nessuno ha ancora scritto niente. Se ci sei stato, il tuo racconto vale pi&ugrave; di dieci mappe.</p>`}
+
+    <button class="btn ${mia?'btn-vuoto':'btn-pieno'}" id="r-scrivi" style="width:100%">
+      ${icona(mia?'i-matita':'i-stella','ico sm')}${mia ? 'Modifica la tua recensione' : 'Scrivi una recensione'}</button>
+
+    ${mia ? `<div class="rece rece-mia">
+      <div class="rece-testa">
+        <div class="rece-faccia">${Nube.profilo?.avatar_url?`<img src="${esc(Nube.profilo.avatar_url)}" alt="">`:icona('i-io','ico sm')}</div>
+        <div class="rece-chi"><b>${esc(Nube.profilo?.nome||'Tu')}<span class="etichetta-mia">tua</span></b>
+          <span>${quandoBreve(mia.creato_il)}${mia.stato!=='pubblicata'?' &middot; in revisione':''}</span></div>
+        ${stelline(mia.voto)}
+      </div>
+      ${mia.testo?`<div class="rece-testo">${esc(mia.testo)}</div>`:''}
+      ${(mia.foto_urls||[]).length?`<div class="striscia-foto" style="margin-top:10px">
+        ${mia.foto_urls.map(f=>`<img src="${esc(f)}" alt="" data-guarda="${esc(f)}">`).join('')}</div>`:''}
+      <div class="rece-azioni"><button data-elimina-rece="${mia.id}">${icona('i-x','ico sm')}Elimina</button></div>
+    </div>` : ''}
+
+    ${altrui.map(r=>`<div class="rece">
+      <div class="rece-testa">
+        <div class="rece-faccia">${r.autore?.avatar_url?`<img src="${esc(r.autore.avatar_url)}" alt="">`:icona('i-io','ico sm')}</div>
+        <div class="rece-chi"><b>${esc(r.autore?.nome||'Utente')}</b><span>${quandoBreve(r.creato_il)}</span></div>
+        ${stelline(r.voto)}
+      </div>
+      ${r.testo?`<div class="rece-testo">${esc(r.testo)}</div>`:''}
+      ${(r.foto_urls||[]).length?`<div class="striscia-foto" style="margin-top:10px">
+        ${r.foto_urls.map(f=>`<img src="${esc(f)}" alt="" data-guarda="${esc(f)}">`).join('')}</div>`:''}
+      <div class="rece-azioni"><button data-segnala="${r.id}">${icona('i-bandiera','ico sm')}Segnala</button></div>
+    </div>`).join('')}`;
+
+  $('#r-scrivi').addEventListener('click',()=>{
+    if(!Nube.dentro()) return apriModale('Serve un account',
+      '<p>Per scrivere una recensione crea un account dalla scheda Io: serve a firmarla.</p>');
+    apriRecensione(l, mia);
+  });
+  box.querySelectorAll('[data-elimina-rece]').forEach(b=>b.addEventListener('click',()=>{
+    apriModale('Eliminare la recensione?',
+      `<p>Sparisce per tutti, subito.</p>
+       <button class="mini" id="conf-el-rece" style="width:100%;margin-top:6px;background:#FBE8EA;color:#7A1421">S&igrave;, elimina</button>`);
+    $('#conf-el-rece').addEventListener('click', async ()=>{
+      await Rec.elimina(b.dataset.eliminaRece, l.k);
+      $('#modale').hidden=true; disegnaRecensioni(l);
+    });
+  }));
+  box.querySelectorAll('[data-segnala]').forEach(b=>b.addEventListener('click',()=>apriSegnalazione(b.dataset.segnala)));
+  box.querySelectorAll('[data-guarda]').forEach(im=>im.addEventListener('click',()=>
+    apriVetrina(`<img src="${im.dataset.guarda}" alt="" style="width:100%;border-radius:12px">`)));
+}
+
+function apriRecensione(l, esistente){
+  let voto = esistente?.voto || 0;
+  let foto = [...(esistente?.foto_urls || [])];
+  const parole = {1:'Male',2:'Cos\u00ec cos\u00ec',3:'Discreto',4:'Buono',5:'Ottimo'};
+
+  const disegna = () => {
+    $('#foglio').innerHTML = `
+      <div class="f-testa">
+        <div class="f-nastro" style="background:var(--l3)"></div>
+        <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+        <h2>${esistente?'Modifica la recensione':'Come &egrave; andata?'}</h2>
+        <div class="tipo">${esc(l.nome)}</div>
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Il tuo voto</div>
+        <div class="stelle-grandi">
+          ${[1,2,3,4,5].map(i=>`<button data-voto="${i}" aria-pressed="${voto>=i}" aria-label="${i} stelle">
+            <svg><use href="#i-stella-piena"/></svg></button>`).join('')}
+        </div>
+        <div class="voce-voto">${voto?esc(parole[voto]):'tocca le stelle'}</div>
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Cosa vuoi raccontare</div>
+        <div class="campo"><textarea id="r-testo" placeholder="Come ti hanno trattato quando hai detto che sei celiaco? Cucina separata? Cosa hai mangiato?">${esc(esistente?.testo||'')}</textarea></div>
+        <p style="font-size:12.5px;color:var(--muto);line-height:1.5;padding-bottom:10px">
+          Racconta com&rsquo;&egrave; andata, non cosa pensi di chi ci lavora. Un fatto preciso
+          aiuta molto pi&ugrave; di un giudizio.</p>
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Foto</div>
+        <div class="galleria">
+          ${foto.map((f,i)=>`<div class="scatto"><img src="${esc(f)}" alt="">
+            <button class="togli-foto" data-tr="${i}" aria-label="Togli">${icona('i-x','ico sm')}</button></div>`).join('')}
+          <button class="aggiungi-scatto" id="r-piu-foto" aria-label="Aggiungi una foto">
+            ${icona('i-macchina-foto','ico lg')}</button>
+        </div>
+        <input id="r-foto" type="file" accept="image/*" multiple hidden>
+      </div>
+
+      <div class="pannello">
+        <div class="avviso-pubblico">${icona('i-avviso','ico sm')}
+          <div>Questa recensione sar&agrave; <b>visibile a tutti</b>, firmata con il tuo nome e la tua foto profilo.
+          Puoi modificarla o cancellarla quando vuoi.</div></div>
+        <button class="btn btn-pieno" id="r-pubblica" style="width:100%">
+          ${icona('i-stella','ico sm')}${esistente?'Salva le modifiche':'Pubblica'}</button>
+      </div>`;
+
+    $('#foglio').classList.add('aperto');
+    $('#f-chiudi').addEventListener('click',()=>{ $('#foglio').classList.remove('aperto'); apriDettaglio(l.k); });
+    document.querySelectorAll('[data-voto]').forEach(b=>b.addEventListener('click',()=>{
+      voto = +b.dataset.voto; memoria = $('#r-testo').value; disegna();
+    }));
+    $('#r-piu-foto').addEventListener('click',()=>$('#r-foto').click());
+    $('#r-foto').addEventListener('change', async e=>{
+      const scelte=[...(e.target.files||[])]; if(!scelte.length) return;
+      memoria = $('#r-testo').value;
+      for(const f of scelte){
+        try{ foto.push(await riduciImmagine(f, 1300, .74)); }catch(err){}
+      }
+      e.target.value=''; disegna();
+    });
+    document.querySelectorAll('[data-tr]').forEach(b=>b.addEventListener('click',()=>{
+      memoria = $('#r-testo').value; foto.splice(+b.dataset.tr,1); disegna();
+    }));
+    if(memoria !== null) $('#r-testo').value = memoria;
+
+    $('#r-pubblica').addEventListener('click', async ()=>{
+      if(!voto) return apriModale('Manca il voto','<p>Tocca almeno una stella.</p>');
+      const b=$('#r-pubblica'); b.disabled=true; b.style.opacity='.6';
+      try{
+        await Rec.salva(l, voto, $('#r-testo').value.trim(), foto);
+        $('#foglio').classList.remove('aperto');
+        apriDettaglio(l.k);
+      }catch(e){
+        apriModale('Non riesco a pubblicare', `<p>${esc(e.message)}</p>`);
+        b.disabled=false; b.style.opacity='1';
+      }
+    });
+  };
+
+  let memoria = null;
+  disegna();
+}
+
+function apriSegnalazione(id){
+  if(!Nube.dentro()) return apriModale('Serve un account','<p>Per segnalare serve essere collegati.</p>');
+  apriModale('Segnalare questa recensione',
+    `<p>Cosa non va? La segnalazione &egrave; anonima per chi l&rsquo;ha scritta.</p>
+     <div class="griglia-chip" id="g-motivi">
+       ${Object.entries(MOTIVI_ABUSO).map(([id,et])=>`<button class="chip" data-motivo="${id}">${et}</button>`).join('')}
+     </div>
+     <div class="campo" style="margin-top:14px"><label>Vuoi aggiungere qualcosa?</label>
+       <input id="sg-nota" type="text" placeholder="facoltativo"></div>`);
+  document.querySelectorAll('[data-motivo]').forEach(b=>b.addEventListener('click', async ()=>{
+    try{
+      await Rec.segnala(id, b.dataset.motivo, $('#sg-nota').value.trim());
+      $('#modale').hidden=true;
+      apriModale('Grazie','<p>La controllo appena posso. Se le segnalazioni sono molte, la recensione sparisce subito in attesa di verifica.</p>');
+    }catch(e){
+      $('#modale').hidden=true;
+      apriModale('Gi&agrave; segnalata','<p>Risulta che tu l&rsquo;abbia gi&agrave; segnalata.</p>');
+    }
+  }));
+}
+
+/* Il pannello personale: tutte le mie recensioni, per rileggerle e correggerle. */
+async function apriMieRecensioni(){
+  $('#foglio').innerHTML = `
+    <div class="f-testa">
+      <div class="f-nastro" style="background:var(--l3)"></div>
+      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+      <h2>Le mie recensioni</h2>
+      <div class="tipo">quello che ho raccontato</div>
+    </div>
+    <div class="pannello" id="mie-rece">
+      <p style="font-size:13px;color:var(--muto)">Un momento&hellip;</p>
+    </div>`;
+  $('#foglio').classList.add('aperto');
+  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+
+  const mie = await Rec.mie();
+  const box = $('#mie-rece');
+  if(!mie.length){
+    box.innerHTML = `<div class="vuoto">${icona('i-stella','ico lg')}<b>Ancora nessuna</b>
+      <p>Apri un locale e racconta com&rsquo;&egrave; andata: aiuti chi ci andr&agrave; dopo di te.</p></div>`;
+    return;
+  }
+  box.innerHTML = mie.map(r=>`<div class="rece ${r.stato!=='pubblicata'?'nascosta':''}">
+    <div class="rece-testa">
+      <div class="rece-chi"><b>${esc(r.luogo_nome)}</b>
+        <span>${esc(r.comune||'')}${r.comune?' &middot; ':''}${quandoBreve(r.creato_il)}${r.stato!=='pubblicata'?' &middot; in revisione':''}</span></div>
+      ${stelline(r.voto)}
+    </div>
+    ${r.testo?`<div class="rece-testo">${esc(r.testo)}</div>`:''}
+    ${(r.foto_urls||[]).length?`<div class="striscia-foto" style="margin-top:10px">
+      ${r.foto_urls.map(f=>`<img src="${esc(f)}" alt="" data-guarda="${esc(f)}">`).join('')}</div>`:''}
+    <div class="rece-azioni">
+      <button data-vai="${esc(r.chiave)}">${icona('i-pin','ico sm')}Vai al locale</button>
+      <button data-el-mia="${r.id}" data-ch="${esc(r.chiave)}">${icona('i-x','ico sm')}Elimina</button>
+    </div>
+  </div>`).join('');
+
+  box.querySelectorAll('[data-vai]').forEach(b=>b.addEventListener('click',()=>{
+    const l = S.locali.get(b.dataset.vai);
+    if(l){ $('#foglio').classList.remove('aperto'); setTimeout(()=>apriDettaglio(l.k), 250); }
+    else apriModale('Locale non caricato','<p>Cerca la zona dalla mappa e riprova: la scheda comparir&agrave;.</p>');
+  }));
+  box.querySelectorAll('[data-el-mia]').forEach(b=>b.addEventListener('click', async ()=>{
+    await Rec.elimina(b.dataset.elMia, b.dataset.ch);
+    apriMieRecensioni();
+  }));
+  box.querySelectorAll('[data-guarda]').forEach(im=>im.addEventListener('click',()=>
+    apriVetrina(`<img src="${im.dataset.guarda}" alt="" style="width:100%;border-radius:12px">`)));
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AGGIUNGERE UN LUOGO PROPRIO
+   ------------------------------------------------------------------
+   Non finisce su OpenStreetMap: resta tuo, e viaggia con l'account se
+   ne hai uno. Serve per i posti che conosci e che sulla mappa aperta
+   non ci sono ancora — e sono tanti.
+   ══════════════════════════════════════════════════════════════════ */
+let mappaScelta = null;
+
+function apriNuovoLuogo(esistente){
+  const v = esistente || null;
+  let modo = v?.modo || S.modo;
+  let liv  = v?.liv  || 'dati_insufficienti';
+  let cat  = v?.cat  || 'specializzato';
+  // una foto sola non basta: insegna, piatto, menu. Il vecchio campo
+  // singolo viene accolto e trasformato in elenco senza perdere nulla.
+  let foto = Array.isArray(v?.foto) ? [...v.foto] : (v?.foto ? [v.foto] : []);
+  const partenza = v ? {lat:v.lat, lng:v.lng}
+                     : (S.posizione || {lat:mappa.getCenter().lat, lng:mappa.getCenter().lng});
+
+  const disegna = () => {
+    const scelte = modo === 'comprare'
+      ? Object.entries(SPESA).sort((a,b)=>a[1].ord-b[1].ord)
+          .map(([id,x])=>`<button class="sc-liv" data-ncat="${id}" aria-pressed="${cat===id}">
+             <span class="pallo" style="background:${x.c}"></span><b>${esc(x.et)}</b>
+             ${cat===id?icona('i-ok','ico sm'):''}</button>`).join('')
+      : Object.entries(LIV).sort((a,b)=>a[1].ord-b[1].ord)
+          .map(([id,x])=>`<button class="sc-liv" data-nliv="${id}" aria-pressed="${liv===id}">
+             <span class="pallo" style="background:${x.c}"></span><b>${esc(x.et)}</b>
+             ${liv===id?icona('i-ok','ico sm'):''}</button>`).join('');
+
+    $('#foglio').innerHTML = `
+      <div class="f-testa">
+        <div class="f-nastro" style="background:${modo==='comprare'?SPESA[cat].c:LIV[liv].c}"></div>
+        <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+        <h2>${v ? 'Modifica il luogo' : 'Aggiungi un locale'}</h2>
+        <div class="tipo">${v ? 'un posto tuo' : 'un posto che conosci tu'}</div>
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Che posto &egrave;</div>
+        <div class="scelta-modo">
+          <button data-nmodo="mangiare" aria-pressed="${modo==='mangiare'}">Ci si mangia</button>
+          <button data-nmodo="comprare" aria-pressed="${modo==='comprare'}">Ci si fa la spesa</button>
+        </div>
+        <div class="campo"><label>Nome del locale</label>
+          <input id="n-nome" type="text" value="${esc(v?.nome||'')}" placeholder="es. Pizzeria da Nino"></div>
+        ${modo==='mangiare' ? `<div class="campo"><label>Tipo</label>
+          <select id="n-tipo" style="width:100%;border:1.5px solid var(--linea);border-radius:var(--r-s);
+            background:var(--bianco);padding:11px 12px;font:inherit;font-size:14px;color:var(--inchiostro)">
+            ${Object.entries(TIPI).map(([id,et])=>
+              `<option value="${id}" ${(v?.tipo||'ristorante')===id?'selected':''}>${et}</option>`).join('')}
+          </select></div>` : ''}
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">${modo==='comprare' ? 'Categoria' : 'Quanto &egrave; sicuro'}</div>
+        <div class="griglia-liv">${scelte}</div>
+        ${modo==='mangiare' ? `<p style="font-size:12.5px;color:var(--muto);line-height:1.5;padding-bottom:12px">
+          Scegli in base a quello che sai davvero. Se non hai chiesto come gestiscono la
+          contaminazione, lascia &ldquo;Da verificare&rdquo;: sar&agrave; utile anche a te fra sei mesi.</p>` : ''}
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Dove si trova</div>
+        <div class="scegli-mappa">
+          <div class="tela" id="n-mappa"></div>
+          <div class="perno"></div>
+          <div class="mirino">${icona('i-pin','ico')}</div>
+          <button class="qui" id="n-qui">${icona('i-vicino','ico sm')}Dove sono</button>
+        </div>
+        <div class="coord" id="n-coord">sposta la mappa per puntare il locale</div>
+        <div class="campo"><label>Indirizzo (facoltativo)</label>
+          <input id="n-ind" type="text" value="${esc(v?.indirizzo||'')}" placeholder="via e numero"></div>
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Foto</div>
+        <p style="font-size:12.5px;color:var(--muto);line-height:1.5;padding-bottom:4px">
+          Aggiungine quante ne vuoi: l&rsquo;insegna per riconoscerlo, il piatto per
+          ricordarti cosa ordinare, il menu per rileggerlo dopo.</p>
+        <div class="galleria">
+          ${foto.map((f,i)=>`<div class="scatto">
+            <img src="${f}" alt="">
+            ${i===0?'<span class="primo">copertina</span>':''}
+            <button class="togli-foto" data-tfoto="${i}" aria-label="Togli">${icona('i-x','ico sm')}</button>
+          </div>`).join('')}
+          <button class="aggiungi-scatto" id="n-piu-foto" aria-label="Aggiungi una foto">
+            ${icona('i-macchina-foto','ico lg')}</button>
+        </div>
+        <input id="n-foto" type="file" accept="image/*" multiple hidden>
+        ${foto.length ? `<div class="quota">${foto.length} ${foto.length===1?'foto':'foto'} &middot; la prima fa da copertina</div>`:''}
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Note</div>
+        <div class="campo"><label>Note</label>
+          <textarea id="n-note" placeholder="Cosa preparano, cosa chiedere, com&rsquo;&egrave; andata&hellip;">${esc(v?.nota||'')}</textarea></div>
+        <div class="campo"><label>Raccolta</label>
+          <input id="n-coll" type="text" value="${esc(v?.coll || S.comune || 'I miei posti')}"></div>
+      </div>
+
+      <div class="pannello">
+        <button class="btn btn-pieno" id="n-salva" style="width:100%">
+          ${icona('i-scudo','ico sm')}${v ? 'Salva le modifiche' : 'Aggiungi ai miei posti'}</button>
+        ${v ? `<button class="mini" id="n-elimina" style="width:100%;margin-top:10px;background:#FBE8EA;color:#7A1421">
+          ${icona('i-x','ico sm')}Elimina questo luogo</button>` : ''}
+      </div>
+
+      <div class="pannello">
+        <div class="occhiello">Vuoi che lo vedano tutti?</div>
+        <p style="font-size:13px;line-height:1.55;padding-bottom:12px">
+          Questo luogo resta tuo. Se lo aggiungi anche a OpenStreetMap comparir&agrave; a chiunque
+          usi questa mappa, e a tutte le altre app che si basano sugli stessi dati.
+          Il tag da usare &egrave; <code>diet:gluten_free</code>.</p>
+        <div class="riga"><span>Apri l&rsquo;editor sul punto scelto</span>
+          <span><a id="n-osm" href="#" target="_blank" rel="noopener">vai</a></span></div>
+      </div>`;
+
+    $('#foglio').classList.add('aperto');
+    $('#f-chiudi').addEventListener('click',()=>{ chiudiNuovo(); });
+
+    // mappa di scelta: il segnaposto e' fisso, scorre la mappa
+    setTimeout(()=>{
+      if(mappaScelta){ mappaScelta.remove(); mappaScelta = null; }
+      mappaScelta = L.map('n-mappa',{zoomControl:false, attributionControl:false})
+        .setView([partenza.lat, partenza.lng], 16);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        {maxZoom:19}).addTo(mappaScelta);
+      const aggiorna = () => {
+        const c = mappaScelta.getCenter();
+        $('#n-coord').textContent = `${c.lat.toFixed(5)}, ${c.lng.toFixed(5)}`;
+        const o = $('#n-osm');
+        if(o) o.href = `https://www.openstreetmap.org/edit#map=19/${c.lat.toFixed(5)}/${c.lng.toFixed(5)}`;
+      };
+      mappaScelta.on('move', aggiorna);
+      setTimeout(()=>{ mappaScelta.invalidateSize(); aggiorna(); }, 120);
+    }, 60);
+
+    $('#n-qui').addEventListener('click', async ()=>{
+      const pos = S.posizione || await posizioneUtente();
+      if(pos){ S.posizione = pos; mappaScelta.setView([pos.lat,pos.lng], 17); }
+      else apriModale('Posizione non attiva','<p>Sposta la mappa a mano per puntare il locale.</p>');
+    });
+
+    document.querySelectorAll('[data-nmodo]').forEach(b=>b.addEventListener('click',()=>{
+      modo=b.dataset.nmodo; conserva(); disegna();
+    }));
+    document.querySelectorAll('[data-nliv]').forEach(b=>b.addEventListener('click',()=>{
+      liv=b.dataset.nliv; conserva(); disegna();
+    }));
+    document.querySelectorAll('[data-ncat]').forEach(b=>b.addEventListener('click',()=>{
+      cat=b.dataset.ncat; conserva(); disegna();
+    }));
+
+    $('#n-piu-foto').addEventListener('click',()=>$('#n-foto').click());
+    $('#n-foto').addEventListener('change', async e=>{
+      const scelte=[...(e.target.files||[])]; if(!scelte.length) return;
+      conserva();
+      for(const f of scelte){
+        try{ foto.push(await riduciImmagine(f, 1300, .74)); }
+        catch(err){ apriModale('Immagine non leggibile','<p>Uno degli scatti non si riesce a leggere.</p>'); }
+      }
+      e.target.value = '';
+      disegna();
+    });
+    document.querySelectorAll('[data-tfoto]').forEach(b=>b.addEventListener('click',()=>{
+      conserva(); foto.splice(+b.dataset.tfoto,1); disegna();
+    }));
+
+    ripristina();
+    $('#n-salva').addEventListener('click', salva);
+    const el=$('#n-elimina');
+    if(el) el.addEventListener('click',()=>{
+      Archivio.togli(v.k); S.locali.delete(v.k);
+      chiudiNuovo(); disegnaSalvati(); disegnaVicino(); disegnaMappa();
+    });
+  };
+
+  // conservo quello che l'utente ha gia' scritto prima di ridisegnare
+  const memoria = {};
+  function conserva(){
+    for(const id of ['n-nome','n-ind','n-note','n-coll','n-tipo']){
+      const e=$('#'+id); if(e) memoria[id]=e.value;
+    }
+    if(mappaScelta){ const c=mappaScelta.getCenter(); partenza.lat=c.lat; partenza.lng=c.lng; }
+  }
+  function ripristina(){
+    for(const [id,val] of Object.entries(memoria)){ const e=$('#'+id); if(e) e.value=val; }
+  }
+
+  function chiudiNuovo(){
+    if(mappaScelta){ mappaScelta.remove(); mappaScelta=null; }
+    $('#foglio').classList.remove('aperto');
+  }
+
+  async function salva(){
+    const nome = $('#n-nome').value.trim();
+    if(!nome) return apriModale('Manca il nome','<p>Scrivi almeno come si chiama il locale.</p>');
+    const c = mappaScelta ? mappaScelta.getCenter() : partenza;
+    const k = v?.k || ('mio:' + Date.now());
+    const tipoSel = $('#n-tipo') ? $('#n-tipo').value : (modo==='comprare' ? 'negozio' : 'ristorante');
+
+    const voce = {
+      k, nome, lat:c.lat, lng:c.lng, modo, origine:'mio',
+      liv: modo==='mangiare' ? liv : null,
+      cat: modo==='comprare' ? cat : null,
+      tipo: tipoSel,
+      comune: v?.comune || S.comune || null,
+      indirizzo: $('#n-ind').value.trim() || null,
+      nota: $('#n-note').value.trim(),
+      orari: v?.orari || '',
+      coll: $('#n-coll').value.trim() || 'I miei posti',
+      stato: v?.stato || 'da_provare',
+      foto,   // elenco ordinato: la prima e' la copertina
+      creato: v?.creato || new Date().toISOString()
+    };
+    Archivio.salva(voce);
+    inserisciMio(voce);
+    chiudiNuovo();
+    disegnaSalvati(); disegnaVicino(); disegnaMappa(); disegnaValigia();
+    apriModale('Aggiunto', `<p><b>${esc(nome)}</b> &egrave; ora fra i tuoi posti${Nube.dentro()?' e viaggia con il tuo account':''}.</p>`);
+  }
+
+  disegna();
+}
+
+/* I luoghi personali vivono accanto a quelli di OpenStreetMap: cosi'
+   compaiono in mappa, negli elenchi e nelle ricerche come tutti gli altri. */
+function inserisciMio(v){
+  S.locali.set(v.k, {
+    k:v.k, osmType:null, osmId:null, modo:v.modo, origine:'mio',
+    nome:v.nome, lat:v.lat, lng:v.lng,
+    tipo:v.tipo || 'altro',
+    livello: v.liv || 'dati_insufficienti',
+    cat: v.cat || 'specializzato',
+    comune:v.comune, indirizzo:v.indirizzo, telefono:null, sito:null, orari:null,
+    descrizione:v.nota || null,
+    foto: Array.isArray(v.foto) ? v.foto : (v.foto ? [v.foto] : []),
+    tagGf:null
+  });
+}
+
+function caricaMiei(){
+  for(const v of Archivio.tutti()) if(v.origine==='mio') inserisciMio(v);
+}
+
 /* ── carta del celiaco ─────────────────────────────────────────────── */
 function apriCarta(){
   const scelta = Pref.leggi('lingua','it');
@@ -2614,7 +3538,8 @@ async function riduciImmagine(file, lato=1500, q=.82){
 }
 
 function apriTessera(){
-  const t = Pref.leggi('tessera', {});
+  const d = Salute.dati();
+  const t = {ente:d.tessera_ente, codice:d.tessera_codice, scadenza:d.tessera_scadenza, foto:d.tessera_foto};
   $('#foglio').innerHTML = `
     <div class="f-testa">
       <div class="f-nastro" style="background:var(--bordeaux-3)"></div>
@@ -2633,6 +3558,8 @@ function apriTessera(){
       <div class="campo"><label>Codice</label>
         <input id="t-codice" type="text" inputmode="text" autocapitalize="characters"
                value="${esc(t.codice||'')}" placeholder="il codice stampato sulla tessera"></div>
+      <div class="campo"><label>Scadenza</label>
+        <input id="t-scad" type="date" value="${esc(t.scadenza||'')}"></div>
       <div class="campo"><label>Foto della tessera</label>
         <input id="t-foto" type="file" accept="image/*" capture="environment"></div>
       ${t.foto?`<img src="${t.foto}" alt="Tessera salvata" style="width:100%;border-radius:12px;border:1px solid var(--linea)">`:''}
@@ -2654,15 +3581,19 @@ function apriTessera(){
     catch(err){ apriModale('Non riesco a leggere l’immagine','<p>Prova con un altro scatto o un altro formato.</p>'); }
   });
   $('#b-salva-t').addEventListener('click',()=>{
-    Pref.scrivi('tessera',{ente:$('#t-ente').value.trim(), codice:$('#t-codice').value.trim().toUpperCase(), foto});
+    Salute.scrivi({tessera_ente:$('#t-ente').value.trim(),
+      tessera_codice:$('#t-codice').value.trim().toUpperCase(),
+      tessera_scadenza:$('#t-scad').value, tessera_foto:foto});
     apriTessera();
   });
   const m=$('#b-mostra-t'); if(m) m.addEventListener('click',apriVetrinaTessera);
-  const c=$('#b-canc-t'); if(c) c.addEventListener('click',()=>{ Pref.scrivi('tessera',{}); apriTessera(); });
+  const c=$('#b-canc-t'); if(c) c.addEventListener('click',()=>{
+    Salute.scrivi({tessera_ente:'',tessera_codice:'',tessera_scadenza:'',tessera_foto:null}); apriTessera(); });
 }
 
 function apriVetrinaTessera(){
-  const t = Pref.leggi('tessera', {});
+  const d = Salute.dati();
+  const t = {ente:d.tessera_ente, codice:d.tessera_codice, foto:d.tessera_foto};
   apriVetrina(`
     <div class="fascia"><b>${esc(t.ente||'La mia tessera')}</b><span>alza la luminosità dello schermo</span></div>
     ${t.foto?`<img src="${t.foto}" alt="Tessera">`:''}
@@ -2676,7 +3607,8 @@ const meseOggi = () => new Date().toISOString().slice(0,7);
 const euro = n => (n||0).toLocaleString('it-IT',{minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
 
 function apriBuoni(){
-  const b = Pref.leggi('buoni', {importo:0, spese:[]});
+  const d = Salute.dati();
+  const b = {importo:d.buoni_importo||0, spese:d.buoni_spese||[]};
   const mese = meseOggi();
   const delMese = (b.spese||[]).filter(s=>s.data.slice(0,7)===mese);
   const speso = delMese.reduce((t,s)=>t+s.importo, 0);
@@ -2747,69 +3679,218 @@ function apriBuoni(){
 
   $('#b-salva-imp').addEventListener('click',()=>{
     const v = parseFloat(($('#b-importo').value||'0').replace(',','.')) || 0;
-    Pref.scrivi('buoni', {...b, importo:v}); apriBuoni();
+    Salute.scrivi({buoni_importo:v}); apriBuoni();
   });
   $('#b-add-spesa').addEventListener('click',()=>{
     const v = parseFloat(($('#sp-importo').value||'0').replace(',','.')) || 0;
     if(v<=0) return;
     const spese = [...(b.spese||[]), {id:String(Date.now()), data:new Date().toISOString(),
       importo:v, dove:$('#sp-dove').value.trim()}];
-    Pref.scrivi('buoni', {...b, spese}); apriBuoni();
+    Salute.scrivi({buoni_spese:spese}); apriBuoni();
   });
   document.querySelectorAll('[data-canc]').forEach(x=>x.addEventListener('click',()=>{
-    Pref.scrivi('buoni', {...b, spese:(b.spese||[]).filter(s=>s.id!==x.dataset.canc)}); apriBuoni();
+    Salute.scrivi({buoni_spese:(b.spese||[]).filter(s=>s.id!==x.dataset.canc)}); apriBuoni();
   }));
 }
 
 /* ── profilo di sensibilita' ───────────────────────────────────────── */
-function applicaProfilo(id){
-  const p = PROFILI[id]; if(!p) return;
-  Pref.scrivi('profilo', id);
-  S.livelli = new Set(p.livelli);
-  S.alta = (id === 'celiachia_alta');
-  disegnaSpettro();
-  sincronizza();
-}
 
 function apriProfilo(primoAvvio){
-  const attuale = Pref.leggi('profilo', null);
+  const d = Salute.dati();
+  const campo = (id, et, val, segna='text', extra='') =>
+    `<div class="campo"><label>${et}</label>
+      <input id="${id}" type="${segna}" value="${esc(val||'')}" ${extra}></div>`;
+
   $('#foglio').innerHTML = `
     <div class="f-testa">
       <div class="f-nastro" style="background:var(--l2)"></div>
-      ${primoAvvio ? '' : `<button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>`}
+      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}${primoAvvio ? 'Lo faccio dopo' : 'Torna indietro'}</button>
       <h2>${primoAvvio ? 'Prima di iniziare' : 'Il mio profilo'}</h2>
-      <div class="tipo">quanto devi stare attento</div>
+      <div class="tipo">quello che serve sapere di te</div>
       <div class="f-livello" style="border-left-color:var(--l2)">
-        <strong>${icona('i-scudo-cuore','ico sm')}Perché te lo chiedo</strong>
-        <p>È l’unica cosa che cambia davvero tutto il resto: da qui decido quali locali mostrarti di default. Puoi cambiarla quando vuoi dalla scheda Io.</p>
+        <strong>${icona('i-scudo-cuore','ico sm')}A cosa serve</strong>
+        <p>La condizione decide quali locali ti mostro di default. Il resto serve a te:
+        ce l&rsquo;hai sempre addosso, anche all&rsquo;estero, anche se cambi telefono.</p>
       </div>
     </div>
+
     <div class="pannello">
-      ${Object.entries(PROFILI).map(([id,p])=>`
-        <div class="opzione" role="button" tabindex="0" data-profilo="${id}" aria-pressed="${attuale===id}">
-          <div class="gemma" style="background:${id==='sensibilita'?'var(--l4)':'var(--l1)'}">${icona('i-scudo','ico sm')}</div>
-          <div class="testo">
-            <h3>${esc(p.et)}</h3>
-            <p>${esc(p.desc)}</p>
-          </div>
+      <div class="occhiello">La mia condizione</div>
+      ${Object.entries(CONDIZIONI).map(([id,et])=>`
+        <div class="opzione" role="button" tabindex="0" data-cond="${id}" aria-pressed="${d.condizione===id}">
+          <div class="gemma" style="background:${id==='sensibilita'?'var(--l4)':(id==='non_dico'?'var(--l6)':'var(--l1)')}">${icona('i-scudo','ico sm')}</div>
+          <div class="testo"><h3>${esc(et)}</h3></div>
           <span class="spunta">${icona('i-ok','ico sm')}</span>
         </div>`).join('')}
     </div>
-    <p class="pie">Nessuna di queste informazioni esce dal telefono.</p>`;
+
+    <div class="pannello">
+      <div class="occhiello">Quanto sei sensibile</div>
+      <div class="scelta-modo">
+        <button data-sens="normale" aria-pressed="${d.sensibilita!=='alta'}">Normale</button>
+        <button data-sens="alta" aria-pressed="${d.sensibilita==='alta'}">Alta: anche le tracce</button>
+      </div>
+      <p style="font-size:12.5px;color:var(--muto);line-height:1.5;padding-bottom:10px">
+      Con sensibilit&agrave; alta mostro solo locali interamente senza glutine o con cucina separata.</p>
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Diagnosi e riferimenti</div>
+      ${campo('s-diagnosi','Data della diagnosi', d.diagnosi_il, 'date')}
+      ${campo('s-centro','Centro o medico di riferimento', d.centro)}
+      ${campo('s-asl','ASL di appartenenza', d.asl)}
+      ${campo('s-regione','Regione', d.regione)}
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Altre intolleranze o allergie</div>
+      <div class="chip-multi" id="s-into">
+        ${INTOLLERANZE.map(x=>`<button data-into="${esc(x)}" aria-pressed="${(d.intolleranze||[]).includes(x)}">${esc(x)}</button>`).join('')}
+      </div>
+      <div class="campo" style="margin-top:14px"><label>Altro, con parole tue</label>
+        <textarea id="s-note" placeholder="cosa devi evitare, cosa ti fa stare male, cosa dire al ristorante">${esc(d.note||'')}</textarea></div>
+      ${campo('s-farmaci','Farmaci che prendi', d.farmaci)}
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">In caso di emergenza</div>
+      ${campo('s-emg-nome','Chi avvisare', d.emergenza_nome)}
+      ${campo('s-emg-tel','Il suo numero', d.emergenza_tel, 'tel')}
+    </div>
+
+    <div class="pannello">
+      <button class="btn btn-pieno" id="s-salva" style="width:100%">
+        ${icona('i-scudo','ico sm')}Salva il profilo</button>
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Dove finiscono questi dati</div>
+      <div class="interruttore">
+        <div class="testo"><b>Conservali anche online</b>
+          <span>Cos&igrave; non si perdono se cambi telefono o se il browser svuota la memoria.
+          Sono dati sulla tua salute: serve il tuo consenso esplicito.</span></div>
+        <span class="leva" id="s-leva" role="switch" tabindex="0" aria-checked="${Salute.consenso()}"></span>
+      </div>
+      <div class="riga"><span>Stato</span><span>${Salute.consenso()?'consenso attivo':'solo su questo telefono'}</span></div>
+      ${Salute.consenso() && Pref.leggi('consenso_il',null) ? `<div class="riga"><span>Concesso il</span><span>${new Date(Pref.leggi('consenso_il')).toLocaleString('it-IT')}</span></div>`:''}
+      <div class="riga"><span>Informativa</span><span><a href="#" id="s-info">leggila</a></span></div>
+      ${!Nube.dentro() ? `<div class="avviso" style="margin-top:12px">${icona('i-avviso','ico sm')}
+        <div>Per conservarli online serve prima un account: lo crei dalla scheda Io.</div></div>`:''}
+    </div>
+
+    <p class="pie">Nessuno di questi dati viene mostrato ad altri utenti n&eacute; usato per altro.</p>`;
+
   $('#foglio').classList.add('aperto');
-  const ch=$('#f-chiudi'); if(ch) ch.addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
-  const scegli = b => {
-    document.querySelectorAll('[data-profilo]').forEach(x=>x.setAttribute('aria-pressed', x===b));
-    applicaProfilo(b.dataset.profilo);
-    setTimeout(()=>{
-      $('#foglio').classList.remove('aperto');
-      if(primoAvvio && S.posizione) caricaIntorno();
-    }, 220);
-  };
-  document.querySelectorAll('[data-profilo]').forEach(b=>{
-    b.addEventListener('click',()=>scegli(b));
-    b.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); scegli(b); } });
+  $('#f-chiudi').addEventListener('click',()=>{
+    $('#foglio').classList.remove('aperto');
+    if(primoAvvio && S.posizione) caricaIntorno();
   });
+
+  let cond = d.condizione, sens = d.sensibilita, into = [...(d.intolleranze||[])];
+
+  document.querySelectorAll('[data-cond]').forEach(b=>{
+    const scegli = () => { cond=b.dataset.cond;
+      document.querySelectorAll('[data-cond]').forEach(x=>x.setAttribute('aria-pressed', x===b)); };
+    b.addEventListener('click',scegli);
+    b.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); scegli(); } });
+  });
+  document.querySelectorAll('[data-sens]').forEach(b=>b.addEventListener('click',()=>{
+    sens=b.dataset.sens;
+    document.querySelectorAll('[data-sens]').forEach(x=>x.setAttribute('aria-pressed', x===b));
+  }));
+  document.querySelectorAll('[data-into]').forEach(b=>b.addEventListener('click',()=>{
+    const v=b.dataset.into;
+    into.includes(v) ? into.splice(into.indexOf(v),1) : into.push(v);
+    b.setAttribute('aria-pressed', into.includes(v));
+  }));
+
+  $('#s-salva').addEventListener('click',()=>{
+    Salute.scrivi({
+      condizione:cond, sensibilita:sens, intolleranze:into,
+      diagnosi_il:$('#s-diagnosi').value, centro:$('#s-centro').value.trim(),
+      asl:$('#s-asl').value.trim(), regione:$('#s-regione').value.trim(),
+      note:$('#s-note').value.trim(), farmaci:$('#s-farmaci').value.trim(),
+      emergenza_nome:$('#s-emg-nome').value.trim(), emergenza_tel:$('#s-emg-tel').value.trim()
+    });
+    applicaProfiloSalute();
+    $('#foglio').classList.remove('aperto');
+    if(primoAvvio && S.posizione) caricaIntorno();
+    else apriModale('Profilo salvato',
+      `<p>Fatto.${Salute.consenso()?' &Egrave; al sicuro anche online.':' Resta su questo telefono: se vuoi conservarlo online, attiva l&rsquo;interruttore in fondo al profilo.'}</p>`);
+  });
+
+  const leva = $('#s-leva');
+  const commuta = async () => {
+    if(Salute.consenso()){
+      apriModale('Togliere il consenso?',
+        `<p>I dati sulla salute verranno cancellati dal server subito. Restano su questo telefono.</p>
+         <button class="mini" id="conf-revoca" style="width:100%;margin-top:6px;background:#FBE8EA;color:#7A1421">S&igrave;, revoca e cancella</button>`);
+      $('#conf-revoca').addEventListener('click', async ()=>{
+        await Salute.revoca(); $('#modale').hidden=true; apriProfilo(false);
+      });
+    }else{
+      if(!Nube.dentro()) return apriModale('Serve prima un account',
+        '<p>Crea un account dalla scheda Io: senza, non c&rsquo;&egrave; dove conservarli.</p>');
+      apriConsenso(async ()=>{ await Salute.concedi(); apriProfilo(false); });
+    }
+  };
+  leva.addEventListener('click', commuta);
+  leva.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); commuta(); } });
+  $('#s-info').addEventListener('click',e=>{ e.preventDefault(); apriInformativa(); });
+}
+
+/* Il consenso si chiede una volta, per esteso, e si registra. */
+function apriConsenso(dopo){
+  apriModale('Conservare i dati sulla salute',
+    `<div class="legge">
+      <p>Per conservare online condizione, tessera, allergie e buoni ho bisogno del tuo
+      <b>consenso esplicito</b>: sono dati relativi alla salute, e la legge chiede che tu lo dica chiaramente.</p>
+      <h4>Cosa verrebbe conservato</h4>
+      <p>Condizione e sensibilit&agrave;, data di diagnosi, centro di riferimento, ASL e regione,
+      intolleranze, farmaci, note, contatto di emergenza, dati e foto della tessera, importi dei buoni.</p>
+      <h4>Perch&eacute;</h4>
+      <p>Perch&eacute; non si perdano quando cambi telefono e perch&eacute; il browser, dopo qualche
+      giorno di inattivit&agrave;, svuota la memoria locale da solo.</p>
+      <h4>Chi li vede</h4>
+      <p>Nessun altro utente. La foto della tessera sta in uno spazio non pubblico:
+      per rivederla serve il tuo accesso.</p>
+      <h4>Puoi cambiare idea</h4>
+      <p>Revocando il consenso vengono cancellati dal server nello stesso momento, senza chiedere a nessuno.</p>
+    </div>
+    <button class="btn btn-pieno" id="c-si" style="width:100%;margin-top:8px">
+      Acconsento, conservali online</button>`);
+  $('#m-ok').textContent = 'No, restano solo sul telefono';
+  $('#c-si').addEventListener('click', async ()=>{ $('#modale').hidden=true; await dopo(); });
+}
+
+function apriInformativa(){
+  apriModale('Informativa',
+    `<div class="legge">
+      <p><b>Titolare del trattamento</b><br>Davide Morabito &mdash; info@davidemorabito.com</p>
+      <h4>Quali dati</h4>
+      <ul>
+        <li>Email e password (gestite dal servizio di autenticazione, mai visibili al titolare)</li>
+        <li>Nome e foto profilo</li>
+        <li>Luoghi salvati, note personali, raccolte</li>
+        <li>Solo con consenso: dati relativi alla salute (condizione, intolleranze, tessera, buoni)</li>
+      </ul>
+      <h4>Basi giuridiche</h4>
+      <p>Esecuzione del servizio richiesto (art. 6.1.b) per account e luoghi salvati.
+      Consenso esplicito (art. 9.2.a) per i dati relativi alla salute.</p>
+      <h4>Dove stanno</h4>
+      <p>Su infrastruttura Supabase. Il posizionamento e i dettagli tecnici sono consultabili
+      su supabase.com. La mappa proviene da OpenStreetMap.</p>
+      <h4>Per quanto</h4>
+      <p>Finch&eacute; tieni l&rsquo;account. Puoi cancellare tutto in autonomia dalla scheda Io.</p>
+      <h4>I tuoi diritti</h4>
+      <p>Accesso, rettifica, cancellazione, limitazione, portabilit&agrave;, opposizione e revoca
+      del consenso (artt. 15&ndash;22 GDPR). Scrivi a info@davidemorabito.com. Puoi rivolgerti
+      al Garante per la protezione dei dati personali.</p>
+      <h4>Cosa non facciamo</h4>
+      <p>Nessuna pubblicit&agrave;, nessuna profilazione, nessuna cessione a terzi,
+      nessun trasferimento dei tuoi dati ad altri utenti.</p>
+      <p style="margin-top:10px;color:var(--muto)">Versione ${INFORMATIVA_VERSIONE}</p>
+    </div>`);
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -2833,39 +3914,44 @@ function apriDettaglio(k){
         <strong>${icona('i-'+L1.ico.slice(2),'ico sm')}${esc(L1.et)}</strong>
         <p>${esc(L1.desc)}</p>
       </div>
-      <div class="eroe-azioni" style="padding:14px 0 0">
+      <div class="azioni-testa">
         <button class="btn" id="f-salva" style="background:rgba(255,255,255,.19);color:#fff">
           ${icona('i-stella','ico sm')}<span id="f-salva-t">${Archivio.ha(l.k)?'Salvato':'Salva'}</span></button>
-        ${l.telefono?`<a class="btn" href="tel:${esc(l.telefono)}" style="background:var(--grano);color:var(--bordeaux)">${icona('i-tel','ico sm')}Chiama</a>`:''}
+        ${l.telefono?`<a class="btn" href="tel:${esc(l.telefono)}" style="background:rgba(255,255,255,.19);color:#fff">${icona('i-tel','ico sm')}Chiama</a>`:''}
+        <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=${l.lat},${l.lng}" target="_blank" rel="noopener"
+           style="background:var(--grano);color:var(--bordeaux)">${icona('i-naviga','ico sm')}Portami l&igrave;</a>
       </div>
     </div>
 
     ${L1.avviso?`<div style="padding:0 14px"><div class="avviso ${L1.grave?'grave':''}">${icona('i-avviso','ico sm')}<div>${esc(L1.avviso)}</div></div></div>`:''}
 
-    <div class="pannello">
+    <div class="pannello" id="pannello-rece"></div>
+
+    ${l.origine==='mio' ? `<div class="pannello">
+      <div class="occhiello">Un posto tuo</div>
+      ${(l.foto||[]).length ? `<div class="striscia-foto">
+        ${l.foto.map(f=>`<img src="${f}" alt="" data-guarda="${esc(f)}">`).join('')}
+      </div>`:''}
+      ${l.descrizione?`<p style="font-size:13.5px;line-height:1.55;padding-bottom:12px">${esc(l.descrizione)}</p>`:''}
+      ${riga('Indirizzo', l.indirizzo?esc(l.indirizzo):'')}
+      <button class="btn btn-vuoto" id="d-modifica" style="width:100%;margin-top:12px">
+        ${icona('i-matita','ico sm')}Modifica</button>
+    </div>` : `<div class="pannello">
       <div class="occhiello">Cosa offrono</div>
       ${l.descrizione?`<p style="font-size:13.5px;line-height:1.55;padding-bottom:10px">${esc(l.descrizione)}</p>`:''}
       ${riga('Cucina', l.cucina?esc(l.cucina.replace(/[_;]/g,' · ')):'')}
-      ${riga('Asporto', l.takeaway==='yes'?'sì':(l.takeaway==='no'?'no':''))}
-      ${riga('Consegna', l.delivery==='yes'?'sì':(l.delivery==='no'?'no':''))}
+      ${riga('Asporto', traduci(l.takeaway))}
+      ${riga('Consegna', traduci(l.delivery))}
       ${riga('Tavoli all\u2019aperto', l.dehors==='yes'?'sì':'')}
-      ${riga('Accessibile', l.accessibile==='yes'?'sì':(l.accessibile==='limited'?'parzialmente':''))}
-      ${riga('Senza lattosio', l.lattosio?esc(l.lattosio):'')}
-      ${riga('Vegetariano', l.vegetariano?esc(l.vegetariano):'')}
-      ${riga('Vegano', l.vegano?esc(l.vegano):'')}
+      ${riga('Accessibile', l.accessibile==='yes'?'sì':(l.accessibile==='limited'?'in parte':''))}
+      ${riga('Senza lattosio', traduci(l.lattosio))}
+      ${riga('Vegetariano', traduci(l.vegetariano))}
+      ${riga('Vegano', traduci(l.vegano))}
       ${l.sito?`<div class="riga"><span>Menu</span><span><a href="${esc(l.sito)}" target="_blank" rel="noopener">vedi sul sito</a></span></div>`:''}
       <div class="riga"><span>Cerca il menu</span><span><a href="https://duckduckgo.com/?q=${encodeURIComponent(l.nome+' '+(l.comune||'')+' menu senza glutine')}" target="_blank" rel="noopener">sul web</a></span></div>
       ${!l.descrizione && !l.cucina && !l.sito ? `<div class="avviso">${icona('i-avviso','ico sm')}<div>OpenStreetMap non riporta altro su questo locale. Una telefonata resta il modo più rapido per sapere cosa preparano senza glutine.</div></div>`:''}
-    </div>
+    </div>`}
 
-    <div class="pannello">
-      <div class="occhiello">Su cosa si basa</div>
-      ${riga('Fonte','OpenStreetMap')}
-      ${riga('Come l\u2019abbiamo trovato', {tag:'tag dieta',cucina:'tipo di cucina',descrizione:'descrizione',nome:'nome del locale'}[l.origine]||'—')}
-      ${riga('Tag dieta', l.tagGf?`<code>${esc(l.tagGf)}</code>`:'assente')}
-      ${riga('Verificato sul posto','da nessuno, per ora')}
-      ${(l.tagGf==='yes'||l.tagGf==='limited')?`<div class="avviso">${icona('i-avviso','ico sm')}<div>Il dato dice che esistono opzioni senza glutine, ma non dice nulla su come viene gestita la contaminazione. Per questo resta in “Da verificare”.</div></div>`:''}
-    </div>
 
     <div class="pannello">
       <div class="occhiello">Informazioni</div>
@@ -2890,12 +3976,47 @@ function apriDettaglio(k){
       ${riga('Correggi i dati', `<a href="https://www.openstreetmap.org/${l.osmType}/${l.osmId}" target="_blank" rel="noopener">su OpenStreetMap</a>`)}
     </div>
 
+    <div class="tecnica">
+      <button class="apri-tecnica" data-tecnica aria-expanded="false">
+        ${icona('i-bussola','ico sm')}Da dove viene questa scheda${icona('i-freccia','ico sm freccetta')}</button>
+      <div class="dentro" hidden>
+      ${riga('Fonte','OpenStreetMap')}
+      ${riga('Come l\u2019abbiamo trovato', {tag:'tag dieta',cucina:'tipo di cucina',descrizione:'descrizione',nome:'nome del locale'}[l.origine]||'—')}
+      ${riga('Tag dieta', l.tagGf?`<code>${esc(l.tagGf)}</code>`:'assente')}
+      ${riga('Verificato sul posto','da nessuno, per ora')}
+      ${(l.tagGf==='yes'||l.tagGf==='limited')?`<div class="avviso">${icona('i-avviso','ico sm')}<div>Il dato dice che esistono opzioni senza glutine, ma non dice nulla su come viene gestita la contaminazione. Per questo resta in “Da verificare”.</div></div>`:''}
+      ${riga('Correggi i dati', `<a href="https://www.openstreetmap.org/${l.osmType}/${l.osmId}" target="_blank" rel="noopener">su OpenStreetMap</a>`)}
+      <p style="font-size:12px;color:var(--muto);line-height:1.5;padding:4px 0 12px">
+        Le correzioni fatte su OpenStreetMap tornano qui e in tutte le altre app
+        che usano gli stessi dati.</p>
+      </div>
+    </div>
+
     <p class="pie">Questa mappa non certifica nessun locale. Chiedi sempre al personale prima di ordinare
     e comunica la tua celiachia.<br><br>Dati &copy; OpenStreetMap contributors, ODbL 1.0.</p>`;
 
   $('#foglio').classList.add('aperto');
   $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
   legaSalva(l);
+  legaTecnica();
+  const mod = $('#d-modifica');
+  if(mod) mod.addEventListener('click',()=>apriNuovoLuogo(Archivio.prendi(l.k)));
+  document.querySelectorAll('[data-guarda]').forEach(im=>im.addEventListener('click',()=>
+    apriVetrina(`<img src="${im.dataset.guarda}" alt="" style="width:100%;border-radius:12px">`)));
+  disegnaRecensioni(l);
+}
+
+/* Il pannello tecnico si apre solo se lo si cerca. */
+function legaTecnica(){
+  document.querySelectorAll('[data-tecnica]').forEach(b=>{
+    if(b.dataset.legato) return; b.dataset.legato='1';
+    b.addEventListener('click',()=>{
+      const aperto = b.getAttribute('aria-expanded') === 'true';
+      b.setAttribute('aria-expanded', !aperto);
+      const d = b.nextElementSibling;
+      if(d) d.hidden = aperto;
+    });
+  });
 }
 
 function legaSalva(l){
@@ -3020,21 +4141,24 @@ document.querySelectorAll('[data-modo]').forEach(b=>
 $('#s-carta').addEventListener('click',apriCarta);
 $('#s-tessera').addEventListener('click',apriTessera);
 $('#s-buoni').addEventListener('click',apriBuoni);
+$('#s-recensioni').addEventListener('click',apriMieRecensioni);
 $('#s-profilo').addEventListener('click',()=>apriProfilo(false));
+$('#b-nuovo').addEventListener('click',()=>apriNuovoLuogo());
 $('#b-tutte').addEventListener('click',apriElencoCitta);
 $('#q-citta').addEventListener('input',e=>{
   clearTimeout(timerQ);
   const v=e.target.value;
   timerQ=setTimeout(()=>cercaLocalita(v),450);
 });
-$('#b-aggiungi').addEventListener('click',()=>{
+$('#b-aggiungi').addEventListener('click',()=>apriNuovoLuogo());
+const _vecchioAggiungi = ()=>{
   const c = S.posizione || mappa.getCenter();
   const lat = c.lat, lng = c.lng ?? c.lon;
   apriModale('Aggiungere un locale',
     `<p>I dati di questa mappa vengono da OpenStreetMap, che chiunque pu&ograve; modificare. Aggiungere un posto significa aggiungerlo per tutti.</p>
      <p><b>Cosa serve indicare</b><br>Il tag corretto &egrave; <code>diet:gluten_free</code>, con valore <code>only</code> se il locale &egrave; interamente senza glutine, oppure <code>yes</code> se ha opzioni senza glutine.</p>
      <p style="margin-bottom:6px"><a href="https://www.openstreetmap.org/edit#map=18/${lat.toFixed(5)}/${lng.toFixed(5)}" target="_blank" rel="noopener" style="color:var(--bordeaux-3);font-weight:700;border-bottom:2px solid var(--grano-3)">Apri l&rsquo;editor su questa zona &rarr;</a></p>`);
-});
+};
 
 $('#b-area').addEventListener('click',cercaArea);
 $('#b-tipi').addEventListener('click',apriFiltroTipi);
@@ -3091,11 +4215,7 @@ try{
   document.head.appendChild(link);
 }catch(e){}
 
-const profiloSalvato = Pref.leggi('profilo', null);
-if(profiloSalvato && PROFILI[profiloSalvato]){
-  S.livelli = new Set(PROFILI[profiloSalvato].livelli);
-  S.alta = (profiloSalvato === 'celiachia_alta');
-}
+applicaProfiloSalute();
 
 disegnaSpettro();
 disegnaCitta();
@@ -3114,12 +4234,16 @@ function apriDettaglioSpesa(l){
       <h2>${esc(l.nome)}</h2>
       <div class="tipo">${esc(C.et)}${l.comune?' · '+esc(l.comune):''}${d?' · '+formatoDist(d):''}</div>
       <div class="f-livello" style="border-left-color:${C.c}"><strong>${icona(C.ico,'ico sm')}Cosa trovi qui</strong><p>${esc(C.desc)}</p></div>
-      <div class="eroe-azioni" style="padding:14px 0 0">
+      <div class="azioni-testa">
         <button class="btn" id="f-salva" style="background:rgba(255,255,255,.19);color:#fff">
           ${icona('i-stella','ico sm')}<span id="f-salva-t">${Archivio.ha(l.k)?'Salvato':'Salva'}</span></button>
-        ${l.telefono?`<a class="btn" href="tel:${esc(l.telefono)}" style="background:var(--grano);color:var(--bordeaux)">${icona('i-tel','ico sm')}Chiama</a>`:''}
+        ${l.telefono?`<a class="btn" href="tel:${esc(l.telefono)}" style="background:rgba(255,255,255,.19);color:#fff">${icona('i-tel','ico sm')}Chiama</a>`:''}
+        <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=${l.lat},${l.lng}" target="_blank" rel="noopener"
+           style="background:var(--grano);color:var(--bordeaux)">${icona('i-naviga','ico sm')}Portami l&igrave;</a>
       </div>
     </div>
+
+    <div class="pannello" id="pannello-rece"></div>
 
     ${l.cat==='farmacia'?`<div style="padding:0 14px"><div class="avviso">${icona('i-buono','ico sm')}
       <div>Chi ha una diagnosi di celiachia ha diritto a un contributo mensile per gli alimenti senza glutine.
@@ -3144,15 +4268,21 @@ function apriDettaglioSpesa(l){
         Se ti serve qualcosa di preciso, una telefonata evita il viaggio a vuoto.</p>
     </div>
 
-    <div class="pannello">
-      <div class="occhiello">Migliora i dati</div>
-      ${riga('Correggi', `<a href="https://www.openstreetmap.org/${l.osmType}/${l.osmId}" target="_blank" rel="noopener">su OpenStreetMap</a>`)}
+    <div class="tecnica">
+      <button class="apri-tecnica" data-tecnica aria-expanded="false">
+        ${icona('i-bussola','ico sm')}Da dove viene questa scheda${icona('i-freccia','ico sm freccetta')}</button>
+      <div class="dentro" hidden>
+        ${riga('Fonte','OpenStreetMap')}
+        ${riga('Correggi i dati', `<a href="https://www.openstreetmap.org/${l.osmType}/${l.osmId}" target="_blank" rel="noopener">su OpenStreetMap</a>`)}
+      </div>
     </div>
 
     <p class="pie">Dati &copy; OpenStreetMap contributors, ODbL 1.0.</p>`;
   $('#foglio').classList.add('aperto');
   $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
   legaSalva(l);
+  legaTecnica();
+  disegnaRecensioni(l);
 }
 
 
@@ -3243,7 +4373,7 @@ function chiudiLancio(vista){
     if(t) t.click();
   }
   // il profilo si chiede una volta sola, e solo dopo che si e' entrati
-  if(!Pref.leggi('profilo', null)) setTimeout(()=>apriProfilo(true), 520);
+  if(!Salute.dati().condizione) setTimeout(()=>apriProfilo(true), 520);
 }
 
 document.querySelectorAll('[data-meta]').forEach(b=>
@@ -3264,7 +4394,7 @@ $('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiLancio()
    finisce per guardare una versione vecchia senza accorgersene.
    Qui la pagina confronta se stessa con quella sul server e lo dice.
    ══════════════════════════════════════════════════════════════════ */
-const VERSIONE = '1.0';
+const VERSIONE = '1.5';
 
 async function controllaVersione(){
   try{
@@ -3285,6 +4415,7 @@ async function controllaVersione(){
 setTimeout(controllaVersione, 4000);
 
 /* ─── avvio: ultimo blocco del file, cosi' non anticipa nessuna costante ─── */
+caricaMiei();
 disegnaConto();
 Nube.avvia();
 precarica();

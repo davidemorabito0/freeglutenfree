@@ -378,6 +378,72 @@ svg{display:block}
 .esiti button:active{background:var(--grano)}
 .esiti .reg{color:var(--muto);font-size:12px;margin-left:auto;text-align:right}
 
+/* ─────────────────────────── area personale ──────────────────────────── */
+.scorciatoie{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:16px 14px 4px}
+.scorc{
+  background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);
+  padding:14px 13px;display:flex;flex-direction:column;gap:9px;min-height:104px;
+}
+.scorc:active{transform:scale(.98)}
+.scorc .cerchio{
+  width:38px;height:38px;border-radius:50%;background:var(--grano-2);
+  display:grid;place-items:center;color:var(--bordeaux);
+}
+.scorc b{font-family:Fraunces,serif;font-weight:700;font-size:14.5px;font-variation-settings:"opsz" 18;line-height:1.2}
+.scorc span{font-size:11.5px;color:var(--muto);line-height:1.35;margin-top:-4px}
+
+.lingue{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:0 0 14px}
+.lingue::-webkit-scrollbar{display:none}
+.lingua{
+  flex:0 0 auto;border:1.5px solid var(--linea);background:var(--carta);
+  border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600;white-space:nowrap;
+}
+.lingua[aria-pressed="true"]{background:var(--bordeaux);color:#fff;border-color:var(--bordeaux)}
+
+.carta-testo{
+  background:var(--bianco);border:1px solid var(--linea);border-radius:var(--r-m);
+  padding:18px;font-size:16px;line-height:1.6;
+}
+.carta-testo .titolo{
+  font-family:Fraunces,serif;font-weight:900;font-size:20px;
+  font-variation-settings:"opsz" 26;margin-bottom:12px;display:block;
+}
+
+/* schermo pieno da mostrare al banco */
+.vetrina{
+  position:fixed;inset:0;z-index:1900;background:#fff;color:#111;
+  display:flex;flex-direction:column;padding:calc(var(--st) + 16px) 18px calc(18px + var(--sb));
+  overflow-y:auto;
+}
+.vetrina[hidden]{display:none}
+.vetrina .chiudi-v{
+  align-self:flex-end;background:#EFEFEF;border-radius:999px;
+  padding:10px 16px;font-size:13.5px;font-weight:700;min-height:42px;
+  display:flex;align-items:center;gap:7px;margin-bottom:14px;
+}
+.vetrina .fascia{
+  background:var(--bordeaux);color:#fff;border-radius:var(--r-m);
+  padding:14px 16px;margin-bottom:16px;
+}
+.vetrina .fascia b{font-family:Fraunces,serif;font-weight:900;font-size:19px;display:block}
+.vetrina .fascia span{font-size:13px;opacity:.9}
+.vetrina .corpo{font-size:18px;line-height:1.62;flex:1}
+.vetrina img{width:100%;border-radius:var(--r-m);border:1px solid #E2E2E2;margin-bottom:14px}
+.codicione{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:clamp(26px,8vw,44px);font-weight:700;letter-spacing:.09em;
+  text-align:center;padding:20px 12px;background:#F4F4F4;border-radius:var(--r-m);
+  word-break:break-all;line-height:1.25;margin-bottom:14px;
+}
+
+.barra-buoni{height:12px;border-radius:6px;background:var(--grano-2);overflow:hidden;margin:10px 0 6px}
+.barra-buoni div{height:100%;background:var(--bordeaux-3);border-radius:6px;transition:width .4s}
+.cifra{font-family:Fraunces,serif;font-weight:900;font-size:30px;font-variation-settings:"opsz" 40;line-height:1}
+.spesa-riga{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--linea);font-size:13.5px}
+.spesa-riga .imp{margin-left:auto;font-weight:700}
+.due-campi{display:flex;gap:9px}
+.due-campi .campo{flex:1}
+
 /* riga filtri: deve stare sopra ogni elenco, non solo sulla mappa */
 .filtri{
   display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
@@ -607,6 +673,21 @@ svg{display:block}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-filtro" viewBox="0 0 24 24"><path d="M3.5 5.5h17M6.5 12h11M10 18.5h4"/></symbol>
   <symbol id="i-lente" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><path d="m16.3 16.3 4.2 4.2"/></symbol>
+  <symbol id="i-io" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="4.1"/><path d="M4.4 20.4a7.9 7.9 0 0 1 15.2 0"/>
+  </symbol>
+  <symbol id="i-carta" viewBox="0 0 24 24">
+    <rect x="2.6" y="4.6" width="18.8" height="14.8" rx="2.6"/>
+    <path d="M6.4 9.6h5M6.4 13h8M6.4 16h4"/><circle cx="17.4" cy="10.4" r="1.6"/>
+  </symbol>
+  <symbol id="i-macchina-foto" viewBox="0 0 24 24">
+    <path d="M3.4 7.6h3.2l1.6-2.4h7.6l1.6 2.4h3.2a1.6 1.6 0 0 1 1.6 1.6v8.4a1.6 1.6 0 0 1-1.6 1.6H3.4a1.6 1.6 0 0 1-1.6-1.6V9.2a1.6 1.6 0 0 1 1.6-1.6Z"/>
+    <circle cx="12" cy="13.2" r="3.4"/>
+  </symbol>
+  <symbol id="i-scudo-cuore" viewBox="0 0 24 24">
+    <path d="M12 2.8 4.5 6v6.3c0 4.6 3.1 7.9 7.5 8.9 4.4-1 7.5-4.3 7.5-8.9V6L12 2.8Z"/>
+    <path d="M12 16.2s-3-2-3-4a1.7 1.7 0 0 1 3-1 1.7 1.7 0 0 1 3 1c0 2-3 4-3 4Z"/>
+  </symbol>
   <symbol id="i-menu-cibo" viewBox="0 0 24 24">
     <path d="M5.5 3v18M5.5 3c1.6 0 2.6 1.4 2.6 3.3S7.1 9.6 5.5 9.6 2.9 8.2 2.9 6.3 3.9 3 5.5 3Z"/>
     <path d="M15 3v6.6c0 1.6 1.1 2.6 2.6 2.6s2.6-1 2.6-2.6V3M17.6 12.2V21"/>
@@ -763,12 +844,28 @@ svg{display:block}
 <section class="vista" id="v-salvati">
   <header class="cappello">
     <div class="marchio">
-      <div class="sigillo"><svg class="ico"><use href="#i-stella"/></svg></div>
-      <div><h1>I miei posti</h1><p>preferiti, diari di viaggio e note</p></div>
+      <div class="sigillo"><svg class="ico"><use href="#i-io"/></svg></div>
+      <div><h1>Io</h1><p>la mia carta, i buoni, i miei posti</p></div>
     </div>
   </header>
+  <div class="scorciatoie">
+    <button class="scorc" id="s-carta">
+      <span class="cerchio"><svg class="ico sm"><use href="#i-carta"/></svg></span>
+      <b>Carta del celiaco</b><span>Da mostrare al ristorante, in 8 lingue</span></button>
+    <button class="scorc" id="s-tessera">
+      <span class="cerchio"><svg class="ico sm"><use href="#i-macchina-foto"/></svg></span>
+      <b>La mia tessera</b><span>Codice e foto, sempre a portata</span></button>
+    <button class="scorc" id="s-buoni">
+      <span class="cerchio"><svg class="ico sm"><use href="#i-buono"/></svg></span>
+      <b>Buoni mensili</b><span>Quanto ti resta questo mese</span></button>
+    <button class="scorc" id="s-profilo">
+      <span class="cerchio"><svg class="ico sm"><use href="#i-scudo-cuore"/></svg></span>
+      <b>Il mio profilo</b><span>Quanto devo stare attento</span></button>
+  </div>
   <div id="salvati-corpo"></div>
 </section>
+
+<div class="vetrina" id="vetrina" hidden></div>
 
 <!-- ═════════════════════════════ dettaglio + modale ═══════════════════════ -->
 <div class="progresso" id="progresso" hidden aria-live="polite">
@@ -788,7 +885,7 @@ svg{display:block}
   <button class="scheda-tab" role="tab" aria-selected="false" data-vista="v-viaggi">
     <svg class="ico"><use href="#i-valigia"/></svg>Viaggi</button>
   <button class="scheda-tab" role="tab" aria-selected="false" data-vista="v-salvati">
-    <svg class="ico"><use href="#i-stella"/></svg>Salvati</button>
+    <svg class="ico"><use href="#i-io"/></svg>Io</button>
 </nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -914,6 +1011,71 @@ const Archivio = {
     for(const v of this.tutti()){ (g[v.coll||'Senza raccolta'] ||= []).push(v); }
     return g;
   }
+};
+
+/* Preferenze personali: stesso principio dell'archivio, restano sul telefono. */
+const Pref = {
+  chiave:'fgf.pref.v1', memoria:{}, disco:true,
+  tutto(){
+    if(!this.disco) return this.memoria;
+    try{ return JSON.parse(localStorage.getItem(this.chiave) || '{}'); }
+    catch(e){ this.disco=false; return this.memoria; }
+  },
+  leggi(k, difetto){ const v = this.tutto()[k]; return v===undefined ? difetto : v; },
+  scrivi(k, v){
+    const o = this.tutto(); o[k]=v; this.memoria=o;
+    if(!this.disco) return;
+    try{ localStorage.setItem(this.chiave, JSON.stringify(o)); }
+    catch(e){ this.disco=false; }
+  }
+};
+
+/* I quattro profili non sono etichette decorative: cambiano davvero
+   quali livelli compaiono di default. Chi ha una diagnosi non deve
+   trovarsi in lista un locale senza garanzie sulla contaminazione. */
+const PROFILI = {
+  celiachia_alta:{
+    et:'Celiachia, alta sensibilità',
+    desc:'Anche tracce minime provocano una reazione. Mostro solo locali interamente senza glutine o con cucina fisicamente separata.',
+    livelli:['gf_100','cucina_dedicata']
+  },
+  celiachia:{
+    et:'Celiachia diagnosticata',
+    desc:'Mostro i locali sicuri e quelli certificati, più quelli da verificare. Resta fuori chi non offre garanzie sulla contaminazione.',
+    livelli:['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','dati_insufficienti']
+  },
+  cucino_per:{
+    et:'Cucino per un celiaco',
+    desc:'Stessa prudenza di chi ha la diagnosi: meglio scoprire ora che un locale non è adatto.',
+    livelli:['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','dati_insufficienti']
+  },
+  sensibilita:{
+    et:'Sensibilità al glutine',
+    desc:'Nessuna reazione autoimmune: mostro tutto, compresi i locali che offrono piatti senza glutine senza misure anti-contaminazione.',
+    livelli:['gf_100','cucina_dedicata','condivisa_certificata','condivisa_protocollo','condivisa_senza_garanzie','dati_insufficienti']
+  }
+};
+
+/* Testo della carta. Formulazione volutamente netta: la parola che conta
+   e' "malattia autoimmune", perche' e' quella che distingue una diagnosi
+   da una preferenza agli occhi di chi sta in cucina. */
+const CARTA = {
+  it:{lin:'Italiano', tit:'Ho la celiachia',
+    txt:'È una malattia autoimmune, non una preferenza alimentare.\n\nNon posso mangiare grano, orzo, segale, farro, kamut e avena non certificata.\n\nAnche una contaminazione minima mi provoca un danno: utensili usati per altre pietanze, olio di frittura condiviso, superfici, briciole di pane.\n\nVi chiedo di preparare il mio piatto con utensili puliti e ingredienti tenuti separati. Se non è possibile, preferisco saperlo. Grazie.'},
+  en:{lin:'English', tit:'I have coeliac disease',
+    txt:'It is an autoimmune condition, not a food preference.\n\nI cannot eat wheat, barley, rye, spelt, kamut or uncertified oats.\n\nEven a tiny amount of cross-contamination makes me ill: shared utensils, shared frying oil, work surfaces, breadcrumbs.\n\nPlease prepare my meal with clean utensils and separate ingredients. If that is not possible, I would rather know. Thank you.'},
+  es:{lin:'Español', tit:'Tengo enfermedad celíaca',
+    txt:'Es una enfermedad autoinmune, no una preferencia alimentaria.\n\nNo puedo comer trigo, cebada, centeno, espelta, kamut ni avena sin certificar.\n\nIncluso una contaminación cruzada mínima me provoca daño: utensilios compartidos, aceite de freír compartido, superficies, migas de pan.\n\nLe pido que prepare mi plato con utensilios limpios e ingredientes separados. Si no es posible, prefiero saberlo. Gracias.'},
+  fr:{lin:'Français', tit:'J’ai la maladie cœliaque',
+    txt:'C’est une maladie auto-immune, pas une préférence alimentaire.\n\nJe ne peux pas manger de blé, d’orge, de seigle, d’épeautre, de kamut ni d’avoine non certifiée.\n\nMême une contamination minime me rend malade : ustensiles partagés, huile de friture partagée, plans de travail, miettes de pain.\n\nMerci de préparer mon plat avec des ustensiles propres et des ingrédients séparés. Si ce n’est pas possible, je préfère le savoir.'},
+  de:{lin:'Deutsch', tit:'Ich habe Zöliakie',
+    txt:'Das ist eine Autoimmunerkrankung, keine Ernährungsvorliebe.\n\nIch darf keinen Weizen, keine Gerste, keinen Roggen, keinen Dinkel, keinen Kamut und keinen nicht zertifizierten Hafer essen.\n\nSchon geringste Verunreinigungen machen mich krank: gemeinsam genutzte Utensilien, gemeinsames Frittieröl, Arbeitsflächen, Brotkrümel.\n\nBitte bereiten Sie mein Essen mit sauberem Geschirr und getrennten Zutaten zu. Falls das nicht möglich ist, sagen Sie es mir bitte. Vielen Dank.'},
+  pt:{lin:'Português', tit:'Tenho doença celíaca',
+    txt:'É uma doença autoimune, não uma preferência alimentar.\n\nNão posso comer trigo, cevada, centeio, espelta, kamut nem aveia não certificada.\n\nMesmo uma contaminação mínima faz-me mal: utensílios partilhados, óleo de fritura partilhado, superfícies, migalhas de pão.\n\nPeço que prepare o meu prato com utensílios limpos e ingredientes separados. Se não for possível, prefiro saber. Obrigado.'},
+  ja:{lin:'日本語', tit:'私はセリアック病です',
+    txt:'食の好みではなく、自己免疫疾患です。\n\n小麦、大麦、ライ麦、スペルト小麦、カムット小麦、認証のないオート麦は食べられません。\n\nごく微量の混入でも体調を崩します。共用の調理器具、共用の揚げ油、調理台、パンくずなどです。\n\n清潔な調理器具と、他と分けた材料で調理をお願いします。難しい場合は、そう教えていただけると助かります。'},
+  zh:{lin:'中文', tit:'我患有乳糜泻',
+    txt:'这是一种自身免疫性疾病，不是饮食偏好。\n\n我不能吃小麦、大麦、黑麦、斯佩尔特小麦、卡姆小麦和未经认证的燕麦。\n\n即使极少量的交叉污染也会让我生病：共用的器具、共用的煎炸油、料理台面、面包屑。\n\n请使用干净的器具和单独存放的食材为我准备餐食。如果做不到，也请告诉我。谢谢。'}
 };
 
 const STATI = {
@@ -1752,6 +1914,276 @@ function esportaSalvati(){
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   AREA PERSONALE
+   ══════════════════════════════════════════════════════════════════ */
+let sveglia = null;
+async function tieniAcceso(si){
+  try{
+    if(si && 'wakeLock' in navigator){ sveglia = await navigator.wakeLock.request('screen'); }
+    else if(sveglia){ sveglia.release(); sveglia = null; }
+  }catch(e){}
+}
+
+function apriVetrina(html){
+  $('#vetrina').innerHTML =
+    `<button class="chiudi-v" id="v-chiudi">${icona('i-x','ico sm')}Chiudi</button>` + html;
+  $('#vetrina').hidden = false;
+  $('#v-chiudi').addEventListener('click', chiudiVetrina);
+  tieniAcceso(true);
+}
+function chiudiVetrina(){ $('#vetrina').hidden = true; tieniAcceso(false); }
+
+/* ── carta del celiaco ─────────────────────────────────────────────── */
+function foglioCarta(){
+  const scelta = Pref.leggi('lingua','it');
+  $('#foglio').innerHTML = `
+    <div class="f-testa">
+      <div class="f-nastro" style="background:var(--l1)"></div>
+      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+      <h2>Carta del celiaco</h2>
+      <div class="tipo">da mostrare al personale</div>
+      <div class="f-livello" style="border-left-color:var(--l1)">
+        <strong>${icona('i-carta','ico sm')}A cosa serve</strong>
+        <p>Spiega in poche righe che la celiachia è una malattia autoimmune e che il problema non è solo l’ingrediente, ma la contaminazione. Funziona meglio di qualunque spiegazione a voce, soprattutto all’estero.</p>
+      </div>
+    </div>
+    <div class="pannello">
+      <div class="occhiello">Lingua</div>
+      <div class="lingue" id="lingue">
+        ${Object.entries(CARTA).map(([id,c])=>
+          `<button class="lingua" data-lingua="${id}" aria-pressed="${id===scelta}">${esc(c.lin)}</button>`).join('')}
+      </div>
+      <div class="carta-testo" id="anteprima"></div>
+      <div class="eroe-azioni" style="padding:14px 0 4px">
+        <button class="btn btn-pieno" id="b-mostra">${icona('i-carta','ico sm')}Mostra a schermo pieno</button>
+      </div>
+    </div>
+    <p class="pie">Testo redatto per questa applicazione. Non sostituisce un certificato medico:
+    se ti serve un documento formale, chiedilo al tuo centro di riferimento.</p>`;
+  $('#foglio').classList.add('aperto');
+  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+
+  const dipingi = () => {
+    const l = Pref.leggi('lingua','it'), c = CARTA[l];
+    $('#anteprima').innerHTML = `<span class="titolo">${esc(c.tit)}</span>${esc(c.txt).replace(/\n/g,'<br>')}`;
+    document.querySelectorAll('[data-lingua]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lingua===l));
+  };
+  document.querySelectorAll('[data-lingua]').forEach(b=>b.addEventListener('click',()=>{
+    Pref.scrivi('lingua', b.dataset.lingua); dipingi();
+  }));
+  $('#b-mostra').addEventListener('click',()=>{
+    const c = CARTA[Pref.leggi('lingua','it')];
+    apriVetrina(`<div class="fascia"><b>${esc(c.tit)}</b><span>freeglutenfree</span></div>
+      <div class="corpo">${esc(c.txt).replace(/\n/g,'<br>')}</div>`);
+  });
+  dipingi();
+}
+
+/* ── tessera e codice ──────────────────────────────────────────────── */
+async function riduciImmagine(file, lato=1500, q=.82){
+  const bmp = await createImageBitmap(file);
+  const s = Math.min(1, lato / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas');
+  c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  let out = c.toDataURL('image/jpeg', q);
+  // la memoria del browser e' limitata: se la foto e' ancora pesante, stringo
+  while(out.length > 2_600_000 && q > .4){ q -= .12; out = c.toDataURL('image/jpeg', q); }
+  return out;
+}
+
+function foglioTessera(){
+  const t = Pref.leggi('tessera', {});
+  $('#foglio').innerHTML = `
+    <div class="f-testa">
+      <div class="f-nastro" style="background:var(--bordeaux-3)"></div>
+      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+      <h2>La mia tessera</h2>
+      <div class="tipo">codice e foto per il banco</div>
+      <div class="f-livello" style="border-left-color:var(--bordeaux-3)">
+        <strong>${icona('i-macchina-foto','ico sm')}Come funziona</strong>
+        <p>Fotografa la tessera o il buono e scrivi il codice: li ritrovi qui anche senza rete, da mostrare in farmacia o alla cassa. Restano solo su questo telefono.</p>
+      </div>
+    </div>
+    <div class="pannello">
+      <div class="occhiello">Dati</div>
+      <div class="campo"><label>Ente o Regione</label>
+        <input id="t-ente" type="text" value="${esc(t.ente||'')}" placeholder="es. ASL Città di Milano"></div>
+      <div class="campo"><label>Codice</label>
+        <input id="t-codice" type="text" inputmode="text" autocapitalize="characters"
+               value="${esc(t.codice||'')}" placeholder="il codice stampato sulla tessera"></div>
+      <div class="campo"><label>Foto della tessera</label>
+        <input id="t-foto" type="file" accept="image/*" capture="environment"></div>
+      ${t.foto?`<img src="${t.foto}" alt="Tessera salvata" style="width:100%;border-radius:12px;border:1px solid var(--linea)">`:''}
+      <div class="eroe-azioni" style="padding:14px 0 4px">
+        <button class="btn btn-pieno" id="b-salva-t">${icona('i-scudo','ico sm')}Salva</button>
+        ${(t.codice||t.foto)?`<button class="btn btn-vuoto" id="b-mostra-t">${icona('i-carta','ico sm')}Mostra</button>`:''}
+      </div>
+      ${(t.codice||t.foto)?`<button class="mini" id="b-canc-t" style="width:100%;margin-top:10px">${icona('i-x','ico sm')}Cancella tutto</button>`:''}
+    </div>
+    <p class="pie">Foto e codice non lasciano il telefono: nessun invio, nessun account.
+    Se cancelli i dati del browser vanno persi.</p>`;
+  $('#foglio').classList.add('aperto');
+  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+
+  let foto = t.foto || null;
+  $('#t-foto').addEventListener('change', async e=>{
+    const f = e.target.files?.[0]; if(!f) return;
+    try{ foto = await riduciImmagine(f); apriModale('Foto pronta','<p>Tocca Salva per conservarla.</p>'); }
+    catch(err){ apriModale('Non riesco a leggere l’immagine','<p>Prova con un altro scatto o un altro formato.</p>'); }
+  });
+  $('#b-salva-t').addEventListener('click',()=>{
+    Pref.scrivi('tessera',{ente:$('#t-ente').value.trim(), codice:$('#t-codice').value.trim().toUpperCase(), foto});
+    foglioTessera();
+  });
+  const m=$('#b-mostra-t'); if(m) m.addEventListener('click',mostraTessera);
+  const c=$('#b-canc-t'); if(c) c.addEventListener('click',()=>{ Pref.scrivi('tessera',{}); foglioTessera(); });
+}
+
+function mostraTessera(){
+  const t = Pref.leggi('tessera', {});
+  apriVetrina(`
+    <div class="fascia"><b>${esc(t.ente||'La mia tessera')}</b><span>alza la luminosità dello schermo</span></div>
+    ${t.foto?`<img src="${t.foto}" alt="Tessera">`:''}
+    ${t.codice?`<div class="codicione">${esc(t.codice)}</div>`:''}
+    <p style="font-size:13px;color:#666;line-height:1.5">Se il lettore non riesce a inquadrare lo schermo,
+    detta il codice: è scritto qui sopra apposta in grande.</p>`);
+}
+
+/* ── buoni mensili ─────────────────────────────────────────────────── */
+const meseOggi = () => new Date().toISOString().slice(0,7);
+const euro = n => (n||0).toLocaleString('it-IT',{minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
+
+function foglioBuoni(){
+  const b = Pref.leggi('buoni', {importo:0, spese:[]});
+  const mese = meseOggi();
+  const delMese = (b.spese||[]).filter(s=>s.data.slice(0,7)===mese);
+  const speso = delMese.reduce((t,s)=>t+s.importo, 0);
+  const resta = Math.max(0, (b.importo||0) - speso);
+  const pct = b.importo ? Math.min(100, speso / b.importo * 100) : 0;
+
+  $('#foglio').innerHTML = `
+    <div class="f-testa">
+      <div class="f-nastro" style="background:var(--l3)"></div>
+      <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
+      <h2>Buoni mensili</h2>
+      <div class="tipo">${new Date().toLocaleDateString('it-IT',{month:'long',year:'numeric'})}</div>
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Questo mese</div>
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span class="cifra">${esc(euro(resta))}</span>
+        <span style="font-size:13px;color:var(--muto)">ancora disponibili</span>
+      </div>
+      <div class="barra-buoni"><div style="width:${pct}%"></div></div>
+      <div style="font-size:12.5px;color:var(--muto)">${esc(euro(speso))} spesi su ${esc(euro(b.importo||0))}</div>
+      ${!b.importo?`<div class="avviso" style="margin-top:14px">${icona('i-avviso','ico sm')}
+        <div>Imposta qui sotto il tuo importo mensile: cambia da Regione a Regione e in base a età e sesso,
+        quindi non posso indovinarlo. Lo trovi nella comunicazione della tua ASL.</div></div>`:''}
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Aggiungi una spesa</div>
+      <div class="due-campi">
+        <div class="campo"><label>Importo</label>
+          <input id="sp-importo" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00"></div>
+        <div class="campo"><label>Dove</label>
+          <input id="sp-dove" type="text" placeholder="farmacia, negozio…"></div>
+      </div>
+      <button class="btn btn-pieno" id="b-add-spesa" style="width:100%">${icona('i-piu','ico sm')}Registra</button>
+    </div>
+
+    ${delMese.length?`<div class="pannello">
+      <div class="occhiello">Spese di questo mese</div>
+      ${delMese.slice().reverse().map((s,i)=>`<div class="spesa-riga">
+        ${icona('i-buono','ico sm')}
+        <span>${esc(s.dove||'Spesa')}<br><span style="color:var(--muto);font-size:12px">${new Date(s.data).toLocaleDateString('it-IT')}</span></span>
+        <span class="imp">${esc(euro(s.importo))}</span>
+        <button data-canc="${esc(s.id)}" style="color:var(--muto);padding:6px">${icona('i-x','ico sm')}</button>
+      </div>`).join('')}
+    </div>`:''}
+
+    <div class="pannello">
+      <div class="occhiello">Impostazioni</div>
+      <div class="campo"><label>Importo mensile riconosciuto</label>
+        <input id="b-importo" type="number" inputmode="decimal" step="0.01" min="0" value="${b.importo||''}" placeholder="es. 90,00"></div>
+      <button class="btn btn-vuoto" id="b-salva-imp" style="width:100%">Salva importo</button>
+    </div>
+
+    <div class="pannello">
+      <div class="occhiello">Come funziona</div>
+      <p style="font-size:13.5px;line-height:1.6;padding-bottom:12px">
+      Chi ha una diagnosi di celiachia ha diritto a un contributo mensile per l’acquisto di alimenti senza glutine,
+      erogato dal Servizio Sanitario. L’importo dipende da età e sesso ed è stabilito a livello nazionale, ma
+      <b>modalità di erogazione ed esercizi accreditati cambiano da Regione a Regione</b>: in alcune si usa una
+      tessera o un’app dedicata, in altre si ritira in farmacia.<br><br>
+      Il residuo di norma non si accumula da un mese all’altro. Per le regole aggiornate della tua Regione,
+      la fonte da consultare è la tua ASL.</p>
+    </div>`;
+  $('#foglio').classList.add('aperto');
+  $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+
+  $('#b-salva-imp').addEventListener('click',()=>{
+    const v = parseFloat(($('#b-importo').value||'0').replace(',','.')) || 0;
+    Pref.scrivi('buoni', {...b, importo:v}); foglioBuoni();
+  });
+  $('#b-add-spesa').addEventListener('click',()=>{
+    const v = parseFloat(($('#sp-importo').value||'0').replace(',','.')) || 0;
+    if(v<=0) return;
+    const spese = [...(b.spese||[]), {id:String(Date.now()), data:new Date().toISOString(),
+      importo:v, dove:$('#sp-dove').value.trim()}];
+    Pref.scrivi('buoni', {...b, spese}); foglioBuoni();
+  });
+  document.querySelectorAll('[data-canc]').forEach(x=>x.addEventListener('click',()=>{
+    Pref.scrivi('buoni', {...b, spese:(b.spese||[]).filter(s=>s.id!==x.dataset.canc)}); foglioBuoni();
+  }));
+}
+
+/* ── profilo di sensibilita' ───────────────────────────────────────── */
+function applicaProfilo(id){
+  const p = PROFILI[id]; if(!p) return;
+  Pref.scrivi('profilo', id);
+  S.livelli = new Set(p.livelli);
+  S.alta = (id === 'celiachia_alta');
+  costruisciSpettro();
+  sincronizza();
+}
+
+function foglioProfilo(primoAvvio){
+  const attuale = Pref.leggi('profilo', null);
+  $('#foglio').innerHTML = `
+    <div class="f-testa">
+      <div class="f-nastro" style="background:var(--l2)"></div>
+      ${primoAvvio ? '' : `<button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>`}
+      <h2>${primoAvvio ? 'Prima di iniziare' : 'Il mio profilo'}</h2>
+      <div class="tipo">quanto devi stare attento</div>
+      <div class="f-livello" style="border-left-color:var(--l2)">
+        <strong>${icona('i-scudo-cuore','ico sm')}Perché te lo chiedo</strong>
+        <p>È l’unica cosa che cambia davvero tutto il resto: da qui decido quali locali mostrarti di default. Puoi cambiarla quando vuoi dalla scheda Io.</p>
+      </div>
+    </div>
+    <div class="pannello">
+      ${Object.entries(PROFILI).map(([id,p])=>`
+        <button class="riga-card" data-profilo="${id}" style="width:100%;${attuale===id?'border-color:var(--bordeaux);border-width:2px':''}">
+          <div class="gemma" style="background:${id==='sensibilita'?'var(--l4)':'var(--l1)'}">${icona('i-scudo','ico sm')}</div>
+          <div class="riga-corpo">
+            <h3>${esc(p.et)}</h3>
+            <div class="meta" style="white-space:normal">${esc(p.desc)}</div>
+          </div>
+        </button>`).join('')}
+    </div>
+    <p class="pie">Nessuna di queste informazioni esce dal telefono.</p>`;
+  $('#foglio').classList.add('aperto');
+  const ch=$('#f-chiudi'); if(ch) ch.addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+  document.querySelectorAll('[data-profilo]').forEach(b=>b.addEventListener('click',()=>{
+    applicaProfilo(b.dataset.profilo);
+    $('#foglio').classList.remove('aperto');
+    if(primoAvvio && S.posizione) caricaIntorno();
+  }));
+}
+
+/* ══════════════════════════════════════════════════════════════════
    DETTAGLIO
    ══════════════════════════════════════════════════════════════════ */
 const riga=(e,v)=> v? `<div class="riga"><span>${e}</span><span>${v}</span></div>` : '';
@@ -1955,6 +2387,10 @@ function cambiaModo(m){
 document.querySelectorAll('[data-modo]').forEach(b=>
   b.addEventListener('click',()=>cambiaModo(b.dataset.modo)));
 
+$('#s-carta').addEventListener('click',foglioCarta);
+$('#s-tessera').addEventListener('click',foglioTessera);
+$('#s-buoni').addEventListener('click',foglioBuoni);
+$('#s-profilo').addEventListener('click',()=>foglioProfilo(false));
 $('#b-tutte').addEventListener('click',modaleTutteCitta);
 $('#q-citta').addEventListener('input',e=>{
   clearTimeout(timerQ);
@@ -1983,7 +2419,8 @@ $('#b-alta').addEventListener('click',()=>{
 $('#modale').addEventListener('click',e=>{ if(e.target.id==='modale') $('#modale').hidden=true; });
 document.addEventListener('keydown',e=>{
   if(e.key!=='Escape') return;
-  if(!$('#modale').hidden) $('#modale').hidden=true;
+  if(!$('#vetrina').hidden) chiudiVetrina();
+  else if(!$('#modale').hidden) $('#modale').hidden=true;
   else $('#foglio').classList.remove('aperto');
 });
 // La mappa si aggiorna da sola: chiedere un tocco per vedere qualcosa
@@ -2023,6 +2460,12 @@ try{
   link.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)],{type:'application/json'}));
   document.head.appendChild(link);
 }catch(e){}
+
+const profiloSalvato = Pref.leggi('profilo', null);
+if(profiloSalvato && PROFILI[profiloSalvato]){
+  S.livelli = new Set(PROFILI[profiloSalvato].livelli);
+  S.alta = (profiloSalvato === 'celiachia_alta');
+}
 
 costruisciSpettro();
 costruisciCitta();
@@ -2181,7 +2624,11 @@ function dettaglioSpesa(l){
   legaSalva(l);
 }
 
-function chiudiSplash(){ $('#splash').classList.add('via'); }
+function chiudiSplash(){
+  $('#splash').classList.add('via');
+  // la domanda si fa una volta sola, subito dopo lo splash
+  if(!Pref.leggi('profilo', null)) setTimeout(()=>foglioProfilo(true), 420);
+}
 
 $('#s-livelli').addEventListener('click', e=>{ e.stopPropagation(); chiudiSplash(); modaleGuida(); });
 $('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiSplash();

@@ -1023,7 +1023,7 @@ svg{display:block}
     <div class="righino">
       <button id="s-livelli">Livelli</button>
       <button id="s-fonti">Fonti</button>
-      <span style="font-size:11px;color:#A98790">v0.9 &middot; 2026-08-16</span>
+      <span style="font-size:11px;color:#A98790">v1.0 &middot; 2026-08-16</span>
     </div>
     <div class="carico-mini" id="carico-mini">
       <span class="pulsa"></span>
@@ -1056,10 +1056,11 @@ svg{display:block}
    CONFIGURAZIONE
    ══════════════════════════════════════════════════════════════════ */
 const CFG = {
-  // I due valori arrivano da config.js, che si modifica senza toccare
-  // questo file. Senza config.js l'app funziona, solo senza account.
-  supabaseUrl: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseUrl) || '',
-  supabaseKey: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseKey) || '',
+  // Valori di base. Se accanto a index.html c'e' un config.js valido,
+  // i suoi valori hanno la precedenza: serve a cambiarli senza toccare
+  // questo file. Se manca, non cambia nulla.
+  supabaseUrl: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseUrl) || 'https://ovafetpgmumrtfsauxpy.supabase.co',
+  supabaseKey: (window.FGF_CONFIG && window.FGF_CONFIG.supabaseKey) || 'sb_publishable_TXBt0fjaoYNp7iUphWYKxQ_9BGrJmgQ',
   overpass:['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'],
   maxDiagKm:45,
   raggioVicino:{mangiare:[5000, 15000, 35000], comprare:[1500, 4000, 12000]}           // allarga finche' non trova qualcosa
@@ -1770,9 +1771,7 @@ function collega(){
       if(Archivio.ha(k)){ Archivio.togli(k); }
       else{ salvaLocale(S.locali.get(k)); }
       s.setAttribute('aria-pressed',Archivio.ha(k));
-      disegnaValigia(); disegnaSalvati();
-disegnaConto();
-Nube.avvia();
+      disegnaValigia(); disegnaSalvati(); disegnaConto();
     });
   });
 }
@@ -2350,7 +2349,12 @@ function chiudiVetrina(){ $('#vetrina').hidden = true; tieniAcceso(false); }
 /* ── account ──────────────────────────────────────────────────────── */
 function disegnaConto(){
   const box = $('#conto'); if(!box) return;
-  if(!Nube.attiva()){ box.innerHTML=''; return; }
+  if(!Nube.attiva()){
+    box.innerHTML = `<div class="conto"><div class="faccia">${icona('i-avviso','ico lg')}</div>
+      <div class="chi"><b>Account non attivo</b>
+      <span>Manca la configurazione del server. I posti salvati restano su questo telefono.</span></div></div>`;
+    return;
+  }
 
   if(!Nube.dentro()){
     box.innerHTML = `<div class="conto ospite" role="button" tabindex="0" id="b-accedi">
@@ -3260,7 +3264,7 @@ $('#s-fonti').addEventListener('click', e=>{ e.stopPropagation(); chiudiLancio()
    finisce per guardare una versione vecchia senza accorgersene.
    Qui la pagina confronta se stessa con quella sul server e lo dice.
    ══════════════════════════════════════════════════════════════════ */
-const VERSIONE = '0.9';
+const VERSIONE = '1.0';
 
 async function controllaVersione(){
   try{
@@ -3281,6 +3285,8 @@ async function controllaVersione(){
 setTimeout(controllaVersione, 4000);
 
 /* ─── avvio: ultimo blocco del file, cosi' non anticipa nessuna costante ─── */
+disegnaConto();
+Nube.avvia();
 precarica();
 
 </script>

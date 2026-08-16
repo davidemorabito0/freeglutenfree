@@ -1,0 +1,76 @@
+name: Raccolta dati OpenStreetMap
+
+# Un giro completo sull'Italia richiede parecchie ore: invece di una
+# sola esecuzione lunghissima, il lavoro e' spezzato in tanti passaggi
+# brevi che riprendono da dove si erano fermati. Cosi' non si sfora mai
+# il limite di durata e non si stressa Overpass.
+
+on:
+  schedule:
+    - cron: '17 */3 * * *'      # ogni 3 ore
+  workflow_dispatch:
+    inputs:
+      province_per_run:
+        description: 'Quante province elaborare in questa esecuzione'
+        required: false
+        default: '14'
+      riparti_da_zero:
+        description: 'Azzera il punto di ripresa (scrivi si)'
+        required: false
+        default: 'no'
+
+concurrency:
+  group: raccolta
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  raccogli:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Azzera il punto di ripresa
+        if: ${{ github.event.inputs.riparti_da_zero == 'si' }}
+        run: rm -f data/_stato.json
+
+      - name: Raccolta
+        env:
+          PROVINCE_PER_RUN: ${{ github.event.inputs.province_per_run || '14' }}
+          PAUSA_SECONDI: '18'
+        run: python scripts/raccolta.py
+
+      - name: Riepilogo
+        run: |
+          if [ -f data/_indice.json ]; then
+            python - <<'PY' >> $GITHUB_STEP_SUMMARY
+          import json
+          d = json.load(open('data/_indice.json'))
+          print('## Raccolta OpenStreetMap\n')
+          print(f"- Province coperte: **{d['province_coperte']}/{d['province_totali']}**")
+          print(f"- Punti *mangiare fuori*: **{d['totale_mangiare']}**")
+          print(f"- Punti *fare la spesa*: **{d['totale_spesa']}**")
+          print(f"- Ultimo aggiornamento: {d['aggiornato']}")
+          PY
+          fi
+
+      - name: Salva i dati nel repository
+        run: |
+          git config user.name  'raccolta-bot'
+          git config user.email 'actions@github.com'
+          git add data
+          if git diff --staged --quiet; then
+            echo 'Nessuna variazione.'
+          else
+            git commit -m "dati: raccolta OSM $(date -u '+%Y-%m-%d %H:%M') [skip ci]"
+            git pull --rebase --autostash origin ${{ github.ref_name }} || true
+            git push
+          fi

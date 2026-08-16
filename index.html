@@ -35,7 +35,7 @@
   --carta:#FFFDF8;
   --bianco:#fff;
   --inchiostro:#33202A;
-  --muto:#8A7568;
+  --muto:#77604F;   /* scurito: su carta chiara il precedente non passava il contrasto */
   --linea:#E7DAC2;
 
   --l1:#2E7D4F;   /* 100% senza glutine   */
@@ -43,7 +43,7 @@
   --l3:#C9962E;   /* condivisa certificata*/
   --l4:#D97828;   /* protocollo dichiarato*/
   --l5:#C0203A;   /* non idoneo           */
-  --l6:#A89684;   /* da verificare        */
+  --l6:#9C8A78;   /* da verificare        */
 
   --r-s:10px; --r-m:16px; --r-l:22px;
   --sb:env(safe-area-inset-bottom,0px);
@@ -85,12 +85,12 @@ svg{display:block}
   position:fixed;left:0;right:0;bottom:0;z-index:1400;height:var(--tab);
   padding-bottom:var(--sb);
   background:var(--bordeaux);
-  display:grid;grid-template-columns:repeat(3,1fr);
+  display:grid;grid-template-columns:repeat(4,1fr);
   box-shadow:0 -1px 0 rgba(255,255,255,.09);
 }
 .scheda-tab{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  color:#C8A9AF;font-size:10.5px;font-weight:600;letter-spacing:.02em;
+  color:#C8A9AF;font-size:9.5px;font-weight:600;letter-spacing:0;
   transition:color .18s;position:relative;
 }
 .scheda-tab[aria-selected="true"]{color:var(--bianco)}
@@ -179,9 +179,10 @@ svg{display:block}
 }
 .riga-card:active{transform:scale(.985)}
 .gemma{
-  width:40px;height:40px;border-radius:12px;flex:0 0 auto;
+  width:42px;height:42px;border-radius:13px;flex:0 0 auto;
   display:grid;place-items:center;color:var(--bianco);
 }
+.gemma .ico{width:22px;height:22px;stroke-width:1.9}
 .riga-corpo{flex:1;min-width:0}
 .riga-corpo h3{font-size:14.5px;font-weight:600;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .riga-corpo .meta{font-size:12px;color:var(--muto);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -284,14 +285,20 @@ svg{display:block}
   padding-bottom:calc(34px + var(--sb));
 }
 .foglio.aperto{transform:translateY(0)}
-.f-testa{padding:calc(var(--st) + 14px) 18px 20px;color:#fff;position:relative;overflow:hidden}
+.f-testa{padding:calc(var(--st) + 14px) 18px 20px;color:#fff;position:relative;overflow:hidden;background:var(--bordeaux)}
+.f-nastro{position:absolute;left:0;top:0;bottom:0;width:5px}
+.chip-livello{
+  display:inline-flex;align-items:center;gap:7px;border-radius:999px;
+  padding:6px 13px 6px 9px;font-size:12px;font-weight:700;
+  letter-spacing:.02em;margin-top:14px;position:relative;z-index:1;
+}
 .f-testa::after{content:"";pointer-events:none;position:absolute;right:-40px;bottom:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.13),transparent 65%)}
 .f-chiudi{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;opacity:.9;margin-bottom:16px;position:relative;z-index:1}
 .f-testa h2{font-family:Fraunces,serif;font-weight:900;font-size:25px;line-height:1.13;font-variation-settings:"opsz" 40;position:relative;z-index:1}
 .f-testa .tipo{font-size:11px;text-transform:uppercase;letter-spacing:.12em;opacity:.82;margin-top:7px;position:relative;z-index:1}
 .f-livello{
-  margin-top:16px;background:rgba(255,255,255,.15);border-radius:var(--r-m);
-  padding:13px 14px;position:relative;z-index:1;backdrop-filter:blur(2px);
+  margin-top:12px;background:rgba(255,255,255,.13);border-radius:var(--r-m);
+  padding:13px 14px;position:relative;z-index:1;border-left:4px solid;
 }
 .f-livello strong{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:700;margin-bottom:5px}
 .f-livello p{font-size:12.5px;line-height:1.5;opacity:.95}
@@ -327,6 +334,91 @@ svg{display:block}
 .pie{padding:6px 20px 28px;font-size:11px;color:var(--muto);line-height:1.6;text-align:center}
 .pie a{border-bottom:1px solid var(--linea)}
 
+
+/* barra di avanzamento: se una richiesta e' lenta si deve vedere che vive */
+.progresso{
+  position:fixed;left:0;right:0;top:0;z-index:1700;pointer-events:none;
+  padding-top:var(--st);
+}
+.progresso[hidden]{display:none}
+.progresso .binario{height:3px;background:rgba(74,15,28,.16)}
+.progresso .riempi{
+  height:100%;width:0;background:var(--bordeaux-3);
+  transition:width .45s cubic-bezier(.25,.9,.3,1);
+}
+.progresso .etichetta{
+  display:block;margin:7px auto 0;width:max-content;max-width:88%;
+  background:var(--bordeaux);color:#F3E4E7;border-radius:999px;
+  padding:6px 15px;font-size:12px;font-weight:600;
+  box-shadow:0 4px 14px rgba(74,15,28,.26);
+}
+.progresso.lento .etichetta{background:var(--l4);color:#3A1E05}
+
+/* tasto indietro: era un filo di testo, ora e' un comando vero */
+.f-chiudi{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.34);
+  border-radius:999px;padding:9px 16px 9px 12px;
+  font-size:13.5px;font-weight:700;letter-spacing:.01em;
+  min-height:42px;margin-bottom:18px;opacity:1;
+}
+.f-chiudi:active{transform:scale(.96)}
+
+/* ricerca citta' */
+.cerca-citta{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.14);
+  border-radius:12px;padding:10px 13px;margin-top:12px;position:relative;z-index:2}
+.cerca-citta input{
+  flex:1;background:none;border:none;color:#fff;font:inherit;font-size:14px;outline:none;min-width:0;
+}
+.cerca-citta input::placeholder{color:#C9A8AF}
+.esiti{margin:10px 14px 0;background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);overflow:hidden}
+.esiti[hidden]{display:none}
+.esiti button{display:flex;align-items:center;gap:10px;width:100%;padding:13px 14px;border-bottom:1px solid var(--linea);font-size:14px}
+.esiti button:last-child{border-bottom:none}
+.esiti button:active{background:var(--grano)}
+.esiti .reg{color:var(--muto);font-size:12px;margin-left:auto;text-align:right}
+
+/* ─────────────────────────── salvati e note ──────────────────────────────── */
+.collezione{margin:18px 14px 6px}
+.collezione-testa{display:flex;align-items:baseline;gap:9px;margin-bottom:10px}
+.collezione-testa h3{font-family:Fraunces,serif;font-weight:700;font-size:17px;font-variation-settings:"opsz" 22}
+.collezione-testa span{font-size:12px;color:var(--muto)}
+.salvato{
+  background:var(--carta);border:1px solid var(--linea);border-radius:var(--r-m);
+  padding:13px;margin-bottom:9px;
+}
+.salvato-cima{display:flex;gap:11px;align-items:flex-start}
+.salvato h4{font-size:14.5px;font-weight:600;line-height:1.25;flex:1;min-width:0}
+.salvato .meta{font-size:12px;color:var(--muto);margin-top:2px}
+.nota{
+  margin-top:11px;background:var(--grano);border-radius:var(--r-s);
+  padding:10px 12px;font-size:13px;line-height:1.5;white-space:pre-wrap;
+}
+.nota:empty{display:none}
+.nota-vuota{margin-top:11px;font-size:12.5px;color:var(--muto);font-style:italic}
+.salvato-azioni{display:flex;gap:7px;margin-top:11px}
+.mini{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px;border-radius:var(--r-s);font-size:12.5px;font-weight:600;
+  background:var(--grano-2);color:var(--bordeaux);min-height:38px;
+}
+.mini.pieno{background:var(--bordeaux);color:#fff}
+.mini:active{transform:scale(.97)}
+.stato-pill{
+  display:inline-flex;align-items:center;gap:5px;border-radius:999px;
+  padding:3px 10px;font-size:10.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;margin-top:6px;
+}
+.campo{margin-bottom:14px}
+.campo label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muto);margin-bottom:6px}
+.campo input,.campo textarea{
+  width:100%;border:1.5px solid var(--linea);border-radius:var(--r-s);
+  background:var(--bianco);padding:11px 12px;font:inherit;font-size:14px;
+  color:var(--inchiostro);resize:vertical;
+}
+.campo textarea{min-height:96px;line-height:1.5}
+.campo input:focus,.campo textarea:focus{outline:none;border-color:var(--bordeaux-3)}
 
 /* ─────────────────────────── interruttore modalita' ───────────────────────
    Due bisogni diversi meritano due mappe diverse: mangiare fuori e' una
@@ -484,6 +576,14 @@ svg{display:block}
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-filtro" viewBox="0 0 24 24"><path d="M3.5 5.5h17M6.5 12h11M10 18.5h4"/></symbol>
   <symbol id="i-lente" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.2"/><path d="m16.3 16.3 4.2 4.2"/></symbol>
+  <symbol id="i-menu-cibo" viewBox="0 0 24 24">
+    <path d="M5.5 3v18M5.5 3c1.6 0 2.6 1.4 2.6 3.3S7.1 9.6 5.5 9.6 2.9 8.2 2.9 6.3 3.9 3 5.5 3Z"/>
+    <path d="M15 3v6.6c0 1.6 1.1 2.6 2.6 2.6s2.6-1 2.6-2.6V3M17.6 12.2V21"/>
+  </symbol>
+  <symbol id="i-lista" viewBox="0 0 24 24">
+    <path d="M8.5 6.5h12M8.5 12h12M8.5 17.5h12M3.6 6.5h.01M3.6 12h.01M3.6 17.5h.01"/>
+  </symbol>
+  <symbol id="i-piu" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-croce" viewBox="0 0 24 24">
     <rect x="3.2" y="3.2" width="17.6" height="17.6" rx="4.4"/><path d="M12 8v8M8 12h8"/>
   </symbol>
@@ -561,6 +661,17 @@ svg{display:block}
   <div id="lo-sapevi"></div>
   <div class="blocco" id="lista-vicino"></div>
 
+  <div class="blocco">
+    <div class="occhiello">Manca un locale?</div>
+    <button class="riga-card" id="b-aggiungi" style="width:100%">
+      <div class="gemma" style="background:var(--bordeaux)"><svg class="ico"><use href="#i-piu"/></svg></div>
+      <div class="riga-corpo">
+        <h3>Aggiungilo tu, in un minuto</h3>
+        <div class="meta">Conosci un posto sicuro che qui non c&rsquo;&egrave;? Inseriscilo su OpenStreetMap: comparir&agrave; qui e in tutte le app che usano gli stessi dati.</div>
+      </div>
+    </button>
+  </div>
+
   <p class="pie">
     Dati &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, licenza ODbL 1.0.<br>
     Progetto indipendente, non collegato ad alcuna associazione.
@@ -601,13 +712,37 @@ svg{display:block}
     <h2>Stai programmando<br>un viaggio?</h2>
     <p>Scegli la città e vedi dove si mangia in sicurezza, prima di partire.</p>
     <div class="citta-fila" id="citta-fila"></div>
+    <div class="cerca-citta">
+      <svg class="ico sm" style="color:#DCC3C9"><use href="#i-lente"/></svg>
+      <input id="q-citta" type="search" inputmode="search" autocomplete="off"
+             placeholder="Cerca una citt&agrave; o un paese…" aria-label="Cerca una localit&agrave;">
+      <button id="b-tutte" aria-label="Tutte le citt&agrave;" style="color:#DCC3C9;padding:4px">
+        <svg class="ico sm"><use href="#i-lista"/></svg></button>
+    </div>
   </header>
+  <div class="esiti" id="esiti" hidden></div>
 
   <div class="valigia" id="valigia"></div>
   <div class="blocco" id="lista-viaggio"></div>
 </section>
 
+<!-- ═══════════════════════════════ 4. SALVATI ═════════════════════════════ -->
+<section class="vista" id="v-salvati">
+  <header class="cappello">
+    <div class="marchio">
+      <div class="sigillo"><svg class="ico"><use href="#i-stella"/></svg></div>
+      <div><h1>I miei posti</h1><p>preferiti, diari di viaggio e note</p></div>
+    </div>
+  </header>
+  <div id="salvati-corpo"></div>
+</section>
+
 <!-- ═════════════════════════════ dettaglio + modale ═══════════════════════ -->
+<div class="progresso" id="progresso" hidden aria-live="polite">
+  <div class="binario"><div class="riempi" id="prog-riempi"></div></div>
+  <span class="etichetta" id="prog-etichetta">Carico…</span>
+</div>
+
 <article class="foglio" id="foglio" aria-live="polite"></article>
 <div class="modale" id="modale" hidden><div class="box" id="modale-box"></div></div>
 
@@ -619,6 +754,8 @@ svg{display:block}
     <svg class="ico"><use href="#i-mappa"/></svg>Mappa</button>
   <button class="scheda-tab" role="tab" aria-selected="false" data-vista="v-viaggi">
     <svg class="ico"><use href="#i-valigia"/></svg>Viaggi</button>
+  <button class="scheda-tab" role="tab" aria-selected="false" data-vista="v-salvati">
+    <svg class="ico"><use href="#i-stella"/></svg>Salvati</button>
 </nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -651,7 +788,7 @@ const LIV = {
     avviso:'Non idoneo a chi ha la celiachia.'},
   dati_insufficienti:{et:'Da verificare',breve:'Da verificare',c:'#A89684',ord:6,alta:false,ico:'i-avviso',
     desc:'Risulta che offra opzioni senza glutine, ma non sappiamo come gestisce la contaminazione.',
-    avviso:'Chiedi al personale prima di ordinare e di\u2019 che sei celiaco.'}
+    avviso:'Chiedi al personale prima di ordinare, e di\u2019 chiaramente che sei celiaco: non basta chiedere se hanno qualcosa senza glutine.'}
 };
 
 /* ══════════════════════════════════════════════════════════════════
@@ -714,6 +851,45 @@ const CITTA = [
 ];
 
 /* ══════════════════════════════════════════════════════════════════
+   ARCHIVIO PERSONALE
+   ------------------------------------------------------------------
+   Le note restano sul telefono di chi le scrive: nessun account,
+   nessun invio da nessuna parte. Se il browser blocca la memoria
+   locale si continua a lavorare in RAM, senza rompere niente.
+   ══════════════════════════════════════════════════════════════════ */
+const Archivio = {
+  chiave:'fgf.salvati.v1', memoria:{}, disco:true,
+  leggi(){
+    if(!this.disco) return this.memoria;
+    try{ return JSON.parse(localStorage.getItem(this.chiave) || '{}'); }
+    catch(e){ this.disco=false; return this.memoria; }
+  },
+  scrivi(o){
+    this.memoria = o;
+    if(!this.disco) return;
+    try{ localStorage.setItem(this.chiave, JSON.stringify(o)); }
+    catch(e){ this.disco=false; }
+  },
+  ha(k){ return !!this.leggi()[k]; },
+  prendi(k){ return this.leggi()[k] || null; },
+  salva(voce){ const o=this.leggi(); o[voce.k]={...(o[voce.k]||{}), ...voce}; this.scrivi(o); },
+  togli(k){ const o=this.leggi(); delete o[k]; this.scrivi(o); },
+  tutti(){ return Object.values(this.leggi()); },
+  collezioni(){
+    const g={};
+    for(const v of this.tutti()){ (g[v.coll||'Senza raccolta'] ||= []).push(v); }
+    return g;
+  }
+};
+
+const STATI = {
+  da_provare:{et:'Da provare', c:'#77604F'},
+  provato:   {et:'Provato',    c:'#2E7D4F'},
+  preferito: {et:'Preferito',  c:'#C9962E'},
+  evitare:   {et:'Da evitare', c:'#C0203A'}
+};
+
+/* ══════════════════════════════════════════════════════════════════
    STATO
    ══════════════════════════════════════════════════════════════════ */
 const S = {
@@ -768,9 +944,13 @@ function corpoQuery(f){
 (
   nwr["diet:gluten_free"]${f};
   nwr["gluten_free"]${f};
-  nwr["cuisine"~"gluten_free",i]${f};
+  nwr["diet:celiac"]${f};
+  nwr["diet:coeliac"]${f};
+  nwr["cuisine"~"gluten_free|celiac",i]${f};
   nwr["amenity"]["name"~"${RE_NOME}",i]${f};
   nwr["shop"]["name"~"${RE_NOME}",i]${f};
+  nwr["amenity"]["description"~"glutine|gluten",i]${f};
+  nwr["shop"]["description"~"glutine|gluten",i]${f};
 );
 out center tags;`;
 }
@@ -840,14 +1020,19 @@ function deduciTipo(t){
 function normalizza(el){
   const t = el.tags||{}, lat = el.lat ?? el.center?.lat, lng = el.lon ?? el.center?.lon;
   if(lat==null||lng==null) return null;
-  const gf = t['diet:gluten_free'] || t['gluten_free'] || null;
+  const gf = t['diet:gluten_free'] || t['gluten_free'] || t['diet:celiac'] || t['diet:coeliac'] || null;
   const nome = t.name || '';
+  const perDescr = !gf && /glutine|gluten/i.test(t.description||'');
   const perNome = !gf && new RegExp(RE_NOME,'i').test(nome);
   const perCucina = !gf && /gluten/i.test(t.cuisine||'');
-  if(!gf && !perNome && !perCucina) return null;
+  if(!gf && !perNome && !perCucina && !perDescr) return null;
   return {
     modo:'mangiare',
-    origine: gf ? 'tag' : (perCucina ? 'cucina' : 'nome'),
+    origine: gf ? 'tag' : (perCucina ? 'cucina' : (perDescr ? 'descrizione' : 'nome')),
+    descrizione: t.description || null,
+    takeaway:t.takeaway||null, delivery:t.delivery||null,
+    dehors:t.outdoor_seating||null, accessibile:t.wheelchair||null,
+    prenotazione:t.reservation||null, social:t['contact:instagram']||t['contact:facebook']||null,
     k:el.type+'/'+el.id, osmType:el.type, osmId:el.id,
     nome:t.name||'Locale senza nome', lat, lng,
     tipo:deduciTipo(t), livello:MAP_OSM[gf]||'dati_insufficienti', tagGf:gf,
@@ -886,6 +1071,68 @@ function ammesso(l){
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   DATI PRECARICATI — raccolti dall'Action, serviti da GitHub Pages
+   ------------------------------------------------------------------
+   Se la provincia e' gia' stata raccolta i punti arrivano da un file
+   statico: risposta immediata e nessun carico su Overpass. Solo se
+   manca si interroga OpenStreetMap dal vivo.
+   ══════════════════════════════════════════════════════════════════ */
+const Dati = {
+  indice:null, prese:new Set(), assente:false,
+  async carica_indice(){
+    if(this.indice || this.assente) return this.indice;
+    try{
+      const r = await fetch('data/_indice.json', {cache:'no-cache'});
+      if(!r.ok) throw 0;
+      this.indice = await r.json();
+    }catch(e){ this.assente = true; }
+    return this.indice;
+  },
+  provincia(lat,lng){
+    const i = this.indice; if(!i || !i.province) return null;
+    for(const [sg,p] of Object.entries(i.province)){
+      const [s,w,n,e] = p.bb;
+      if(lat>=s && lat<=n && lng>=w && lng<=e) return sg;
+    }
+    return null;
+  },
+  async prendi(lat,lng,modo){
+    await this.carica_indice();
+    const sg = this.provincia(lat,lng); if(!sg) return 0;
+    const id = modo+'/'+sg;
+    if(this.prese.has(id)) return -1;              // gia' in memoria
+    try{
+      const r = await fetch(`data/${modo}/${sg}.json`, {cache:'no-cache'});
+      if(!r.ok) return 0;
+      const j = await r.json();
+      let nuovi = 0;
+      for(const c of (j.punti||[])){
+        const o = daCompatto(c, modo);
+        if(o && !S.locali.has(o.k)){ S.locali.set(o.k,o); nuovi++; }
+      }
+      this.prese.add(id);
+      return nuovi;
+    }catch(e){ return 0; }
+  }
+};
+
+const TIPO_OSM = {n:'node', w:'way', r:'relation'};
+
+function daCompatto(c, modo){
+  const base = {
+    k:c.k, osmType:TIPO_OSM[c.ty]||'node', osmId:c.id, modo,
+    nome:c.n, lat:c.la, lng:c.ln,
+    indirizzo:c.ind||null, comune:c.com||null, telefono:c.tel||null,
+    sito:c.web||null, orari:c.ora||null, tagGf:c.gf||null
+  };
+  if(modo==='comprare') return {...base, cat:c.ct, marca:c.mar||null};
+  return {...base, tipo:c.tp||'altro', livello:c.lv||'dati_insufficienti',
+    origine:c.or||'tag', cucina:c.cuc||null, descrizione:c.des||null,
+    lattosio:c.lat_||null, vegetariano:c.veg||null, vegano:c.vgn||null,
+    takeaway:c.asp||null, delivery:c.con||null, dehors:c.deh||null, accessibile:c.acc||null};
+}
+
+/* ══════════════════════════════════════════════════════════════════
    VISTA 1 — VICINO A ME
    ══════════════════════════════════════════════════════════════════ */
 function scheletroEroe(testo){
@@ -910,19 +1157,41 @@ function avviaVicino(){
   }, eroeSenzaPosizione, {timeout:12000, enableHighAccuracy:true, maximumAge:60000});
 }
 
+// Un contatore di richieste: cambiando modalita' la vecchia viene abbandonata
+// invece di bloccare i comandi. I tasti restano sempre premibili.
+let richiesta = 0;
+
 async function caricaIntorno(){
-  if(!S.posizione || S.caricando) return;
-  S.caricando = true;
-  scheletroEroe(S.modo==='comprare' ? 'Cerco dove fare la spesa…' : 'Cerco i posti più vicini…');
+  if(!S.posizione) return;
+  const mio = ++richiesta, modo = S.modo;
+  scheletroEroe(modo==='comprare' ? 'Cerco dove fare la spesa…' : 'Cerco i posti più vicini…');
+  Prog.avvia(modo==='comprare' ? 'Cerco negozi e farmacie' : 'Cerco posti senza glutine');
   try{
-    for(const r of CFG.raggioVicino){
-      assorbi(await interroga(qPerModo(S.posizione.lat,S.posizione.lng,r)), S.modo);
-      if(vicini().length) break;
+    // prima l'archivio gia' raccolto: se c'e', la risposta e' istantanea
+    const pronti = await Dati.prendi(S.posizione.lat, S.posizione.lng, modo);
+    if(mio !== richiesta) return;
+    if(pronti !== 0){
+      disegnaVicino(); disegnaMappa(); disegnaComune();
+      if(vicini().length){ Prog.fine(`${vicini().length} risultati`); return; }
     }
-    disegnaVicino(); disegnaMappa(); disegnaComune();
+    let i = 0;
+    for(const r of CFG.raggioVicino){
+      const d = await interroga(qPerModo(S.posizione.lat,S.posizione.lng,r));
+      if(mio !== richiesta) return;                 // l'utente ha cambiato idea
+      assorbi(d, modo);
+      i++;
+      const n = vicini().length;
+      Prog.passo(30 + i*22, n ? `${n} trovati entro ${Math.round(CFG.raggioVicino[i-1]/1000)} km` : 'Allargo la ricerca…');
+      if(n){ disegnaVicino(); disegnaMappa(); disegnaComune(); break; }   // mostro subito i primi
+    }
+    if(mio !== richiesta) return;
+    if(!vicini().length) eroeErrore('Niente nei dintorni','Con questi filtri non risulta nulla vicino a te.');
+    Prog.fine(`${vicini().length} risultati`);
   }catch(e){
+    if(mio !== richiesta) return;
     eroeErrore('Ricerca non riuscita','OpenStreetMap non ha risposto. Riprova fra qualche secondo.');
-  }finally{ S.caricando = false; }
+    Prog.fine('Ricerca non riuscita');
+  }
 }
 
 function eroeSenzaPosizione(){
@@ -1001,11 +1270,12 @@ function cardRiga(l, destra1, destra2, stella=false){
     <div class="gemma" style="background:${L1.c}">${icona('i-'+L1.ico.slice(2),'ico sm')}</div>
     <div class="riga-corpo">
       <h3>${esc(l.nome)}</h3>
-      <div class="meta">${esc(l.marca || TIPI[l.tipo] || '')}${l.comune?' · '+esc(l.comune):''}</div>
+      <div class="meta">${esc(l.modo==='comprare' ? SPESA[l.cat].et : (TIPI[l.tipo]||''))}${l.marca?' · '+esc(l.marca):''}${l.comune?' · '+esc(l.comune):''}</div>
       <span class="tag-liv" style="background:${L1.c}1A;color:${L1.c}">${esc(L1.breve)}</span>
     </div>
-    ${stella ? `<span class="stella" data-stella="${esc(l.k)}" role="button" aria-pressed="${S.viaggio.has(l.k)}">${icona('i-stella','ico sm')}</span>`
-             : `<div class="dist">${destra1||''}<span>${destra2||''}</span></div>`}
+    <div class="dist">${destra1||''}<span>${destra2||''}</span></div>
+    <span class="stella" data-stella="${esc(l.k)}" role="button"
+          aria-pressed="${Archivio.ha(l.k)}" aria-label="Salva">${icona('i-stella','ico sm')}</span>
   </button>`;
 }
 
@@ -1020,11 +1290,12 @@ function collega(){
   document.querySelectorAll('[data-stella]').forEach(s=>{
     if(s.dataset.legato) return; s.dataset.legato='1';
     s.addEventListener('click',e=>{
-      e.stopPropagation();
+      e.stopPropagation(); e.preventDefault();
       const k=s.dataset.stella;
-      S.viaggio.has(k) ? S.viaggio.delete(k) : S.viaggio.set(k,S.locali.get(k));
-      s.setAttribute('aria-pressed',S.viaggio.has(k));
-      disegnaValigia();
+      if(Archivio.ha(k)){ Archivio.togli(k); }
+      else{ salvaLocale(S.locali.get(k)); }
+      s.setAttribute('aria-pressed',Archivio.ha(k));
+      disegnaValigia(); disegnaSalvati();
     });
   });
 }
@@ -1086,6 +1357,7 @@ async function cercaArea(silenzioso){
   S.caricando=true;
   $('#t-area').textContent='Cerco…';
   $('#b-area').insertAdjacentHTML('afterbegin','<span class="rotella"></span>');
+  Prog.avvia('Cerco in questa zona');
   try{
     assorbi(await interroga(qBoxPerModo(b)), S.modo);
     disegnaMappa();
@@ -1095,15 +1367,20 @@ async function cercaArea(silenzioso){
     S.caricando=false;
     document.querySelector('.rotella')?.remove();
     $('#t-area').textContent='Cerca in quest\u2019area';
+    Prog.fine();
   }
 }
 
 /* ══════════════════════════════════════════════════════════════════
    VISTA 3 — VIAGGI
    ══════════════════════════════════════════════════════════════════ */
+const ICONICHE = ['Roma','Milano','Firenze','Venezia','Napoli','Bologna','Torino','Palermo'];
+
 function costruisciCitta(){
-  $('#citta-fila').innerHTML = CITTA.map(c=>
-    `<button class="citta" data-citta="${esc(c.n)}" aria-pressed="false">${esc(c.n)}</button>`).join('');
+  // in alto le grandi, sempre a portata di pollice; tutto il resto
+  // sta nell'elenco alfabetico e nella ricerca, paesini compresi.
+  $('#citta-fila').innerHTML = ICONICHE.map(n=>
+    `<button class="citta" data-citta="${esc(n)}" aria-pressed="false">${esc(n)}</button>`).join('');
   document.querySelectorAll('[data-citta]').forEach(b=>
     b.addEventListener('click',()=>scegliCitta(b.dataset.citta)));
   disegnaValigia();
@@ -1112,17 +1389,34 @@ function costruisciCitta(){
     <p>Ti mostro i locali ordinati per livello di sicurezza, dai più affidabili in giù.</p></div>`;
 }
 
-async function scegliCitta(nome){
-  const c = CITTA.find(x=>x.n===nome); if(!c) return;
+async function scegliCitta(nome, esterna){
+  const c = esterna || CITTA.find(x=>x.n===nome); if(!c) return;
+  const mio = ++richiesta, modo = S.modo;
   S.cittaScelta = c;
-  document.querySelectorAll('[data-citta]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.citta===nome));
-  $('#lista-viaggio').innerHTML = `<div class="vuoto">${icona('i-bussola','ico lg')}<b>Cerco a ${esc(nome)}…</b><p>Un momento.</p></div>`;
+  document.querySelectorAll('[data-citta]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.citta===c.n));
+  $('#lista-viaggio').innerHTML = `<div class="vuoto">${icona('i-bussola','ico lg')}<b>Cerco a ${esc(c.n)}</b><p>Sto interrogando OpenStreetMap.</p></div>`;
+  Prog.avvia(`Cerco a ${c.n}`);
   try{
-    assorbi(await interroga(qPerModo(c.lat,c.lng,7000)), S.modo);
-    disegnaViaggio();
-    disegnaMappa();
+    const pronti = await Dati.prendi(c.lat, c.lng, modo);
+    if(mio !== richiesta) return;
+    if(pronti !== 0){
+      mappa.setView([c.lat,c.lng],13);
+      disegnaViaggio(); disegnaMappa();
+      const q = [...S.locali.values()].filter(l=>l.modo===modo && distanza(c.lat,c.lng,l.lat,l.lng)<9000).length;
+      if(q){ Prog.fine(`${q} risultati a ${c.n}`); return; }
+    }
+    const d = await interroga(qPerModo(c.lat,c.lng,7000));
+    if(mio !== richiesta) return;
+    Prog.passo(70,'Preparo i risultati');
+    assorbi(d, modo);
+    mappa.setView([c.lat,c.lng],13);
+    disegnaViaggio(); disegnaMappa();
+    const n = [...S.locali.values()].filter(l=>l.modo===modo && distanza(c.lat,c.lng,l.lat,l.lng)<9000).length;
+    Prog.fine(`${n} risultati a ${c.n}`);
   }catch(e){
-    $('#lista-viaggio').innerHTML = `<div class="vuoto">${icona('i-avviso','ico lg')}<b>Ricerca non riuscita</b><p>OpenStreetMap non ha risposto. Riprova fra qualche secondo.</p></div>`;
+    if(mio !== richiesta) return;
+    $('#lista-viaggio').innerHTML = `<div class="vuoto">${icona('i-avviso','ico lg')}<b>Ricerca non riuscita</b><p>OpenStreetMap non ha risposto. Tocca di nuovo la citt&agrave; per riprovare.</p></div>`;
+    Prog.fine('Ricerca non riuscita');
   }
 }
 
@@ -1150,18 +1444,183 @@ function disegnaViaggio(){
 }
 
 function disegnaValigia(){
-  const v=[...S.viaggio.values()];
+  const cit = S.cittaScelta ? S.cittaScelta.n : null;
+  const v = Archivio.tutti().filter(x=>!cit || x.coll===cit);
   $('#valigia').innerHTML = `
     <div class="valigia-testa">${icona('i-valigia','ico sm')}<h3>La mia lista</h3></div>
     ${v.length
-      ? `<p>${v.length} ${v.length===1?'posto salvato':'posti salvati'} per questo viaggio.</p>
-         <ul>${v.map(l=>`<li><span style="width:8px;height:8px;border-radius:50%;background:${stile(l).c};display:block;flex:0 0 auto"></span>
+      ? `<p>${v.length} ${v.length===1?'posto salvato':'posti salvati'}${cit?' per '+esc(cit):''}. Aggiungi le note dalla scheda Salvati.</p>
+         <ul>${v.map(l=>`<li><span style="width:8px;height:8px;border-radius:50%;background:${coloreVoce(l)};display:block;flex:0 0 auto"></span>
            <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.nome)}</span>
            <button class="togli" data-togli="${esc(l.k)}" aria-label="Togli">${icona('i-x','ico sm')}</button></li>`).join('')}</ul>`
       : `<p>Tocca la stella accanto a un locale per aggiungerlo alla lista del viaggio.</p>`}`;
   document.querySelectorAll('[data-togli]').forEach(b=>b.addEventListener('click',()=>{
-    S.viaggio.delete(b.dataset.togli); disegnaValigia(); disegnaViaggio();
+    Archivio.togli(b.dataset.togli); disegnaValigia(); disegnaViaggio(); disegnaSalvati();
   }));
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AVANZAMENTO — una richiesta lenta deve sembrare viva, non rotta
+   ══════════════════════════════════════════════════════════════════ */
+const Prog = {
+  t:null, lento:null, attivo:false,
+  avvia(testo){
+    this.attivo=true;
+    $('#progresso').hidden=false;
+    $('#progresso').classList.remove('lento');
+    $('#prog-riempi').style.width='8%';
+    $('#prog-etichetta').textContent=testo;
+    // avanzamento lento e continuo: non arriva mai a 100 da solo
+    clearInterval(this.t);
+    let v=8;
+    this.t=setInterval(()=>{ v=Math.min(v+ (v<60?2.5:0.7), 92);
+      $('#prog-riempi').style.width=v+'%'; },420);
+    clearTimeout(this.lento);
+    this.lento=setTimeout(()=>{
+      if(!this.attivo) return;
+      $('#progresso').classList.add('lento');
+      $('#prog-etichetta').textContent='Ci sta mettendo più del solito… ancora un momento';
+    },9000);
+  },
+  passo(pct,testo){
+    if(!this.attivo) return;
+    $('#prog-riempi').style.width=Math.max(pct,parseFloat($('#prog-riempi').style.width)||0)+'%';
+    if(testo) $('#prog-etichetta').textContent=testo;
+  },
+  fine(testo){
+    clearInterval(this.t); clearTimeout(this.lento);
+    this.attivo=false;
+    $('#prog-riempi').style.width='100%';
+    if(testo) $('#prog-etichetta').textContent=testo;
+    setTimeout(()=>{ $('#progresso').hidden=true; $('#prog-riempi').style.width='0'; }, testo?900:380);
+  }
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   SALVATI, NOTE, DIARIO DI VIAGGIO
+   ══════════════════════════════════════════════════════════════════ */
+function raccoltaCorrente(){
+  if(S.cittaScelta && document.querySelector('#v-viaggi.attiva')) return S.cittaScelta.n;
+  return S.comune || (S.cittaScelta ? S.cittaScelta.n : 'I miei posti');
+}
+
+function salvaLocale(l, coll){
+  if(!l) return;
+  Archivio.salva({
+    k:l.k, nome:l.nome, lat:l.lat, lng:l.lng, modo:l.modo,
+    liv:l.livello||null, cat:l.cat||null, tipo:l.tipo||null,
+    comune:l.comune||null, tel:l.telefono||null, sito:l.sito||null,
+    coll: coll || raccoltaCorrente(),
+    stato: Archivio.prendi(l.k)?.stato || 'da_provare',
+    nota: Archivio.prendi(l.k)?.nota || '',
+    orari: Archivio.prendi(l.k)?.orari || '',
+    creato: Archivio.prendi(l.k)?.creato || new Date().toISOString()
+  });
+}
+
+function coloreVoce(v){
+  return v.modo==='comprare' ? (SPESA[v.cat]?.c||'#77604F') : (LIV[v.liv]?.c||'#9C8A78');
+}
+function icoVoce(v){
+  return v.modo==='comprare' ? (SPESA[v.cat]?.ico||'i-carrello') : (LIV[v.liv]?.ico||'i-spiga');
+}
+
+function disegnaSalvati(){
+  const g = Archivio.collezioni();
+  const nomi = Object.keys(g).sort((a,b)=>a.localeCompare(b,'it'));
+  const corpo = $('#salvati-corpo');
+  if(!nomi.length){
+    corpo.innerHTML = `<div class="vuoto">${icona('i-stella','ico lg')}
+      <b>Ancora niente di salvato</b>
+      <p>Tocca la stella accanto a un locale per tenerlo da parte. Puoi aggiungere una nota,
+      gli orari che ti sei fatto confermare al telefono e raggrupparli per città o per viaggio.</p></div>`;
+    return;
+  }
+  corpo.innerHTML = nomi.map(nome=>{
+    const voci = g[nome].sort((a,b)=>a.nome.localeCompare(b.nome,'it'));
+    return `<div class="collezione">
+      <div class="collezione-testa"><h3>${esc(nome)}</h3><span>${voci.length} ${voci.length===1?'posto':'posti'}</span></div>
+      ${voci.map(v=>{
+        const st = STATI[v.stato]||STATI.da_provare;
+        return `<div class="salvato">
+          <div class="salvato-cima">
+            <div class="gemma" style="background:${coloreVoce(v)}">${icona(icoVoce(v),'ico sm')}</div>
+            <div style="flex:1;min-width:0">
+              <h4>${esc(v.nome)}</h4>
+              <div class="meta">${esc(v.comune||'')}${v.tipo&&v.comune?' · ':''}${esc(TIPI[v.tipo]||'')}</div>
+              <span class="stato-pill" style="background:${st.c}1F;color:${st.c}">${esc(st.et)}</span>
+            </div>
+          </div>
+          ${v.orari?`<div class="nota"><b>Orari:</b> ${esc(v.orari)}</div>`:''}
+          ${v.nota?`<div class="nota">${esc(v.nota)}</div>`:`<div class="nota-vuota">Nessuna nota</div>`}
+          <div class="salvato-azioni">
+            <button class="mini pieno" data-nota="${esc(v.k)}">${icona('i-matita','ico sm')}Nota</button>
+            ${v.tel?`<a class="mini" href="tel:${esc(v.tel)}">${icona('i-tel','ico sm')}Chiama</a>`:''}
+            <a class="mini" href="https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}" target="_blank" rel="noopener">${icona('i-naviga','ico sm')}Vai</a>
+            <button class="mini" data-elimina="${esc(v.k)}" aria-label="Rimuovi">${icona('i-x','ico sm')}</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('') + `<div style="padding:6px 14px 8px">
+      <button class="mini" id="b-esporta" style="width:100%">${icona('i-lista','ico sm')}Copia tutto come testo</button>
+    </div>`;
+
+  corpo.querySelectorAll('[data-nota]').forEach(b=>b.addEventListener('click',()=>modaleNota(b.dataset.nota)));
+  corpo.querySelectorAll('[data-elimina]').forEach(b=>b.addEventListener('click',()=>{
+    Archivio.togli(b.dataset.elimina); disegnaSalvati(); disegnaValigia();
+  }));
+  const es=$('#b-esporta');
+  if(es) es.addEventListener('click',esportaSalvati);
+}
+
+function modaleNota(k){
+  const v = Archivio.prendi(k); if(!v) return;
+  const raccolte = [...new Set(Archivio.tutti().map(x=>x.coll).filter(Boolean))];
+  apriModale(esc(v.nome), `
+    <div class="campo"><label>Come lo consideri</label>
+      <div class="griglia-chip" id="g-stato">
+        ${Object.entries(STATI).map(([id,s])=>
+          `<button class="chip" data-stato="${id}" aria-pressed="${v.stato===id}">${s.et}</button>`).join('')}
+      </div>
+    </div>
+    <div class="campo"><label>Orari, come li hai verificati tu</label>
+      <input id="c-orari" type="text" value="${esc(v.orari||'')}" placeholder="es. chiuso il lunedì, confermato al telefono"></div>
+    <div class="campo"><label>Raccolta</label>
+      <input id="c-coll" type="text" list="l-coll" value="${esc(v.coll||'')}" placeholder="es. Milano, oppure Sicilia 2026">
+      <datalist id="l-coll">${raccolte.map(r=>`<option value="${esc(r)}">`).join('')}</datalist></div>
+    <div class="campo"><label>Nota</label>
+      <textarea id="c-nota" placeholder="Cosa hai chiesto, cosa ti hanno risposto, cosa ordinare, cosa evitare…">${esc(v.nota||'')}</textarea></div>
+  `);
+  let stato = v.stato;
+  document.querySelectorAll('[data-stato]').forEach(b=>b.addEventListener('click',()=>{
+    stato = b.dataset.stato;
+    document.querySelectorAll('[data-stato]').forEach(x=>x.setAttribute('aria-pressed', x===b));
+  }));
+  $('#m-ok').textContent = 'Salva';
+  $('#m-ok').addEventListener('click',()=>{
+    Archivio.salva({k, stato,
+      orari:$('#c-orari').value.trim(),
+      coll:$('#c-coll').value.trim() || 'I miei posti',
+      nota:$('#c-nota').value.trim()});
+    disegnaSalvati();
+  });
+}
+
+function esportaSalvati(){
+  const g = Archivio.collezioni();
+  const testo = Object.entries(g).map(([nome,voci]) =>
+    `${nome.toUpperCase()}\n` + voci.map(v=>{
+      const st=(STATI[v.stato]||STATI.da_provare).et;
+      return `• ${v.nome}${v.comune?' — '+v.comune:''} [${st}]`
+        + (v.orari?`\n  Orari: ${v.orari}`:'')
+        + (v.nota?`\n  ${v.nota}`:'');
+    }).join('\n')
+  ).join('\n\n') + '\n\nfreeglutenfree · dati OpenStreetMap (ODbL)';
+  navigator.clipboard?.writeText(testo).then(
+    ()=>apriModale('Copiato','<p>L’elenco è negli appunti: puoi incollarlo in una nota, in un messaggio o in una mail.</p>'),
+    ()=>apriModale('I tuoi posti',`<div class="campo"><textarea readonly style="min-height:220px">${esc(testo)}</textarea></div>`)
+  );
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1176,31 +1635,52 @@ function apriDettaglio(k){
   const d = S.posizione ? distanza(S.posizione.lat,S.posizione.lng,l.lat,l.lng) : null;
 
   $('#foglio').innerHTML=`
-    <div class="f-testa" style="background:${L1.c}">
+    <div class="f-testa">
+      <div class="f-nastro" style="background:${L1.c}"></div>
       <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
       <h2>${esc(l.nome)}</h2>
       <div class="tipo">${esc(TIPI[l.tipo])}${l.comune?' · '+esc(l.comune):''}${d?' · '+formatoDist(d):''}</div>
-      <div class="f-livello">
+      <div class="f-livello" style="border-left-color:${L1.c}">
         <strong>${icona('i-'+L1.ico.slice(2),'ico sm')}${esc(L1.et)}</strong>
         <p>${esc(L1.desc)}</p>
+      </div>
+      <div class="eroe-azioni" style="padding:14px 0 0">
+        <button class="btn" id="f-salva" style="background:rgba(255,255,255,.19);color:#fff">
+          ${icona('i-stella','ico sm')}<span id="f-salva-t">${Archivio.ha(l.k)?'Salvato':'Salva'}</span></button>
+        ${l.telefono?`<a class="btn" href="tel:${esc(l.telefono)}" style="background:var(--grano);color:var(--bordeaux)">${icona('i-tel','ico sm')}Chiama</a>`:''}
       </div>
     </div>
 
     ${L1.avviso?`<div style="padding:0 14px"><div class="avviso ${L1.grave?'grave':''}">${icona('i-avviso','ico sm')}<div>${esc(L1.avviso)}</div></div></div>`:''}
 
     <div class="pannello">
+      <div class="occhiello">Cosa offrono</div>
+      ${l.descrizione?`<p style="font-size:13.5px;line-height:1.55;padding-bottom:10px">${esc(l.descrizione)}</p>`:''}
+      ${riga('Cucina', l.cucina?esc(l.cucina.replace(/[_;]/g,' · ')):'')}
+      ${riga('Asporto', l.takeaway==='yes'?'sì':(l.takeaway==='no'?'no':''))}
+      ${riga('Consegna', l.delivery==='yes'?'sì':(l.delivery==='no'?'no':''))}
+      ${riga('Tavoli all\u2019aperto', l.dehors==='yes'?'sì':'')}
+      ${riga('Accessibile', l.accessibile==='yes'?'sì':(l.accessibile==='limited'?'parzialmente':''))}
+      ${riga('Senza lattosio', l.lattosio?esc(l.lattosio):'')}
+      ${riga('Vegetariano', l.vegetariano?esc(l.vegetariano):'')}
+      ${riga('Vegano', l.vegano?esc(l.vegano):'')}
+      ${l.sito?`<div class="riga"><span>Menu</span><span><a href="${esc(l.sito)}" target="_blank" rel="noopener">vedi sul sito</a></span></div>`:''}
+      <div class="riga"><span>Cerca il menu</span><span><a href="https://duckduckgo.com/?q=${encodeURIComponent(l.nome+' '+(l.comune||'')+' menu senza glutine')}" target="_blank" rel="noopener">sul web</a></span></div>
+      ${!l.descrizione && !l.cucina && !l.sito ? `<div class="avviso">${icona('i-avviso','ico sm')}<div>OpenStreetMap non riporta altro su questo locale. Una telefonata resta il modo più rapido per sapere cosa preparano senza glutine.</div></div>`:''}
+    </div>
+
+    <div class="pannello">
       <div class="occhiello">Su cosa si basa</div>
       ${riga('Fonte','OpenStreetMap')}
-      ${riga('Come e\u2019 stato trovato', l.origine==='tag'?'tag dieta':(l.origine==='cucina'?'tipo di cucina':'nome del locale'))}
+      ${riga('Come l\u2019abbiamo trovato', {tag:'tag dieta',cucina:'tipo di cucina',descrizione:'descrizione',nome:'nome del locale'}[l.origine]||'—')}
       ${riga('Tag dieta', l.tagGf?`<code>${esc(l.tagGf)}</code>`:'assente')}
-      ${riga('Verifica sul posto','mai effettuata')}
+      ${riga('Verificato sul posto','da nessuno, per ora')}
       ${(l.tagGf==='yes'||l.tagGf==='limited')?`<div class="avviso">${icona('i-avviso','ico sm')}<div>Il dato dice che esistono opzioni senza glutine, ma non dice nulla su come viene gestita la contaminazione. Per questo resta in “Da verificare”.</div></div>`:''}
     </div>
 
     <div class="pannello">
       <div class="occhiello">Informazioni</div>
       ${riga('Indirizzo', l.indirizzo?esc(l.indirizzo):'')}
-      ${riga('Cucina', l.cucina?esc(l.cucina.replace(/[_;]/g,' ')):'')}
       ${riga('Orari', l.orari?esc(l.orari):'')}
       ${riga('Telefono', l.telefono?`<a href="tel:${esc(l.telefono)}">${esc(l.telefono)}</a>`:'')}
       ${riga('Sito', l.sito?`<a href="${esc(l.sito)}" target="_blank" rel="noopener">apri</a>`:'')}
@@ -1226,6 +1706,17 @@ function apriDettaglio(k){
 
   $('#foglio').classList.add('aperto');
   $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+  legaSalva(l);
+}
+
+function legaSalva(l){
+  const b=$('#f-salva'); if(!b) return;
+  b.addEventListener('click',()=>{
+    if(Archivio.ha(l.k)){ Archivio.togli(l.k); $('#f-salva-t').textContent='Salva'; }
+    else{ salvaLocale(l); $('#f-salva-t').textContent='Salvato'; }
+    disegnaSalvati(); disegnaValigia();
+    document.querySelectorAll(`[data-stella="${l.k}"]`).forEach(s=>s.setAttribute('aria-pressed',Archivio.ha(l.k)));
+  });
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1250,6 +1741,52 @@ function modaleTipi(){
   }));
 }
 
+function modaleTutteCitta(){
+  const ord = [...CITTA].sort((a,b)=>a.n.localeCompare(b.n,'it'));
+  apriModale('Citt&agrave; principali',
+    `<p>Non trovi la tua? Usa il campo di ricerca: funziona anche con i paesi piccoli.</p>
+     <div class="griglia-chip" id="g-citta">
+     ${ord.map(c=>`<button class="chip" data-scegli="${esc(c.n)}">${esc(c.n)}</button>`).join('')}
+     </div>`);
+  document.querySelectorAll('[data-scegli]').forEach(b=>b.addEventListener('click',()=>{
+    $('#modale').hidden=true; scegliCitta(b.dataset.scegli);
+  }));
+}
+
+/* Ricerca libera di qualunque localita' italiana. Nominatim e' il servizio
+   di ricerca di OpenStreetMap: stessa fonte, stessa licenza. */
+let timerQ=null;
+async function cercaLocalita(testo){
+  const box=$('#esiti');
+  if(testo.trim().length<3){ box.hidden=true; return; }
+  box.hidden=false;
+  box.innerHTML=`<button disabled style="color:var(--muto)">Cerco “${esc(testo)}”…</button>`;
+  try{
+    const u=`https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=it&limit=8&accept-language=it&q=${encodeURIComponent(testo)}`;
+    const r=await fetch(u); const j=await r.json();
+    const luoghi=j.filter(x=>['city','town','village','municipality','hamlet','suburb','administrative'].includes(x.type)
+                             || x.category==='place' || x.category==='boundary');
+    if(!luoghi.length){
+      box.innerHTML=`<button disabled style="color:var(--muto)">Nessuna localit&agrave; trovata</button>`;
+      return;
+    }
+    box.innerHTML=luoghi.map((x,i)=>{
+      const nome=(x.name||x.display_name.split(',')[0]).trim();
+      const resto=x.display_name.split(',').slice(1,3).join(',').trim();
+      return `<button data-esito="${i}">${icona('i-pin','ico sm')}
+        <span>${esc(nome)}</span><span class="reg">${esc(resto)}</span></button>`;
+    }).join('');
+    box.querySelectorAll('[data-esito]').forEach(b=>b.addEventListener('click',()=>{
+      const x=luoghi[+b.dataset.esito];
+      const nome=(x.name||x.display_name.split(',')[0]).trim();
+      box.hidden=true; $('#q-citta').value=''; $('#q-citta').blur();
+      scegliCitta(nome,{n:nome,lat:+x.lat,lng:+x.lon});
+    }));
+  }catch(e){
+    box.innerHTML=`<button disabled style="color:var(--muto)">Ricerca non riuscita, riprova</button>`;
+  }
+}
+
 function modaleGuida(){
   apriModale('I sei livelli',
     `<p>Descrivono il rischio di contaminazione incrociata, non la qualità del cibo.</p>` +
@@ -1272,7 +1809,8 @@ document.querySelectorAll('.scheda-tab').forEach(t=>t.addEventListener('click',(
 }));
 
 function cambiaModo(m){
-  if(S.modo===m || S.caricando) return;
+  if(S.modo===m) return;
+  richiesta++;                     // abbandono la richiesta in corso, non la aspetto
   S.modo = m;
   document.querySelectorAll('[data-modo]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.modo===m));
   $('#b-alta').style.display = m==='comprare' ? 'none' : '';
@@ -1288,6 +1826,21 @@ function cambiaModo(m){
 }
 document.querySelectorAll('[data-modo]').forEach(b=>
   b.addEventListener('click',()=>cambiaModo(b.dataset.modo)));
+
+$('#b-tutte').addEventListener('click',modaleTutteCitta);
+$('#q-citta').addEventListener('input',e=>{
+  clearTimeout(timerQ);
+  const v=e.target.value;
+  timerQ=setTimeout(()=>cercaLocalita(v),450);
+});
+$('#b-aggiungi').addEventListener('click',()=>{
+  const c = S.posizione || mappa.getCenter();
+  const lat = c.lat, lng = c.lng ?? c.lon;
+  apriModale('Aggiungere un locale',
+    `<p>I dati di questa mappa vengono da OpenStreetMap, che chiunque pu&ograve; modificare. Aggiungere un posto significa aggiungerlo per tutti.</p>
+     <p><b>Cosa serve indicare</b><br>Il tag corretto &egrave; <code>diet:gluten_free</code>, con valore <code>only</code> se il locale &egrave; interamente senza glutine, oppure <code>yes</code> se ha opzioni senza glutine.</p>
+     <p style="margin-bottom:6px"><a href="https://www.openstreetmap.org/edit#map=18/${lat.toFixed(5)}/${lng.toFixed(5)}" target="_blank" rel="noopener" style="color:var(--bordeaux-3);font-weight:700;border-bottom:2px solid var(--grano-3)">Apri l&rsquo;editor su questa zona &rarr;</a></p>`);
+});
 
 $('#b-area').addEventListener('click',cercaArea);
 $('#b-tipi').addEventListener('click',modaleTipi);
@@ -1345,6 +1898,7 @@ try{
 
 costruisciSpettro();
 costruisciCitta();
+disegnaSalvati();
 avviaVicino();   // la posizione si chiede subito
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1452,11 +2006,17 @@ function dettaglioSpesa(l){
   const C = SPESA[l.cat];
   const d = S.posizione ? distanza(S.posizione.lat,S.posizione.lng,l.lat,l.lng) : null;
   $('#foglio').innerHTML=`
-    <div class="f-testa" style="background:${C.c}">
+    <div class="f-testa">
+      <div class="f-nastro" style="background:${C.c}"></div>
       <button class="f-chiudi" id="f-chiudi">${icona('i-freccia','ico sm')}Torna indietro</button>
       <h2>${esc(l.nome)}</h2>
       <div class="tipo">${esc(C.et)}${l.comune?' · '+esc(l.comune):''}${d?' · '+formatoDist(d):''}</div>
-      <div class="f-livello"><strong>${icona(C.ico,'ico sm')}Cosa trovi qui</strong><p>${esc(C.desc)}</p></div>
+      <div class="f-livello" style="border-left-color:${C.c}"><strong>${icona(C.ico,'ico sm')}Cosa trovi qui</strong><p>${esc(C.desc)}</p></div>
+      <div class="eroe-azioni" style="padding:14px 0 0">
+        <button class="btn" id="f-salva" style="background:rgba(255,255,255,.19);color:#fff">
+          ${icona('i-stella','ico sm')}<span id="f-salva-t">${Archivio.ha(l.k)?'Salvato':'Salva'}</span></button>
+        ${l.telefono?`<a class="btn" href="tel:${esc(l.telefono)}" style="background:var(--grano);color:var(--bordeaux)">${icona('i-tel','ico sm')}Chiama</a>`:''}
+      </div>
     </div>
 
     ${l.cat==='farmacia'?`<div style="padding:0 14px"><div class="avviso">${icona('i-buono','ico sm')}
@@ -1490,6 +2050,7 @@ function dettaglioSpesa(l){
     <p class="pie">Dati &copy; OpenStreetMap contributors, ODbL 1.0.</p>`;
   $('#foglio').classList.add('aperto');
   $('#f-chiudi').addEventListener('click',()=>$('#foglio').classList.remove('aperto'));
+  legaSalva(l);
 }
 
 function chiudiSplash(){ $('#splash').classList.add('via'); }
